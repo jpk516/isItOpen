@@ -12,14 +12,14 @@ const VenueService = {
     get: (name) => {
         return api.get(`${base}${name}`)
     },
-    add: (character) => {
+    add: (venue) => {
         return api.post(base, {
-            character: character
+            venue: venue
         })
     },
-    update: (character) => {
+    update: (venue) => {
         return api.put(base, {
-            character: character
+            venue: venue
         })
     }
 }
