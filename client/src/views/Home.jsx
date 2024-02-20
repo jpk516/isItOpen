@@ -2,6 +2,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
+import IIOMap from '../components/IIOMap';
+import VenueList from '../components/VenueList';
 
 function Home() {
     return (
@@ -17,9 +19,15 @@ function Home() {
                     <Alert variant="info">
                         Is it open? We aren't sure yet because we don't have anything else made yet.
                     </Alert>
+                    <IIOMap />
                 </Col>
                 <Col lg={4}>
-                    {/* <ObjectCounter /> */}
+                    <VenueList />
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    
                 </Col>
             </Row>
         </Container>
