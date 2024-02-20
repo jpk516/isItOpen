@@ -11,7 +11,7 @@ const LocalStrategy = require('passport-local').Strategy
 
 
 const port = process.env.port || 8000
-const url = process.env.MONGO_URI
+const mongoUrl = process.env.MONGO_URI
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -42,12 +42,14 @@ passport.deserializeUser(User.deserializeUser())
 // import controllers
 const accountController = require('./controllers/account')
 app.use(accountController)
+const venueController = require('./controllers/venue');
+app.use(venueController)
 
 app.get('/', (req, res) => res.send('API Running...'))
 
 async function connect() {
     try {
-        mongoose.connect(url)
+        mongoose.connect(mongoUrl)
             .then(() => console.log('MongoDB Connected'))
             .catch(err => console.log(err));
     } catch (error) {
@@ -56,6 +58,6 @@ async function connect() {
 }
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}!`)
     connect()
+    console.log(`App is running at http://localhost:${port}`)
 })

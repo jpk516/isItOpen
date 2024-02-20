@@ -32,9 +32,6 @@ function TopNav({ authenticated, onAuthChange, username }) {
             <LinkContainer to="/venues">
               <Nav.Link>Venues</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/about">
-              <Nav.Link>About</Nav.Link>
-            </LinkContainer>
           </Nav>
           <Nav>
             {authenticated ?

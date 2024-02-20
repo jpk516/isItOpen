@@ -30,6 +30,7 @@ function LoginForm({ authenticated, onAuthChange }) {
                 <Form.Label>Username</Form.Label>
                 <Form.Control type="text" placeholder="Enter username"
                     value={loginDetails.userName}
+                    autoComplete="username"
                     onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
                  />
                 <Form.Text className="text-muted">
@@ -39,6 +40,7 @@ function LoginForm({ authenticated, onAuthChange }) {
                 <Form.Label>Password</Form.Label>
                 <Form.Control type="password" placeholder="Password"
                     value={loginDetails.password}
+                    autoComplete="current-password"
                     onChange={e => setLoginDetails({...loginDetails, password: e.target.value})}
                  />
             </Form.Group>

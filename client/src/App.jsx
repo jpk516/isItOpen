@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './views/Home';
 import Login from './views/Login';
 import Register from './views/Register';
+import Venues from './views/Venues';
 import Container from 'react-bootstrap/esm/Container';
 import AccountService from './services/account-service';
 import { useEffect, useState } from 'react';
@@ -32,6 +33,7 @@ function App() {
             <Route path="" element={<Home />}></Route>
             <Route path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
             <Route path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+            <Route path="/venues" element={<Venues />}></Route>
           </Routes>
           <div className="mt-5"></div>
         </Container>
