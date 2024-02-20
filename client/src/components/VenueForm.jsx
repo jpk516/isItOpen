@@ -7,14 +7,23 @@ import { useParams, useNavigate } from "react-router-dom";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-
 function VenueForm() {
     const [validated, setValidated] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const { name } = useParams();
     const navigate = useNavigate();
     const [venueDetails, setVenueDetails] = useState({
-        name: '', description: ''
+        name: '', 
+        description: '', 
+        address: '', 
+        city: '', 
+        state: '', 
+        zip: '', 
+        phone: '', 
+        email: '', 
+        website: '', 
+        image: '', 
+        type: ''
     });
 
     // see if this is an edit or a create
@@ -85,6 +94,78 @@ function VenueForm() {
                                     required
                                     onChange={e => setVenueDetails({...venueDetails, description: e.target.value})}
                                 />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueAddress">
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control type="text" placeholder="Enter address" 
+                                    value={venueDetails.address}
+                                    required
+                                    onChange={e => setVenueDetails({...venueDetails, address: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueCity">
+                                <Form.Label>City</Form.Label>
+                                <Form.Control type="text" placeholder="Enter city" 
+                                    value={venueDetails.city}
+                                    required
+                                    onChange={e => setVenueDetails({...venueDetails, city: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueState">
+                                <Form.Label>State</Form.Label>
+                                <Form.Control type="text" placeholder="Enter state" 
+                                    value={venueDetails.state}
+                                    required
+                                    onChange={e => setVenueDetails({...venueDetails, state: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueZip">
+                                <Form.Label>Zip</Form.Label>
+                                <Form.Control type="text" placeholder="Enter zip" 
+                                    value={venueDetails.zip}
+                                    required
+                                    onChange={e => setVenueDetails({...venueDetails, zip: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenuePhone">
+                                <Form.Label>Phone</Form.Label>
+                                <Form.Control type="text" placeholder="Enter phone" 
+                                    value={venueDetails.phone}
+                                    onChange={e => setVenueDetails({...venueDetails, phone: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueEmail">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email" 
+                                    value={venueDetails.email}
+                                    onChange={e => setVenueDetails({...venueDetails, email: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueWebsite">
+                                <Form.Label>Website</Form.Label>
+                                <Form.Control type="text" placeholder="Enter website" 
+                                    value={venueDetails.website}
+                                    onChange={e => setVenueDetails({...venueDetails, website: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueImage">
+                                <Form.Label>Image</Form.Label>
+                                <Form.Control type="text" placeholder="Enter image URL" 
+                                    value={venueDetails.image}
+                                    onChange={e => setVenueDetails({...venueDetails, image: e.target.value})}
+                                />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueType">
+                                <Form.Label>Type</Form.Label>
+                                <Form.Select
+                                    value={venueDetails.type}
+                                    onChange={e => setVenueDetails({...venueDetails, type: e.target.value})}
+                                >
+                                    <option value="">Select type</option>
+                                    <option value="Bar">Bar</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Music Venue">Music Venue</option>
+                                </Form.Select>
                             </Form.Group>
                         </Col>
                     </Row>
