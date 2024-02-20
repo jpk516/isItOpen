@@ -18,4 +18,4 @@ This project lives in the "client" folder. To install, cd to the client folder a
 
 To start the react website cd to client folder and run:
 
-### `npm start`
+### `npm run dev`
