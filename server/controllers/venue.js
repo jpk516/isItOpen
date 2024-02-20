@@ -6,13 +6,9 @@ const base = '/api/venues/'
 
 
 router.get(base, (req, res) => {
-    if (req.isAuthenticated()) {
-        Venue.find({})
-            .then((result) => res.json(result))
-            .catch((err) => res.json({ success: false, message: "Could not load venues: " + err }));
-    } else {
-        res.status(401).send("User is not authenticated")
-    }
+    Venue.find({})
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not load venues: " + err }));
 });
 
 router.get(`${base}count`, (req, res) => {
