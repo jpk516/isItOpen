@@ -1,10 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import {APIProvider, Map, Marker} from '@vis.gl/react-google-maps';
+import {APIProvider, Map, Marker, MapControl, ControlPosition} from '@vis.gl/react-google-maps';
 import mapStyles from '../styles/mapStyles'; //import style sheet for the map
 import VenueService from '../services/venue-service';
 import IIOMarker from './IIOMarker';
 import { useNavigate } from "react-router-dom";
+import Card from 'react-bootstrap/Card';
 
 
 function IIOMap() {
@@ -33,6 +34,11 @@ function IIOMap() {
               disableDefaultUI={true}
               options={{styles:mapStyles}} //add styling to the map from the mapStyles.js file
             >
+              <MapControl position={ControlPosition.TOP_LEFT} variant="secondary">
+                <Card>
+                  <Card.Body>Is It Open?</Card.Body>
+                </Card>
+              </MapControl>
             {/* <Marker position={{lat: 38.9506, lng: -92.3268}}></Marker> */}
             {venues.map((venue, index) => {
               return (
