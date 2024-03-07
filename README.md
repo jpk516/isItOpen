@@ -5,6 +5,11 @@ Is it open?
 ## Back-End
 This project lives in the "server" folder. To install, cd to the server folder and run:  
 
+TODO:  
+--------------  
+- Logging, Error Handling
+- Remove hardcoded strings from controllers  
+
 ### `npm install` 
 
 To start the server cd to server folder and run:  

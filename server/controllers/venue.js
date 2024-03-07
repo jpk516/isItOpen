@@ -7,7 +7,9 @@ const base = '/api/venues/'
 
 router.get(base, (req, res) => {
     Venue.find({})
-        .then((result) => res.json(result))
+        .then((result) => {
+            res.json(result)
+        })
         .catch((err) => res.json({ success: false, message: "Could not load venues: " + err }));
 });
 

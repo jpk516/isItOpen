@@ -14,17 +14,11 @@ function VenueForm() {
     const navigate = useNavigate();
     const [venueDetails, setVenueDetails] = useState({
         name: '', 
-        description: '',
-        geo: {
-            
-        },
-        location: {
-            address: '', 
-            city: '', 
-            state: '', 
-            zip: '', 
-        },
-        
+        description: '', 
+        address: '', 
+        city: '', 
+        state: '', 
+        zip: '', 
         phone: '', 
         email: '', 
         website: '', 
@@ -104,7 +98,7 @@ function VenueForm() {
                             <Form.Group className="mb-3" controlId="formVenueAddress">
                                 <Form.Label>Address</Form.Label>
                                 <Form.Control type="text" placeholder="Enter address" 
-                                    value={venueDetails.location.address}
+                                    value={venueDetails.address}
                                     required
                                     onChange={e => setVenueDetails({...venueDetails, address: e.target.value})}
                                 />
@@ -112,7 +106,7 @@ function VenueForm() {
                             <Form.Group className="mb-3" controlId="formVenueCity">
                                 <Form.Label>City</Form.Label>
                                 <Form.Control type="text" placeholder="Enter city" 
-                                    value={venueDetails.location.city}
+                                    value={venueDetails.city}
                                     required
                                     onChange={e => setVenueDetails({...venueDetails, city: e.target.value})}
                                 />
@@ -120,7 +114,7 @@ function VenueForm() {
                             <Form.Group className="mb-3" controlId="formVenueState">
                                 <Form.Label>State</Form.Label>
                                 <Form.Control type="text" placeholder="Enter state" 
-                                    value={venueDetails.location.state}
+                                    value={venueDetails.state}
                                     required
                                     onChange={e => setVenueDetails({...venueDetails, state: e.target.value})}
                                 />
@@ -128,7 +122,7 @@ function VenueForm() {
                             <Form.Group className="mb-3" controlId="formVenueZip">
                                 <Form.Label>Zip</Form.Label>
                                 <Form.Control type="text" placeholder="Enter zip" 
-                                    value={venueDetails.location.zip}
+                                    value={venueDetails.zip}
                                     required
                                     onChange={e => setVenueDetails({...venueDetails, zip: e.target.value})}
                                 />

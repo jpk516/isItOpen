@@ -1,62 +1,61 @@
-import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { useState } from 'react';
+import AccountService from '../services/account-service';
+import { useNavigate } from "react-router-dom";
 
-const CheckIn = () => {
-    const [checkInData, setCheckInData] = useState({
-        // Initialize the check-in data fields here
-        // For example:
-        name: '',
-        location: '',
-        // Add more fields as per your check-in model
-    });
+function CheckIn({ authenticated, onAuthChange }) {
+    const navigate = useNavigate();
+    const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
+    const [loginMessage, setLoginMessage] = useState('');
 
-    const handleInputChange = (e) => {
-        setCheckInData({
-            ...checkInData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Send the check-in data to the server here
-        // You can use an API call or any other method to send the data
-        console.log(checkInData); // Just for demonstration, you can remove this line
-        // Reset the form after submitting
-        setCheckInData({
-            name: '',
-            location: '',
-        });
-    };
+    const handleSubmit = () => {
+        AccountService.authenticate(loginDetails.userName, loginDetails.password)
+            .then(response => {
+                if (response.data.success) {
+                    onAuthChange(true);
+                    navigate("/");
+                } else {
+                    setLoginMessage(response.data.message)
+                }
+            })
+            .catch(error => {
+                setLoginMessage(error);
+            })
+    }
 
     return (
-        <div>
-            <h2>Create Check-In</h2>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Name:
-                    <input
-                        type="text"
-                        name="name"
-                        value={checkInData.name}
-                        onChange={handleInputChange}
-                    />
-                </label>
-                <br />
-                <label>
-                    Location:
-                    <input
-                        type="text"
-                        name="location"
-                        value={checkInData.location}
-                        onChange={handleInputChange}
-                    />
-                </label>
-                <br />
-                {/* Add more input fields for other check-in data */}
-                <button type="submit">Submit</button>
-            </form>
-        </div>
+        <Form>
+            <Form.Group className="mb-3" controlId="formUsername">
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" placeholder="Enter username"
+                    value={loginDetails.userName}
+                    autoComplete="username"
+                    onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
+                 />
+                <Form.Text className="text-muted">
+                </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Password"
+                    value={loginDetails.password}
+                    autoComplete="current-password"
+                    onChange={e => setLoginDetails({...loginDetails, password: e.target.value})}
+                 />
+            </Form.Group>
+            <Form.Group>
+                <Button variant="primary"  onClick={handleSubmit}>
+                    Submit
+                </Button>
+                { loginMessage.length > 0 && 
+                    <Form.Text className="text-danger p-3">
+                        {loginMessage}
+                    </Form.Text>
+                }
+            </Form.Group>
+        </Form>
     );
-};
-
-export default CheckIn;
+  }
+  
+  export default CheckIn;
