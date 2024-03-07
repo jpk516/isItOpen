@@ -44,6 +44,8 @@ const accountController = require('./controllers/account')
 app.use(accountController)
 const venueController = require('./controllers/venue');
 app.use(venueController)
+const checkInController = require('./controllers/check-in');
+app.use(checkInController)
 
 app.get('/', (req, res) => res.send('API Running...'))
 

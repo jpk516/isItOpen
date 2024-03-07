@@ -5,9 +5,7 @@ const CheckIn = new Schema({
     venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     comment: { type: String, required: false },
-    // do we want ratings?
-    rating: { type: Number, required: false },
-    open: { type: Boolean, default: true },
+    open: { type: Boolean, required: false },
     created: { type: Date, default: Date.now }
 });
 
