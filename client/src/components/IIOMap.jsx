@@ -48,7 +48,6 @@ function IIOMap() {
                   title={venue.name}
                   label={venue.type[0]}
                   onClick={() => handleMarkerClick(venue)}
-                  fillColor={venue.type === 'Bar' ? 'red' : 'blue'}
                 />
               )
             })}
