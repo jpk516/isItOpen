@@ -3,8 +3,12 @@ import { useState, useEffect } from 'react';
 import {APIProvider, Map, Marker} from '@vis.gl/react-google-maps';
 import mapStyles from '../styles/mapStyles'; //import style sheet for the map
 import VenueService from '../services/venue-service';
+import IIOMarker from './IIOMarker';
+import { useNavigate } from "react-router-dom";
+
 
 function IIOMap() {
+  const navigate = useNavigate();
   const [venues, setVenues] = useState([]);
 
   useEffect(() => {
@@ -15,6 +19,10 @@ function IIOMap() {
       })
   }, [])
 
+  function handleMarkerClick(venue) {
+    navigate(`/venues/manage/${venue.name}`)
+  }
+
   return (
     <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
             <Map
@@ -24,12 +32,18 @@ function IIOMap() {
               gestureHandling={'greedy'}
               disableDefaultUI={true}
               options={{styles:mapStyles}} //add styling to the map from the mapStyles.js file
-              
             >
             {/* <Marker position={{lat: 38.9506, lng: -92.3268}}></Marker> */}
             {venues.map((venue, index) => {
               return (
-                <Marker key={venue._id} position={{lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0]}}></Marker>
+                <Marker 
+                  key={venue._id} 
+                  position={{lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0]}}
+                  title={venue.name}
+                  label={venue.type[0]}
+                  onClick={() => handleMarkerClick(venue)}
+                  fillColor={venue.type === 'Bar' ? 'red' : 'blue'}
+                />
               )
             })}
             </Map>
