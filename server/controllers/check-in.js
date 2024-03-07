@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport');
 const Venue = require("../models/check-in");
-const base = '/api/check-in/'
+const base = '/api/check-in'
 
 router.get(base, (req, res) => {
     Venue.find({})
@@ -10,14 +10,14 @@ router.get(base, (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not load check-ins: " + err }));
 });
 
-router.get(`${base}count`, (req, res) => {
+router.get(`${base}/count`, (req, res) => {
     Venue.estimatedDocumentCount()
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not load counts: " + err }));
 });
 
 // get based on venue
-router.get(`${base}:venue`, (req, res) => {
+router.get(`${base}/venue/:venue`, (req, res) => {
     if (req.isAuthenticated()) {
         Venue.find({venue: req.params.venue})
             .then((result) => res.json(result))
@@ -28,7 +28,7 @@ router.get(`${base}:venue`, (req, res) => {
 });
 
 // get based on user
-router.get(`${base}:user`, (req, res) => {
+router.get(`${base}/user/:user`, (req, res) => {
     if (req.isAuthenticated()) {
         Venue.find({user: req.params.user})
             .then((result) => res.json(result))
