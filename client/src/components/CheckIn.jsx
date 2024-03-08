@@ -5,11 +5,13 @@ import { useState, useEffect } from 'react';
 import CheckInService from '../services/check-in-service';
 import { useNavigate } from "react-router-dom";
 import VenueService from '../services/venue-service';
+import CheckInTags from './CheckInTags';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 function CheckIn({onCheckIn}) {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
-    const [checkInDetails, setCheckInDetails] = useState({ open: false, comment: '', venue: '' });
+    const [checkInDetails, setCheckInDetails] = useState({ open: true, comment: '', venue: '' });
     const [venueSelectList, setVenueSelectList] = useState([]);
 
     useEffect(() => {
@@ -34,7 +36,7 @@ function CheckIn({onCheckIn}) {
     
     return (
         <Card>
-            <Card.Header>Manage Venue</Card.Header>
+            <Card.Header>What's Up?</Card.Header>
             <Card.Body>
                 <Form>
                     <Form.Group className="mb-3" controlId="formIsOpen">
@@ -49,14 +51,20 @@ function CheckIn({onCheckIn}) {
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formComment">
-                        <Form.Label>Comment</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            placeholder="Enter comment"
-                            value={checkInDetails.comment}
-                            onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
-                        />
+                        {/* <Form.Label>Comment</Form.Label> */}
+                        <FloatingLabel
+                            controlId="floatingTextarea"
+                            label="Comments"
+                            className="mb-3"
+                        >
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                placeholder="Enter comments"
+                                value={checkInDetails.comment}
+                                onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
+                            />
+                        </FloatingLabel>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formVenue">
@@ -75,7 +83,11 @@ function CheckIn({onCheckIn}) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Button variant="primary" onClick={handleCheckIn}>
+                    <Form.Group>
+                        <Form.Label>What's It Like?</Form.Label>
+                        <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly"]} />
+                    </Form.Group>
+                    <Button variant="primary" onClick={handleCheckIn} >
                         Check In
                     </Button>
                 </Form>
