@@ -44,6 +44,7 @@ router.post(base, (req, res, next) => {
         return
     }
     const newVenue = new Venue(req.body.venue)
+    newVenue.user = req.user._id
     newVenue.save()
         .then((result) => res.json(result))
         .catch((err) => {

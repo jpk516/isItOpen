@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport');
 const Venue = require("../models/venue");
-const base = '/api/venues/'
+const base = '/api/venues'
 const { getGeoFromVenue } = require('../services/geocoding');
 const { add } = require('../models/pointSchema');
 
@@ -17,13 +17,21 @@ router.get(base, (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not load venues: " + err }));
 });
 
-router.get(`${base}count`, (req, res) => {
+router.get(`${base}/select-list`, (req, res) => {
+    Venue.find({}).select('name')
+        .then((result) => {
+            res.json(result)
+        })
+        .catch((err) => res.json({ success: false, message: "Could not load venues: " + err }));
+});
+
+router.get(`${base}/count`, (req, res) => {
     Venue.estimatedDocumentCount()
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not load counts: " + err }));
 });
 
-router.get(`${base}:name`, (req, res) => {
+router.get(`${base}/:name`, (req, res) => {
     if (req.isAuthenticated()) {
         Venue.find({name: req.params.name})
             .then((result) => res.json(result[0]))

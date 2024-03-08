@@ -10,7 +10,7 @@ function ManageVenue() {
         <Container>
             <Row className="mb-3">
                 <Col>
-                    <h2>Edit Venue</h2>
+                    <h2>Manage Venue</h2>
                 </Col>
                 <Col>
                     <div className="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -25,7 +25,9 @@ function ManageVenue() {
                 </Col>
             </Row>
             <Row>
-                <CheckIn venue="Venue" />
+                <Col>
+                    <CheckIn venue="Venue" />
+                </Col>
             </Row>
         </Container>
     );
