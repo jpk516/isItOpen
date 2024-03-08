@@ -32,6 +32,12 @@ function TopNav({ authenticated, onAuthChange, username }) {
             <LinkContainer to="/venues">
               <Nav.Link>Venues</Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/brlist">
+              <Nav.Link>Lists</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/fav">
+              <Nav.Link>Favorites</Nav.Link>
+            </LinkContainer>
           </Nav>
           <Nav>
             {authenticated ?
@@ -41,6 +47,9 @@ function TopNav({ authenticated, onAuthChange, username }) {
                 <Nav.Link>Login</Nav.Link>
               </LinkContainer>
             }
+            <LinkContainer to="/settings">
+              <Nav.Link>Settings</Nav.Link>
+            </LinkContainer>
           </Nav>
         </Navbar.Collapse>
       </Container>
