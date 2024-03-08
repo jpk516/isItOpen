@@ -6,6 +6,7 @@ const CheckIn = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     comment: { type: String, required: false },
     open: { type: Boolean, required: false },
+    tags: [{type: String, required: false}],
     created: { type: Date, default: Date.now }
 });
 

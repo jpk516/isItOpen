@@ -1,6 +1,6 @@
 import api from './axios-service.js'
 
-const base = '/check-in'
+const base = '/check-ins'
 
 const CheckInService = {
     getAll: () => {
@@ -15,14 +15,14 @@ const CheckInService = {
     getByVenue: (name) => {
         return api.get(`${base}/venue/${name}`)
     },
-    add: (venue) => {
+    add: (checkIn) => {
         return api.post(base, {
-            venue: venue
+            checkIn: checkIn
         })
     },
-    update: (venue) => {
+    update: (checkIn) => {
         return api.put(base, {
-            venue: venue
+            checkIn: checkIn
         })
     }
 }

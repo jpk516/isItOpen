@@ -9,6 +9,7 @@ TODO:
 --------------  
 - Logging, Error Handling
 - Remove hardcoded strings from controllers  
+- Create ViewModels for controller calls  
 
 ### `npm install` 
 

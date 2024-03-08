@@ -1,4 +1,3 @@
-// Make a list of tags for a check-in that tell what the vibe is like at the venue.
 // examples are "lively", "quiet", "loud", "closing up ", "busy", "empty", "friendly", "unfriendly", "dangerous", "safe", "clean", "dirty", "expensive", "cheap", "upscale", "casual", "formal", "family-friendly", "adults-only", "touristy", "local", "hipster", "mainstream", "trendy", "divey", "sports-bar", "dance-club", "live-music", "karaoke", "trivia", "open-mic", "comedy", "lgbtq-friendly", "pet-friendly", "smoking-allowed", "smoking-prohibited", "vaping-allowed", "vaping-prohibited", "marijuana-friendly", "marijuana-prohibited
 
 import Badge from 'react-bootstrap/Badge';
@@ -9,7 +8,7 @@ function CheckInTags({tags}) {
     const [clickedTags, setClickedTags] = useState([]);
 
     const handleTagClick = (tag) => {
-        if (clickedTags.includes(tag)) {
+        if (clickedTags.includes(tag)) { 
             setClickedTags(clickedTags.filter((clickedTag) => clickedTag !== tag));
         } else {
             setClickedTags([...clickedTags, tag]);
