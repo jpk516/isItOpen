@@ -9,15 +9,23 @@ const passport = require('passport')
 const bodyParser = require("body-parser")
 const LocalStrategy = require('passport-local').Strategy
 
-
 const port = process.env.port || 8000
 const mongoUrl = process.env.MONGO_URI
+const debug = process.env.DEBUG_MODE === 'true' || false;
 
 const corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true
 }
 app.use(cors(corsOptions))
+
+if (debug) {
+    mongoose.set('debug', true);
+    app.use((req, res, next) => {
+        console.log("express request: ", req.method, req.url)
+        next()
+    })
+}
 
 // add json parsers
 app.use(bodyParser.json())

@@ -1,59 +1,67 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
-import AccountService from '../services/account-service';
+import CheckInService from '../services/check-in-service';
 import { useNavigate } from "react-router-dom";
 
-function CheckIn({ authenticated, onAuthChange }) {
+function CheckIn({onCheckIn, venue}) {
     const navigate = useNavigate();
-    const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
-    const [loginMessage, setLoginMessage] = useState('');
+    let venueName = venue || '';
+    const [errorMessage, setErrorMessage] = useState('');
+    const [checkInDetails, setCheckInDetails] = useState({ isOpen: false, comment: '', venue: '' });
 
-    const handleSubmit = () => {
-        AccountService.authenticate(loginDetails.userName, loginDetails.password)
+    const handleCheckIn = () => {
+        // Perform check-in logic here
+        CheckInService.add(checkInDetails)
             .then(response => {
-                if (response.data.success) {
-                    onAuthChange(true);
-                    navigate("/");
-                } else {
-                    setLoginMessage(response.data.message)
-                }
+                setCheckInDetails(response.data)
+                onCheckIn(true);
             })
             .catch(error => {
-                setLoginMessage(error);
+                setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
             })
     }
 
+    
     return (
         <Form>
-            <Form.Group className="mb-3" controlId="formUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="text" placeholder="Enter username"
-                    value={loginDetails.userName}
-                    autoComplete="username"
-                    onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
-                 />
-                <Form.Text className="text-muted">
-                </Form.Text>
+            <Form.Group className="mb-3" controlId="formIsOpen">
+                <Form.Label>Is it open?</Form.Label>
+                <Form.Check
+                    type="switch"
+                    id="isOpenSwitch"
+                    label={checkInDetails.isOpen ? 'Yes' : 'No'}
+                    checked={checkInDetails.isOpen}
+                    onChange={() => setCheckInDetails({ ...checkInDetails, isOpen: !checkInDetails.isOpen })}
+                />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password"
-                    value={loginDetails.password}
-                    autoComplete="current-password"
-                    onChange={e => setLoginDetails({...loginDetails, password: e.target.value})}
-                 />
+
+            <Form.Group className="mb-3" controlId="formComment">
+                <Form.Label>Comment</Form.Label>
+                <Form.Control
+                    as="textarea"
+                    rows={3}
+                    placeholder="Enter comment"
+                    value={checkInDetails.comment}
+                    onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
+                />
             </Form.Group>
-            <Form.Group>
-                <Button variant="primary"  onClick={handleSubmit}>
-                    Submit
-                </Button>
-                { loginMessage.length > 0 && 
-                    <Form.Text className="text-danger p-3">
-                        {loginMessage}
-                    </Form.Text>
-                }
+
+            <Form.Group className="mb-3" controlId="formVenue">
+                <Form.Label>Venue</Form.Label>
+                <Form.Control
+                    as="select"
+                    value={checkInDetails.venue}
+                    onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}
+                >
+                    <option value="">Select venue</option>
+                    <option value={venueName}>{venueName}</option>
+                </Form.Control>
             </Form.Group>
+
+            <Button variant="primary" onClick={handleCheckIn}>
+                Check In
+            </Button>
         </Form>
     );
   }

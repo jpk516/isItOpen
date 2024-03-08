@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import VenueForm from '../components/VenueForm'
 import { NavLink } from "react-router-dom";
+import CheckIn from '../components/CheckIn';
 
 function ManageVenue() {
     return (
@@ -22,6 +23,9 @@ function ManageVenue() {
                 <Col>
                     <VenueForm />
                 </Col>
+            </Row>
+            <Row>
+                <CheckIn venue="Venue" />
             </Row>
         </Container>
     );
