@@ -10,15 +10,12 @@ function Home() {
         <Container>
             <Row className="mb-3">
                 <Col>
-                    <h2>Welcome</h2>
+                    <h2>What's Hot?</h2>
                 </Col>
                 <hr />
             </Row>
             <Row>
                 <Col>
-                    <Alert variant="info">
-                        Is it open? We aren't sure yet because we don't have anything else made yet.
-                    </Alert>
                     <IIOMap />
                 </Col>
                 <Col lg={4}>
