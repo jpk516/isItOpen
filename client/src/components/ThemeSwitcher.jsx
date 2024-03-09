@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Tooltip } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { FaSun, FaMoon } from 'react-icons/fa';
 
-// This component is responsible for switching between light and dark themes.
-// TODO: - save to user settings
-//       - start with user's current theme
-
+// TODO: save the user's theme preference to user settings
 const ThemeSwitcher = () => {
-    // start with user's current theme
-    
+    // Determine if the user has a set theme preference
+    const getPreferredTheme = () => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        } else {
+            return 'light';
+        }
+    };
 
-    const [theme, setTheme] = useState('light'); // Default theme is light
+    const [theme, setTheme] = useState(getPreferredTheme());
 
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
@@ -22,8 +25,8 @@ const ThemeSwitcher = () => {
     }, [theme]);
 
     return (
-        <Button onClick={toggleTheme} className="icon-btn" variant="dark">
-            {theme === 'light' ? <FaMoon className="text-accent2" /> : <FaSun />}
+        <Button onClick={toggleTheme} className="icon-btn" variant={theme === 'light' ? 'light' : 'dark'}>
+            {theme === 'light' ? <FaMoon className="text-accent2" /> : <FaSun className="text-accent2" />}
             <span className="visually-hidden">Toggle theme</span>
         </Button>
     );
