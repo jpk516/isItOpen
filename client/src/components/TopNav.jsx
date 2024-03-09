@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { LinkContainer } from 'react-router-bootstrap'
 import AccountService from '../services/account-service';
 import { useNavigate } from "react-router-dom";
+import ThemeSwitcher from './ThemeSwitcher';
 // import { FaGamepad } from 'react-icons/fa/';
 
 function TopNav({ authenticated, onAuthChange, username }) {
@@ -39,7 +40,7 @@ function TopNav({ authenticated, onAuthChange, username }) {
               <Nav.Link>Favorites</Nav.Link>
             </LinkContainer>
           </Nav>
-          <Nav>
+          <Nav>            
             {authenticated ?
               <Nav.Link onClick={logOut}>Logout, {username}</Nav.Link>
               :
@@ -50,6 +51,7 @@ function TopNav({ authenticated, onAuthChange, username }) {
             <LinkContainer to="/settings">
               <Nav.Link>Settings</Nav.Link>
             </LinkContainer>
+            <ThemeSwitcher />
           </Nav>
         </Navbar.Collapse>
       </Container>

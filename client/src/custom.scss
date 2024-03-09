@@ -21,3 +21,18 @@ $theme-colors: (
 .pointer:hover {
     cursor: pointer;
 }
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn svg {
+    vertical-align: middle;
+}
