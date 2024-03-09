@@ -64,7 +64,6 @@ const options = {
     },
     apis: ['./controllers/*.js'], // files containing annotations as above
 };
-console.log(options)
 const specs = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

@@ -44,6 +44,10 @@ router.get(base, (req, res) => {
  *     responses:
  *       200:
  *         description: The created tag
+ *         content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/tag'
  *       401:
  *         description: User is not authenticated
  *       500:

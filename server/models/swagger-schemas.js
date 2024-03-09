@@ -5,8 +5,15 @@ const venue = require('./venue');
 const user = require('./user');
 
 module.exports = {
-    tag: m2s(tag),
-    checkIn: m2s(checkIn),
-    venue: m2s(venue),
-    user: m2s(user),
+    Tag: m2s(tag),
+    CheckIn: m2s(checkIn),
+    Venue: m2s(venue),
+    User: m2s(user),
+    ActionResult: {
+        type: 'object',
+        properties: {
+            success: { type: 'boolean' },
+            message: { type: 'string' }
+        }
+    }
 };
