@@ -36,6 +36,34 @@ router.post("/api/account/register", (req, res) => {
     });
 });
 
+
+/**
+* @openapi
+* /api/account/login:
+*   post:
+*     summary: Log in the user
+*     tags: [Account]
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               username:
+*                 type: string
+*               password:
+*                 type: string
+*     responses:
+*       200:
+*         description: Login successful
+*       400:
+*         description: Invalid request body
+*       401:
+*         description: Unauthorized
+*       500:
+*         description: Error occurred during login
+*/
 router.post("/api/account/login", (req, res) => {
     if (!req.body.username) {
         res.json({ success: false, message: "Username was not given" })
@@ -67,14 +95,26 @@ router.post("/api/account/login", (req, res) => {
     }
 });
 
+/**
+ * @openapi
+ * /api/account/logout:
+ *   delete:
+ *     summary: Log out the current user
+ *     tags: [Account]
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ *       500:
+ *         description: Error occurred during logout
+ */
 router.delete("/api/account/logout", (req, res) => {
     req.logout(function(err) {
         if (err) { 
             res.json({ success: false, message: err }) 
         } else {
-            res.json({ success: true, message: "logout successful" })
+            res.json({ success: true, message: "Logout successful" })
         }
-      });
+    });
 });
 
-module.exports = router
+module.exports = router;
