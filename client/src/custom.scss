@@ -1,0 +1,20 @@
+// $white: #ffffff;
+
+// $theme-colors: (
+//     "light":      #d9d4cf,
+//     "dark":       #0d1214,
+//     "primary":    #313e4d,
+//     "secondary":  #4770c6,
+//     "info":       #ec5073,
+//     "success":    #269c5b,
+//     "warning":    #e2c828,
+//     "danger":     #ef1515,
+// );
+
+@import 'bootstrap/scss/bootstrap';
+
+// Global styles
+
+.pointer:hover {
+    cursor: pointer;
+}
