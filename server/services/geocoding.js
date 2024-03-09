@@ -5,6 +5,7 @@ const client = new Client({});
 // take in an address and return the lat and long
 const getGeo = async (address) => {
     try {
+        console.log("address", address)
         const response = await client.geocode({
             params: {
                 address: address,

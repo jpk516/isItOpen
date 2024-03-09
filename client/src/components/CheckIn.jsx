@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import VenueService from '../services/venue-service';
 import CheckInTags from './CheckInTags';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 function CheckIn({onCheckIn}) {
     const navigate = useNavigate();
@@ -23,7 +24,6 @@ function CheckIn({onCheckIn}) {
     }, [])
 
     const handleCheckIn = () => {
-        // Perform check-in logic here
         CheckInService.add(checkInDetails)
             .then(response => {
                 setCheckInDetails({ open: false, comment: '', venue: '' });
@@ -33,7 +33,10 @@ function CheckIn({onCheckIn}) {
             })
     }
 
-    
+    const handleOpenChange = (isOpen) => {
+        setCheckInDetails({ ...checkInDetails, open: isOpen });
+    }
+
     return (
         <Card>
             <Card.Header>What's Up?</Card.Header>
@@ -41,60 +44,42 @@ function CheckIn({onCheckIn}) {
                 <Form>
                     <Form.Group className="mb-3" controlId="formIsOpen">
                         <Form.Label>Is it open?</Form.Label>
-                        <Form.Check
-                            type="switch"
-                            id="isOpenSwitch"
-                            label={checkInDetails.open ? 'Yes' : 'No'}
-                            checked={checkInDetails.open}
-                            onChange={() => setCheckInDetails({ ...checkInDetails, open: !checkInDetails.open })}
-                        />
+                        <ButtonGroup>
+                            <Button variant={checkInDetails.open ? "success" : "secondary"} onClick={() => handleOpenChange(true)}>Yes</Button>
+                            <Button variant={!checkInDetails.open ? "danger" : "secondary"} onClick={() => handleOpenChange(false)}>No</Button>
+                        </ButtonGroup>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formComment">
-                        {/* <Form.Label>Comment</Form.Label> */}
-                        <FloatingLabel
-                            controlId="floatingTextarea"
-                            label="Comments"
-                            className="mb-3"
-                        >
-                            <Form.Control
-                                as="textarea"
-                                rows={3}
-                                placeholder="Enter comments"
-                                value={checkInDetails.comment}
-                                onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
-                            />
-                        </FloatingLabel>
-                    </Form.Group>
+                    <FloatingLabel controlId="floatingTextarea" label="Comments" className="mb-3">
+                        <Form.Control as="textarea" rows={3} placeholder="Leave a comment here" value={checkInDetails.comment} onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })} />
+                    </FloatingLabel>
 
                     <Form.Group className="mb-3" controlId="formVenue">
                         <Form.Label>Venue</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={checkInDetails.venue}
-                            onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}
-                        >
+                        <Form.Control as="select" value={checkInDetails.venue} onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}>
                             <option value="">Select venue</option>
-                            {venueSelectList.map((venue, index) => {
-                                return (
-                                    <option key={venue._id} value={venue._id}>{venue.name}</option>
-                                )
-                            })}
+                            {venueSelectList.map((venue) => (
+                                <option key={venue._id} value={venue._id}>{venue.name}</option>
+                            ))}
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group>
+                    <Form.Group className="mb-3">
                         <Form.Label>What's It Like?</Form.Label>
                         <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]} />
                     </Form.Group>
-                    <Button variant="primary" onClick={handleCheckIn} >
-                        Check In
-                    </Button>
+                    
+                    <div className="d-grid gap-2">
+                        <Button variant="primary" size="lg" onClick={handleCheckIn}>
+                            Check In
+                        </Button>
+                    </div>
+                    
+                    {errorMessage && <div className="text-danger">{errorMessage}</div>}
                 </Form>
             </Card.Body>
         </Card>
-        
     );
-  }
-  
-  export default CheckIn;
+}
+
+export default CheckIn;
