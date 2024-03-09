@@ -74,7 +74,7 @@ const venueController = require('./controllers/venue');
 app.use(venueController)
 const checkInController = require('./controllers/check-in');
 app.use(checkInController)
-const tagController = require('./controllers/tags');
+const tagController = require('./controllers/tag');
 app.use(tagController)
 
 app.get('/', (req, res) => res.send('API Running...'))
