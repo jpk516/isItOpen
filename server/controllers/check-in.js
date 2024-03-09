@@ -84,7 +84,29 @@ router.get(`${base}/venue/:venue`, (req, res) => {
     }
 });
 
-// get based on user
+/**
+* @openapi
+* /api/check-ins/user/{userId}:
+*   get:
+*       summary: Returns all check-ins made by a user
+*       tags: [Check-Ins]
+*       description: Returns all check-ins made by a user
+*       parameters:
+*           - in: path
+*             name: userId
+*             required: true
+*             description: The user ID
+*       responses:
+*           200:
+*               description: A list of check-ins for specified user
+*               content:
+*                   application/json:
+*                       schema:
+*                           type: array
+*                           items:
+*                               $ref: '#/components/schemas/CheckIn'
+* 
+*/
 router.get(`${base}/user/:user`, (req, res) => {
     if (req.isAuthenticated()) {
         CheckIn.find({user: req.params.user})
@@ -95,6 +117,31 @@ router.get(`${base}/user/:user`, (req, res) => {
     }
 });
 
+/**
+* @openapi
+* /api/check-ins:
+*   post:
+*       summary: Creates a new check-in
+*       tags: [Check-Ins]
+*       description: Creates a new check-in
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: '#/components/schemas/CheckIn'
+*       responses:
+*           200:
+*               description: The created check-in
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/CheckIn'
+*           401:
+*               description: User is not authenticated
+*           500:
+*               description: Internal server error
+*/
 router.post(base, (req, res, next) => {
     if (!req.isAuthenticated()) {
         res.status(401).send("User is not authenticated")
