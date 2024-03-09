@@ -10,14 +10,10 @@ const TagService = {
         return api.get(`${base}/${name}`)
     },
     add: (tag) => {
-        return api.post(base, {
-            tag: tag
-        })
+        return api.post(base, tag)
     },
     update: (tag) => {
-        return api.put(base, {
-            tag: tag
-        })
+        return api.put(base, tag)
     }
 }
 

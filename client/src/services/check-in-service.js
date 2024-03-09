@@ -16,14 +16,10 @@ const CheckInService = {
         return api.get(`${base}/venue/${name}`)
     },
     add: (checkIn) => {
-        return api.post(base, {
-            checkIn: checkIn
-        })
+        return api.post(base, checkIn)
     },
     update: (checkIn) => {
-        return api.put(base, {
-            checkIn: checkIn
-        })
+        return api.put(base, checkIn)
     }
 }
 

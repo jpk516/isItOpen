@@ -19,9 +19,9 @@ function CheckInTags({tags}) {
         <>
             <Stack direction="horizontal" gap={2} className='mt-2 mb-4'>
                 {tags.map((tag) => (
-                    <h5>
+                    <h5 key={tag}>
                         <Badge
-                            key={tag}
+                            id={tag}
                             bg={clickedTags.includes(tag) ? "success" : "secondary"}
                             onClick={() => handleTagClick(tag)}
                             style={{ cursor: "pointer" }}

@@ -85,7 +85,7 @@ function CheckIn({onCheckIn}) {
 
                     <Form.Group>
                         <Form.Label>What's It Like?</Form.Label>
-                        <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly"]} />
+                        <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]} />
                     </Form.Group>
                     <Button variant="primary" onClick={handleCheckIn} >
                         Check In
