@@ -25,3 +25,5 @@ This project lives in the "client" folder. To install, cd to the client folder a
 To start the react website cd to client folder and run:
 
 ### `npm run dev`
+
+Project created with React + Vite template.

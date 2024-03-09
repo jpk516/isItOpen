@@ -24,28 +24,28 @@ function IIOMap() {
 
   return (
     <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
-            <Map
-              defaultCenter={{lat: 38.9517, lng: -92.3341}} //Set latitude and longitude to Columbia Missouri
-              defaultZoom={15}
-              style={{height: '600px' }}
-              gestureHandling={'greedy'}
-              disableDefaultUI={true}
-              options={{styles:mapStyles}} //add styling to the map from the mapStyles.js file
-            >
-            {/* <Marker position={{lat: 38.9506, lng: -92.3268}}></Marker> */}
-            {venues.map((venue, index) => {
-              return (
-                <Marker 
-                  key={venue._id} 
-                  position={{lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0]}}
-                  title={venue.name}
-                  label={venue.type[0]}
-                  onClick={() => handleMarkerClick(venue)}
-                />
-              )
-            })}
-            </Map>
-      </APIProvider>
+      <Map
+        defaultCenter={{lat: 38.9517, lng: -92.3341}} //Set latitude and longitude to Columbia Missouri
+        defaultZoom={15}
+        style={{height: '600px' }}
+        gestureHandling={'greedy'}
+        disableDefaultUI={true}
+        options={{styles:mapStyles}} //add styling to the map from the mapStyles.js file
+      >
+      {/* <Marker position={{lat: 38.9506, lng: -92.3268}}></Marker> */}
+      {venues.map((venue, index) => {
+        return (
+          <Marker 
+            key={venue._id} 
+            position={{lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0]}}
+            title={venue.name}
+            label={venue.type[0]}
+            onClick={() => handleMarkerClick(venue)}
+          />
+        )
+      })}
+      </Map>
+    </APIProvider>
   );
 }
   
