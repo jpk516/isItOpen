@@ -19,26 +19,19 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
-if (debug) {
-    mongoose.set('debug', true);
-    app.use((req, res, next) => {
-        console.log("express request: ", req.method, req.url)
-        next()
-    })
-}
-
 // add json parsers
 app.use(bodyParser.json())
 // from class. needed?
 app.use(bodyParser.urlencoded({extended: false}))
 
-// auth setup
+// auth & session setup
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }))
 
+// setup passport
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -46,26 +39,6 @@ const User = require('./models/user')
 passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
-
-// setup swagger
-const swaggerJsdoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSchemas = require('./models/swagger-schemas');
-const options = {
-    definition: {
-      openapi: '3.0.0',
-      info: {
-        title: 'Is It Open API',
-        version: '1.0.0',
-      },
-      components: {
-        schemas: swaggerSchemas
-      },
-    },
-    apis: ['./controllers/*.js'], // files containing annotations as above
-};
-const specs = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // import controllers
 const accountController = require('./controllers/account')
@@ -77,12 +50,43 @@ app.use(checkInController)
 const tagController = require('./controllers/tag');
 app.use(tagController)
 
+// setup debug mode
 if (debug) {
+    // log mongoose queries
+    mongoose.set('debug', true);
+    // log express requests
+    app.use((req, res, next) => {
+        console.log("express request: ", req.method, req.url)
+        next()
+    })
+    // setup test controller
     const testController = require('./controllers/test')
     app.use(testController)
+
+    // setup swagger
+    const swaggerJsdoc = require('swagger-jsdoc');
+    const swaggerUi = require('swagger-ui-express');
+    const swaggerSchemas = require('./models/swagger-schemas');
+    const options = {
+        definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Is It Open API',
+            version: '1.0.0',
+        },
+        components: {
+            schemas: swaggerSchemas
+        },
+        },
+        apis: ['./controllers/*.js'], // files containing annotations as above
+    };
+
+    // serve swagger ui
+    const specs = swaggerJsdoc(options);
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 }
 
-app.get('/', (req, res) => res.send('API Running...'))
+app.get('/', (req, res) => res.send('IIO API Running...'))
 
 async function connect() {
     try {
