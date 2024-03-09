@@ -47,6 +47,23 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+// setup swagger
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Is It Open API',
+        version: '1.0.0',
+      },
+    },
+    apis: ['./controllers/*.js', './models/*.js'], // files containing annotations as above
+};
+
+const specs = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
 // import controllers
 const accountController = require('./controllers/account')
 app.use(accountController)
