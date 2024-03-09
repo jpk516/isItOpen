@@ -46,7 +46,7 @@ router.post(base, (req, res, next) => {
         res.status(401).send("User is not authenticated")
         return
     }
-    const newVenue = new Venue(req.body.venue)
+    const newVenue = new Venue(req.body)
     getGeoFromVenue(newVenue).then((geo) => {
         newVenue.geo = geo
         console.log(newVenue)
@@ -68,7 +68,7 @@ router.put(base, (req, res, next) => {
         return
     }
 
-    const updateVenue = new Venue(req.body.venue)
+    const updateVenue = new Venue(req.body)
     getGeoFromVenue(updateVenue).then((geo) => {
         updateVenue.geo = geo
         Venue.findOneAndUpdate({ name: updateVenue.name }, updateVenue, { new: true })

@@ -54,7 +54,7 @@ router.post(base, (req, res, next) => {
         res.status(401).send("User is not authenticated");
         return;
     }
-    const newTag = new Tag(req.body.tag);
+    const newTag = new Tag(req.body);
     newTag.save()
         .then((result) => res.json(result))
         .catch((err) => {
@@ -68,7 +68,7 @@ router.put(base, (req, res, next) => {
         return
     }
 
-    const updateTag = req.body.tag
+    const updateTag = req.body
     Tag.findOneAndUpdate({ name: updateTag.name }, updateTag, { new: true })
         .then((result) => res.json(result))
         .catch((err) => next(err));

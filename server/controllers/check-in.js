@@ -43,7 +43,7 @@ router.post(base, (req, res, next) => {
         res.status(401).send("User is not authenticated")
         return
     }
-    const newCheckIn = new CheckIn(req.body.checkIn)
+    const newCheckIn = new CheckIn(req.body)
     newCheckIn.user = req.user._id
     newCheckIn.save()
         .then((result) => res.json(result))
