@@ -1,15 +1,18 @@
-// $white: #ffffff;
+$white: #ffffff;
 
-// $theme-colors: (
-//     "light":      #d9d4cf,
-//     "dark":       #0d1214,
-//     "primary":    #313e4d,
-//     "secondary":  #4770c6,
-//     "info":       #ec5073,
-//     "success":    #269c5b,
-//     "warning":    #e2c828,
-//     "danger":     #ef1515,
-// );
+$theme-colors: (
+    "light":      #dadcde,
+    "dark":       #191526,
+    "primary":    #273c7a,
+    "secondary":  #456fb1,
+    "info":       #6f88ab,
+    "accent1":    #46464e,
+    "accent2":    #b36e66,
+    "accent3":    #a5aeb6,
+    "success":    #2ea264,
+    "warning":    #e1cb2f,
+    "danger":     #ed2519,
+);
 
 @import 'bootstrap/scss/bootstrap';
 
