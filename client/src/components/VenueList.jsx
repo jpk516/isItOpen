@@ -3,10 +3,11 @@ import Table from 'react-bootstrap/Table';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-function VenueList() {
+function VenueList({name}) {
     const navigate = useNavigate();
+    const listName = name ? name : "Venues";
     const [venues, setVenues] = useState([]);
 
     useEffect(() => {
@@ -23,7 +24,7 @@ function VenueList() {
 
     return (
         <Card>
-            <Card.Header>Venues</Card.Header>
+            <Card.Header>{listName}</Card.Header>
             <ListGroup variant='flush'>
                 {venues.map((venue, index) => {
                     return (
