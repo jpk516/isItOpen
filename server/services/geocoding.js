@@ -12,7 +12,6 @@ const getGeo = async (address) => {
                 key: process.env.GOOGLE_MAPS_API_KEY
             }
         });
-        // return as geo object from mongoose
         return response.data.results[0].geometry.location
     } catch (error) {
         console.error(error);
