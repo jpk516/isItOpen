@@ -3,7 +3,7 @@ const router = express.Router()
 const passport = require('passport');
 const User = require("../models/user");
 
-router.get("/api/account/", (req, res) => {
+router.get("/api/accounts/", (req, res) => {
     if (req.isAuthenticated()) {
         res.json({ success: true, message: "User is authenticated", user: req.user });
     } else {
@@ -11,14 +11,14 @@ router.get("/api/account/", (req, res) => {
     }
 });
 
-router.get("/api/account/count", (req, res) => {
+router.get("/api/accounts/count", (req, res) => {
     User.estimatedDocumentCount()
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not load counts: " + err }));
 });
 
 
-router.post("/api/account/register", (req, res) => {
+router.post("/api/accounts/register", (req, res) => {
     User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
         if (err) {
             res.json({ success: false, message: "Your account could not be saved. Error: " + err });
@@ -39,10 +39,10 @@ router.post("/api/account/register", (req, res) => {
 
 /**
 * @openapi
-* /api/account/login:
+* /api/accounts/login:
 *   post:
 *       summary: Log in the user
-*       tags: [Account]
+*       tags: [Accounts]
 *       requestBody:
 *           required: true
 *           content:
@@ -68,7 +68,7 @@ router.post("/api/account/register", (req, res) => {
 *           500:
 *               description: Error occurred during login
 */
-router.post("/api/account/login", (req, res) => {
+router.post("/api/accounts/login", (req, res) => {
     if (!req.body.username) {
         res.json({ success: false, message: "Username was not given" })
     }
@@ -101,10 +101,10 @@ router.post("/api/account/login", (req, res) => {
 
 /**
  * @openapi
- * /api/account/logout:
+ * /api/accounts/logout:
  *   delete:
  *      summary: Log out the current user
- *      tags: [Account]
+ *      tags: [Accounts]
  *      responses:
  *          200:
  *              description: Logout Result Message
@@ -115,7 +115,7 @@ router.post("/api/account/login", (req, res) => {
  *          500:
  *              description: Error occurred during logout
  */
-router.delete("/api/account/logout", (req, res) => {
+router.delete("/api/accounts/logout", (req, res) => {
     req.logout(function(err) {
         if (err) { 
             res.json({ success: false, message: err }) 
