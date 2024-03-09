@@ -66,8 +66,31 @@ router.post(base, (req, res, next) => {
         });
 });
 
-
-
+/**
+* @openapi
+* /api/tags:
+*   put:
+*       summary: Updates a tag
+*       tags: [Tags]
+*       description: Updates a tag
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: '#/components/schemas/Tag'
+*       responses:
+*           200:
+*               description: The updated tag
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/Tag'
+*           401:
+*               description: User is not authenticated
+*           500:
+*               description: Internal server error
+*/
 router.put(base, (req, res, next) => {
     if (!req.isAuthenticated()) {
         res.status(401).send("User is not authenticated")
@@ -75,7 +98,7 @@ router.put(base, (req, res, next) => {
     }
 
     const updateTag = req.body
-    Tag.findOneAndUpdate({ name: updateTag.name }, updateTag, { new: true })
+    Tag.findOneAndUpdate({ _id: updateTag._id }, updateTag, { new: true })
         .then((result) => res.json(result))
         .catch((err) => next(err));
 });
