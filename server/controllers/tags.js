@@ -6,20 +6,6 @@ const base = '/api/tags';
 
 /**
  * @openapi
- * components:
- *   schemas:
- *     Tag:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *           unique: true
- *           index: true
- *           required: true
- */
-
-/**
- * @openapi
  * /api/tags:
  *   get:
  *     description: Returns all tags
@@ -31,7 +17,7 @@ const base = '/api/tags';
  *          schema:
  *              type: array
  *              items:
- *                  $ref: '#/components/schemas/Tag'
+ *                  $ref: '#/components/schemas/tag'
  * 
  */
 router.get(base, (req, res) => {
@@ -50,7 +36,7 @@ router.get(base, (req, res) => {
  *       content:
  *         application/json:
  *          schema:
- *           $ref: '#/components/schemas/Tag'
+ *           $ref: '#/components/schemas/tag'
  *     responses:
  *       200:
  *         description: The created tag

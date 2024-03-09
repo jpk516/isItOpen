@@ -50,6 +50,7 @@ passport.deserializeUser(User.deserializeUser())
 // setup swagger
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const swaggerSchemas = require('./models/swagger-schemas');
 const options = {
     definition: {
       openapi: '3.0.0',
@@ -57,10 +58,13 @@ const options = {
         title: 'Is It Open API',
         version: '1.0.0',
       },
+      components: {
+        schemas: swaggerSchemas
+      },
     },
-    apis: ['./controllers/*.js', './models/*.js'], // files containing annotations as above
+    apis: ['./controllers/*.js'], // files containing annotations as above
 };
-
+console.log(options)
 const specs = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
