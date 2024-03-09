@@ -77,6 +77,11 @@ app.use(checkInController)
 const tagController = require('./controllers/tag');
 app.use(tagController)
 
+if (debug) {
+    const testController = require('./controllers/test')
+    app.use(testController)
+}
+
 app.get('/', (req, res) => res.send('API Running...'))
 
 async function connect() {
