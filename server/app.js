@@ -9,9 +9,9 @@ const passport = require('passport')
 const bodyParser = require("body-parser")
 const LocalStrategy = require('passport-local').Strategy
 
-
 const port = process.env.port || 8000
 const mongoUrl = process.env.MONGO_URI
+const debug = process.env.DEBUG_MODE === 'true' || false;
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -24,13 +24,14 @@ app.use(bodyParser.json())
 // from class. needed?
 app.use(bodyParser.urlencoded({extended: false}))
 
-// auth setup
+// auth & session setup
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }))
 
+// setup passport
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -44,8 +45,48 @@ const accountController = require('./controllers/account')
 app.use(accountController)
 const venueController = require('./controllers/venue');
 app.use(venueController)
+const checkInController = require('./controllers/check-in');
+app.use(checkInController)
+const tagController = require('./controllers/tag');
+app.use(tagController)
 
-app.get('/', (req, res) => res.send('API Running...'))
+// setup debug mode
+if (debug) {
+    // log mongoose queries
+    mongoose.set('debug', true);
+    // log express requests
+    app.use((req, res, next) => {
+        console.log("express request: ", req.method, req.url)
+        next()
+    })
+    // setup test controller
+    const testController = require('./controllers/test')
+    app.use(testController)
+
+    // setup swagger
+    const swaggerJsdoc = require('swagger-jsdoc');
+    const swaggerUi = require('swagger-ui-express');
+    const swaggerSchemas = require('./models/swagger-schemas');
+    const options = {
+        definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Is It Open API',
+            version: '1.0.0',
+        },
+        components: {
+            schemas: swaggerSchemas
+        },
+        },
+        apis: ['./controllers/*.js'], // files containing annotations as above
+    };
+
+    // serve swagger ui
+    const specs = swaggerJsdoc(options);
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+}
+
+app.get('/', (req, res) => res.send('IIO API Running...'))
 
 async function connect() {
     try {

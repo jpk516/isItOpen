@@ -3,10 +3,6 @@
   min-height: 600px;
 }
 
-.pointer:hover {
-  cursor: pointer;
-}
-
 .map-container {
   height: 100%;
   width: 100%;
