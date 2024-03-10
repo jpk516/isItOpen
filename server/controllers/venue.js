@@ -147,7 +147,6 @@ router.post(base, (req, res, next) => {
     const newVenue = new Venue(req.body)
     getGeoFromVenue(newVenue).then((geo) => {
         newVenue.geo = geo
-        console.log(newVenue)
         newVenue.save()
         .then((result) => res.json(result))
         .catch((err) => {
