@@ -7,18 +7,18 @@ import ListbyType from "../components/Listbytype";
 
 
 function Fav() {
-  return(
-  <Container>
-    <Row>
-            <h2>Bars List</h2>
-            <Col></Col>
-                <Col lg={10}>
-                   <ListbyType />
-                </Col>
-                <Col></Col>
-            </Row>
+  return("hello Favorites"
+//   <Container>
+//     <Row>
+//             <h2>Bars List</h2>
+//             <Col></Col>
+//                 <Col lg={10}>
+//                    <ListbyType />
+//                 </Col>
+//                 <Col></Col>
+//             </Row>
 
-  </Container>
-  )
+//   </Container>
+   )
 }
 export default Fav;
