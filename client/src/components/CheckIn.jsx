@@ -39,8 +39,8 @@ function CheckIn({onCheckIn}) {
 
     return (
         <Card>
-            <Card.Header>What's Up? Are they still serving?</Card.Header>
             <Card.Body>
+                <Card.Title className="pb-3">What's Up? Are they still serving?</Card.Title>
                 <Form>
                     <Form.Group className="mb-3" controlId="formIsOpen">
                         <ButtonGroup>
