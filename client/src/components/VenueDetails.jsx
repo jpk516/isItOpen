@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, ListGroup, Row, Col } from 'react-bootstrap';
-import { FaBuilding, FaCity, FaMapMarkedAlt, FaPhone, FaEnvelope, FaGlobe, FaMusic, FaUtensils, FaGlassMartiniAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaBuilding, FaPhone, FaEnvelope, FaGlobe, FaMusic, FaUtensils, FaGlassMartiniAlt } from 'react-icons/fa';
 
-const VenueDetails = ({ venue }) => {
+const VenueView = ({ venue }) => {
   const getVenueTypeIcon = (type) => {
     switch (type) {
       case 'Bar':
@@ -21,13 +22,7 @@ const VenueDetails = ({ venue }) => {
       <Card.Header as="h5">{venue.name}</Card.Header>
       <ListGroup variant="flush">
         <ListGroup.Item>
-          <FaBuilding /> <strong>Address:</strong> {venue.address}
-        </ListGroup.Item>
-        <ListGroup.Item>
-          <FaCity /> <strong>City:</strong> {venue.city}
-        </ListGroup.Item>
-        <ListGroup.Item>
-          <FaMapMarkedAlt /> <strong>State/Zip:</strong> {`${venue.state}, ${venue.zip}`}
+          <FaBuilding /> <strong>Address:</strong> {`${venue.address}, ${venue.city}, ${venue.state} ${venue.zip}`}
         </ListGroup.Item>
         <ListGroup.Item>
           <FaPhone /> <strong>Phone:</strong> {venue.phone}
@@ -36,7 +31,7 @@ const VenueDetails = ({ venue }) => {
           <FaEnvelope /> <strong>Email:</strong> {venue.email}
         </ListGroup.Item>
         <ListGroup.Item>
-          <FaGlobe /> <strong>Website:</strong> <a href={venue.website} target="_blank" rel="noopener noreferrer">{venue.website}</a>
+          <FaGlobe /> <strong>Website:</strong> <Link to={{ pathname: venue.website }} target="_blank">{venue.website}</Link>
         </ListGroup.Item>
         <ListGroup.Item>
           {getVenueTypeIcon(venue.type)} <strong>Type:</strong> {venue.type}
@@ -46,4 +41,4 @@ const VenueDetails = ({ venue }) => {
   );
 };
 
-export default VenueDetails;
+export default VenueView;
