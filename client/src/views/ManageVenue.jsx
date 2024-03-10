@@ -49,11 +49,13 @@ function ManageVenue() {
                 </Col>
             </Row>
             <Row className="mb-3">
-                <Col>
+                <Col lg={10}>
                     <VenueForm />
                 </Col>
                 <Col>
                     <Achievement text="Gold Star" tooltipText="Achieved for excellence!" color="warning" />
+                    <Achievement text="x10 Checkins" tooltipText="What a super star!" color="primary" />
+                    <Achievement text="x20 Checkins" tooltipText="Achieved for excellence!" color="accent2" />
                 </Col>
             </Row>
             
