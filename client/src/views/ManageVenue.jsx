@@ -10,6 +10,7 @@ import VenueForm from '../components/VenueForm'
 import CheckIn from '../components/CheckIn';
 import VenueDetails from '../components/VenueDetails';
 import VenueService from '../services/venue-service';
+import Achievement from '../components/Achievement';
 
 function ManageVenue() {
     const [venueDetails, setVenueDetails] = useState({});
@@ -39,21 +40,23 @@ function ManageVenue() {
                 </Col>
                 <hr />
             </Row>
-            <Row>
+            <Row className="mb-3">
                 <Col>
-                    <VenueForm />
+                    <VenueDetails venue={venueDetails} />
                 </Col>
-            </Row>
-            <Row>
                 <Col>
                     <CheckIn venue="Venue" />
                 </Col>
             </Row>
-            <Row>
+            <Row className="mb-3">
                 <Col>
-                    <VenueDetails venue={venueDetails} />
+                    <VenueForm />
+                </Col>
+                <Col>
+                    <Achievement text="Gold Star" tooltipText="Achieved for excellence!" color="warning" />
                 </Col>
             </Row>
+            
         </Container>
     );
 }

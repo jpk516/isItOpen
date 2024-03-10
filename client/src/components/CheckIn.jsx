@@ -39,20 +39,27 @@ function CheckIn({onCheckIn}) {
 
     return (
         <Card>
-            <Card.Header>What's Up?</Card.Header>
+            <Card.Header>What's Up? Are they still serving?</Card.Header>
             <Card.Body>
                 <Form>
                     <Form.Group className="mb-3" controlId="formIsOpen">
-                        <Form.Label>Is it open?</Form.Label>
                         <ButtonGroup>
-                            <Button variant={checkInDetails.open ? "success" : "secondary"} onClick={() => handleOpenChange(true)}>Yes</Button>
-                            <Button variant={!checkInDetails.open ? "danger" : "secondary"} onClick={() => handleOpenChange(false)}>No</Button>
+                            <Button variant={checkInDetails.open ? "success" : "outline-secondary"} onClick={() => handleOpenChange(true)}>Yup! It's open.</Button>
+                            <Button variant={!checkInDetails.open ? "danger" : "outline-secondary"} onClick={() => handleOpenChange(false)}>Nope! They are done.</Button>
                         </ButtonGroup>
                     </Form.Group>
+                    
+                    { checkInDetails.open && 
+                        <Form.Group className="mb-3">
+                            <Form.Label>What's It Like?</Form.Label>
+                            <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]} />
+                        </Form.Group>
+                    }
 
-                    <FloatingLabel controlId="floatingTextarea" label="Comments" className="mb-3">
-                        <Form.Control as="textarea" rows={3} placeholder="Leave a comment here" value={checkInDetails.comment} onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })} />
-                    </FloatingLabel>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Any other juicy details?</Form.Label>
+                        <Form.Control as="textarea" rows={3} placeholder="Something something something" value={checkInDetails.comment} onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })} />
+                    </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formVenue">
                         <Form.Label>Venue</Form.Label>
@@ -64,11 +71,6 @@ function CheckIn({onCheckIn}) {
                         </Form.Control>
                     </Form.Group>
 
-                    <Form.Group className="mb-3">
-                        <Form.Label>What's It Like?</Form.Label>
-                        <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]} />
-                    </Form.Group>
-                    
                     <div className="d-grid gap-2">
                         <Button variant="primary" size="lg" onClick={handleCheckIn}>
                             Check In
