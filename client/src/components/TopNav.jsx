@@ -30,7 +30,7 @@ function TopNav({ authenticated, onAuthChange, username }) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <LinkContainer to="/venues">
-              <Nav.Link>Venues</Nav.Link>
+              <Nav.Link>Venue Creation</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/brlist">
               <Nav.Link>Lists</Nav.Link>

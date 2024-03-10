@@ -12,7 +12,7 @@ function Fav() {
     <Row>
             <h2>Bars List</h2>
             <Col></Col>
-                <Col lg={8}>
+                <Col lg={10}>
                    <ListbyType />
                 </Col>
                 <Col></Col>
