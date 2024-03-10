@@ -1,52 +1,22 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import {APIProvider, Map, Marker, MapControl, ControlPosition} from '@vis.gl/react-google-maps';
-import mapStyles from '../styles/mapStyles'; //import style sheet for the map
-import VenueService from '../services/venue-service';
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef } from 'react';
+import { initMap } from '../services/initializeMap';
 
+const IIOMap = () => {
 
-function IIOMap() {
-  const navigate = useNavigate();
-  const [venues, setVenues] = useState([]);
+  //*Useref is a mutable ref, so until map is loaded in the other file we set this to null to not cause any erros 
+  const mapRef = useRef(null); 
 
   useEffect(() => {
-      VenueService.getAll().then(response => {
-          setVenues(response.data);
-      }).catch(error => {
-          console.log(error)
-      })
-  }, [])
+    //after component mounts, map begins to initilize
+    if (mapRef.current) { //making sure mapref is has a DOM element
+      
+      //calls the initMap function in intilizeMap.js file
+      initMap(mapRef.current).then(({ map, marker}) => {
+      }).catch(error => console.error(error)); //error initilizing error is thrown
+    }
+  }, []);
 
-  function handleMarkerClick(venue) {
-    navigate(`/venues/manage/${venue.name}`)
-  }
+  return <div ref={mapRef} style={{ width: "100%", height: '100%' }}></div>; //have to return a div for the map, as it does not automatically do it like api Provider does
+};
 
-  return (
-    <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
-      <Map
-        defaultCenter={{lat: 38.9517, lng: -92.3341}} //Set latitude and longitude to Columbia Missouri
-        defaultZoom={15}
-        style={{height: '600px' }}
-        gestureHandling={'greedy'}
-        disableDefaultUI={true}
-        options={{styles:mapStyles}} //add styling to the map from the mapStyles.js file
-      >
-      {/* <Marker position={{lat: 38.9506, lng: -92.3268}}></Marker> */}
-      {venues.map((venue, index) => {
-        return (
-          <Marker 
-            key={venue._id} 
-            position={{lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0]}}
-            title={venue.name}
-            label={venue.type[0]}
-            onClick={() => handleMarkerClick(venue)}
-          />
-        )
-      })}
-      </Map>
-    </APIProvider>
-  );
-}
-  
 export default IIOMap;
