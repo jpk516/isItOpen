@@ -32,7 +32,7 @@ function TopNav({ authenticated, onAuthChange, username }) {
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/venues">
-              <Nav.Link>Venues</Nav.Link>
+              <Nav.Link>Venue Creation</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/brlist">
               <Nav.Link>Lists</Nav.Link>
