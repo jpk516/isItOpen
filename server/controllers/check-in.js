@@ -1,3 +1,12 @@
+
+/**
+ * @fileoverview This file contains the implementation of the check-in controller.
+ * It handles the routes related to check-ins, such as retrieving all check-ins, 
+ * counting check-ins, retrieving check-ins for a specific venue, retrieving check-ins 
+ * made by a specific user, and creating a new check-in.
+ * 
+ * @module controllers/check-in
+ */
 const express = require('express')
 const router = express.Router()
 const passport = require('passport');
