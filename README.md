@@ -5,6 +5,13 @@ Is it open?
 ## Back-End
 This project lives in the "server" folder. To install, cd to the server folder and run:  
 
+Make a new database object and use in API:
+------------------------------------------
+- Add model in models folder.
+- create controller in controllers folder.
+- optional: add openapi documentation for use with swagger-ui (http://localhost:8099/api-docs/)
+- add to controller import section of app.js (search for comment: // import controllers)
+
 TODO:  
 --------------  
 - Logging, Error Handling
