@@ -5,6 +5,14 @@ Is it open?
 ## Back-End
 This project lives in the "server" folder. To install, cd to the server folder and run:  
 
+Organization:
+-------------
+- app.js: Application setup and entry point
+- .env: Configuration settings
+- Models: Mongoose definition files for things stored in MongoDB
+- Controllers: API endpoint setup for each model allowing for data access
+- Services: Importable, reusable functionality
+
 Make a new database object and use in API:
 ------------------------------------------
 - Add model in models folder.
