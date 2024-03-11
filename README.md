@@ -1,9 +1,15 @@
 # isItOpen
-Is it open?
+Is it open? By Steven Gibson, Jimmy Keating, Alex Franklin, Jack Carroll, and Gerard Lucas
 
 
 ## Back-End
 This project lives in the "server" folder. To install, cd to the server folder and run:  
+
+### `npm install` 
+
+To start the server cd to server folder and run:  
+
+### `npm start`  
 
 Organization:
 -------------
@@ -19,18 +25,8 @@ Make a new database object and use in API:
 - create controller in controllers folder.
 - optional: add openapi documentation for use with swagger-ui (http://localhost:8099/api-docs/)
 - add to controller import section of app.js (search for comment: // import controllers)
+- data should be available at http://localhost:8099/api/*yourendpoint* (and at http://localhost:8099/api-docs/ if openapi docs present)
 
-TODO:  
---------------  
-- Logging, Error Handling
-- Remove hardcoded strings from controllers  
-- Create ViewModels for controller calls  
-
-### `npm install` 
-
-To start the server cd to server folder and run:  
-
-### `npm start`  
 
 ## Front-End
 This project lives in the "client" folder. To install, cd to the client folder and run:
@@ -42,3 +38,6 @@ To start the react website cd to client folder and run:
 ### `npm run dev`
 
 Project created with React + Vite template.
+
+Organization:
+-------------
