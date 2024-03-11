@@ -18,7 +18,7 @@ function ListbyType() {
     }, []);
 
     function handleRowClick(venue) {
-        navigate(`/venues/manage/${venue.name}`)
+        navigate(`/venues/view/${venue.name}`)
     }
 // So I created a new function to filter the venues based on their type. This used alot of the original code from the venues List 
 //first set the input to look for type of venue then set the filter for when it is accessed.

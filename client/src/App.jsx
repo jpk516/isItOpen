@@ -8,6 +8,7 @@ import Register from './views/Register';
 import Venues from './views/Venues';
 import ManageVenue from './views/ManageVenue';
 import BRList from './views/BRList';
+import VenuePage from './views/Venuepage';
 import Settings from './views/Settings';
 import Container from 'react-bootstrap/esm/Container';
 import AccountService from './services/account-service';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/brlist" element={<BRList />}></Route>
             <Route path="/settings" element={<Settings />}></Route>
             <Route path="/fav" element={<Fav />}></Route>
+            <Route path="/venues/view/:name?" element={<VenuePage />}></Route>
           </Routes>
           <div className="mt-5"></div>
         </Container>
