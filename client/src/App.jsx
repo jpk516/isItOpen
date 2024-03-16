@@ -6,6 +6,7 @@ import Home from './views/Home';
 import Login from './views/Login';
 import Register from './views/Register';
 import Venues from './views/Venues';
+import Admin from './views/Admin';
 import ManageVenue from './views/ManageVenue';
 import BRList from './views/BRList';
 import Settings from './views/Settings';
@@ -34,14 +35,15 @@ function App() {
         <Container className='nav-margin'>
           <MessageToast message="test" bg="warning" show={false}/>
           <Routes>
-            <Route path="" element={<Home />}></Route>
-            <Route path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-            <Route path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-            <Route path="/venues" element={<Venues />}></Route>
-            <Route path="/venues/manage/:name?" element={<ManageVenue />}></Route>
-            <Route path="/brlist" element={<BRList />}></Route>
-            <Route path="/settings" element={<Settings />}></Route>
-            <Route path="/fav" element={<Fav />}></Route>
+            <Route exact path="" element={<Home />}></Route>
+            <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+            <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+            <Route exact path="/venues" element={<Venues />}></Route>
+            <Route exact path="/venues/manage/:name?" element={<ManageVenue />}></Route>
+            <Route exact path="/brlist" element={<BRList />}></Route>
+            <Route exact path="/settings" element={<Settings />}></Route>
+            <Route exact path="/fav" element={<Fav />}></Route>
+            <Route exact path="/admin" element={<Admin />}></Route>
           </Routes>
           <div className="mt-5"></div>
         </Container>

@@ -28,16 +28,13 @@ function TopNav({ authenticated, onAuthChange, username }) {
         <Navbar.Toggle />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <LinkContainer to="/">
+            <LinkContainer end="true" to="/">
               <Nav.Link>Home</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/venues">
-              <Nav.Link>Venue Creation</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/brlist">
+            <LinkContainer end="true" to="/brlist">
               <Nav.Link>Lists</Nav.Link>
             </LinkContainer>
-            <LinkContainer to="/fav">
+            <LinkContainer end="true" to="/fav">
               <Nav.Link>Favorites</Nav.Link>
             </LinkContainer>
           </Nav>
