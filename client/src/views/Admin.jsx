@@ -2,6 +2,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 import VenueList from '../components/VenueList';
+import ManageTags from '../components/ManageTags';
 
 function Admin() {
     return (
@@ -22,8 +23,7 @@ function Admin() {
                     </Row>
                 </Tab>
                 <Tab eventKey="tags" title="Tags">
-                    {/* Placeholder for the Tags form component */}
-                    <p>Tags form will be here</p>
+                    <ManageTags />
                 </Tab>
                 <Tab eventKey="users" title="Users">
                     {/* Placeholder for the Users form component */}
