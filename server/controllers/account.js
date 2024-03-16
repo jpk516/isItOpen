@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains the account controller for handling user 
+ * authentication and account management. We use the passport library to handle 
+ * user authentication and session management.
+ * 
+ * @module controllers/account
+ */
 const express = require('express')
 const router = express.Router()
 const passport = require('passport');
