@@ -1,3 +1,11 @@
+/**
+*@fileoverview This file contains the implementation of the tag controller.
+*It handles the routes related to tags, such as retrieving all tags, creating a new tag,
+*and updating a tag.
+
+*@module controllers/tag
+*/
+
 const express = require('express');
 const Tag = require("../models/tag");
 

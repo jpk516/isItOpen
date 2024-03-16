@@ -1,19 +1,22 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge';
+import Stack from 'react-bootstrap/Stack';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { useState, useEffect } from 'react';
 import CheckInService from '../services/check-in-service';
 import { useNavigate } from "react-router-dom";
 import VenueService from '../services/venue-service';
-import CheckInTags from './CheckInTags';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import TagService from '../services/tag-service';
+
 
 function CheckIn({onCheckIn}) {
     const navigate = useNavigate();
     const [errorMessage, setErrorMessage] = useState('');
-    const [checkInDetails, setCheckInDetails] = useState({ open: true, comment: '', venue: '' });
+    const [checkInDetails, setCheckInDetails] = useState({ open: true, comment: '', venue: '', tags: [] });
     const [venueSelectList, setVenueSelectList] = useState([]);
+    const [tags, setTags] = useState(["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]);
 
     useEffect(() => {
         VenueService.getSelectList().then(response => {
@@ -21,7 +24,23 @@ function CheckIn({onCheckIn}) {
         }).catch(error => {
             console.log(error)
         })
+        
+        // TagService.getAll().then(response => {
+        //     setTags(response.data);
+        // }).catch(error => {
+        //     console.log(error)
+        // })
     }, [])
+
+    const handleTagClick = (tag) => {
+        let updatedTags;
+        if (checkInDetails?.tags?.includes(tag)) {
+            updatedTags = checkInDetails.tags.filter((clickedTag) => clickedTag !== tag);
+        } else {
+            updatedTags = [...checkInDetails.tags, tag];
+        }
+        setCheckInDetails({ ...checkInDetails, tags: updatedTags });
+    };
 
     const handleCheckIn = () => {
         CheckInService.add(checkInDetails)
@@ -36,6 +55,10 @@ function CheckIn({onCheckIn}) {
     const handleOpenChange = (isOpen) => {
         setCheckInDetails({ ...checkInDetails, open: isOpen });
     }
+
+    const handleTagsChange = (tags) => {
+        setCheckInDetails({ ...checkInDetails, tags });
+    };
 
     return (
         <Card>
@@ -52,7 +75,20 @@ function CheckIn({onCheckIn}) {
                     { checkInDetails.open && 
                         <Form.Group className="mb-3">
                             <Form.Label>What's It Like?</Form.Label>
-                            <CheckInTags tags={["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]} />
+                            <Stack direction="horizontal" gap={2} className='mt-2 mb-4'>
+                            {tags.map((tag) => (
+                                <h5 key={tag}>
+                                    <Badge
+                                        id={tag}
+                                        bg={checkInDetails?.tags?.includes(tag) ? "success" : "secondary"}
+                                        onClick={() => handleTagClick(tag)}
+                                        style={{ cursor: "pointer" }}
+                                    >
+                                        {tag}
+                                    </Badge>
+                                </h5>
+                            ))}
+                            </Stack>
                         </Form.Group>
                     }
 

@@ -1,10 +1,20 @@
-const express = require('express')
-const router = express.Router()
+
+
+/**
+ * @fileoverview This file contains the controller functions for handling 
+ * venue-related API endpoints like getting all venues, getting a 
+ * venue by name, creating a new venue, and updating a venue.
+ * 
+ * @module controllers/venue
+ */
+const express = require('express');
 const passport = require('passport');
 const Venue = require("../models/venue");
-const base = '/api/venues'
 const { getGeoFromVenue } = require('../services/geocoding');
 const { add } = require('../models/pointSchema');
+
+const router = express.Router();
+const base = '/api/venues';
 
 // TODO: add roles / auth to routes
 //       We don't need to call the geo service if the address hasn't changed
@@ -110,7 +120,7 @@ router.get(`${base}/:name`, (req, res) => {
             .then((result) => res.json(result[0]))
             .catch((err) => res.json({ success: false, message: "Could not load venue. Error: " + err }));
     } else {
-        res.status(401).send("User is not authenticated")
+        res.status(401).send("User is not authenticated");
     }
 });
 
@@ -141,19 +151,19 @@ router.get(`${base}/:name`, (req, res) => {
 */
 router.post(base, (req, res, next) => {
     if (!req.isAuthenticated()) {
-        res.status(401).send("User is not authenticated")
-        return
+        res.status(401).send("User is not authenticated");
+        return;
     }
-    const newVenue = new Venue(req.body)
+    const newVenue = new Venue(req.body);
     getGeoFromVenue(newVenue).then((geo) => {
-        newVenue.geo = geo
+        newVenue.geo = geo;
         newVenue.save()
         .then((result) => res.json(result))
         .catch((err) => {
             if (err.code === 11000) {
-                res.status(500).send("A venue with that name already exists")
+                res.status(500).send("A venue with that name already exists");
             } else {
-                res.status(500).send(err.message)
+                res.status(500).send(err.message);
             }
         });
     });
@@ -161,7 +171,7 @@ router.post(base, (req, res, next) => {
 
 /**
 * @openapi
-* /api/venuess:
+* /api/venues:
 *   put:
 *       summary: Updates a venue
 *       tags: [Venues]
@@ -186,19 +196,18 @@ router.post(base, (req, res, next) => {
 */
 router.put(base, (req, res, next) => {
     if (!req.isAuthenticated()) {
-        res.status(401).send("User is not authenticated")
-        return
+        res.status(401).send("User is not authenticated");
+        return;
     }
 
-    const updateVenue = new Venue(req.body)
+    const updateVenue = new Venue(req.body);
     getGeoFromVenue(updateVenue).then((geo) => {
-        updateVenue.geo = geo
+        updateVenue.geo = geo;
         Venue.findOneAndUpdate({ name: updateVenue.name }, updateVenue, { new: true })
         .then((result) => res.json(result))
         .catch((err) => next(err));
     });
-    
 });
 
-
+module.exports =
 module.exports = router
