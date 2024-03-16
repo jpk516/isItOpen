@@ -111,4 +111,43 @@ router.put(base, (req, res, next) => {
         .catch((err) => next(err));
 });
 
+/**
+* @openapi
+* /api/tags/{id}:
+*   delete:
+*       summary: Deletes a tag by ID
+*       tags: [Tags]
+*       description: Deletes a tag by ID
+*       parameters:
+*           - in: path
+*             name: id
+*             schema:
+*                 type: string
+*             required: true
+*             description: ID of the tag to delete
+*       responses:
+*           200:
+*               description: The deleted tag
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/Tag'
+*           401:
+*               description: User is not authenticated
+*           500:
+*               description: Internal server error
+*/
+router.delete(`${base}/:id`, (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        res.status(401).send("User is not authenticated");
+        return;
+    }
+
+    const tagId = req.params.id;
+    Tag.findByIdAndDelete(tagId)
+        .then((result) => res.json(result))
+        .catch((err) => next(err));
+});
+
+
 module.exports = router;

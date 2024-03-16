@@ -14,6 +14,9 @@ const TagService = {
     },
     update: (tag) => {
         return api.put(base, tag)
+    },
+    delete: (id) => {
+        return api.delete(`${base}/${id}`)
     }
 }
 
