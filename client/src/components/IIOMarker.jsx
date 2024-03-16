@@ -3,7 +3,8 @@ import {
   AdvancedMarker,
   Marker,
   InfoWindow,
-  useAdvancedMarkerRef
+  useAdvancedMarkerRef,
+  Pin,
 } from '@vis.gl/react-google-maps';
 
 // Define the icons for each type of venue
@@ -23,16 +24,21 @@ function IIOMarker({ venue }) {
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
+  const img = document.createElement('img');
+  img.src = icons[venue.type]?.icon || '';
+
   return (
     <>
 
-      <Marker //using Marker, to use advanced marker you just do <AdvancedMarker
+      <AdvancedMarker //using Marker, to use advanced marker you just do <AdvancedMarker
         ref={markerRef}
         onClick={() => setInfowindowOpen(true)}
         position={{ lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0] }}
         title={venue.name}
-        icon={icons[venue.type]?.icon || ''}  // checks if the icon exists in the icons dictionary
-      />
+          // checks if the icon exists in the icons dictionary
+      >
+        <Pin glyph={img} background={'transparent'} borderColor={'transparent'} />
+      </AdvancedMarker>
       {infowindowOpen && (
         <InfoWindow
           anchor={marker}
