@@ -34,7 +34,7 @@ const base = '/api/venues';
 *                       schema:
 *                           type: array
 *                           items:
-*                               $ref: '#/components/schemas/Venues'
+*                               $ref: '#/components/schemas/Venue'
 * 
 */
 router.get(base, (req, res) => {
@@ -60,7 +60,7 @@ router.get(base, (req, res) => {
 *                       schema:
 *                           type: array
 *                           items:
-*                               $ref: '#/components/schemas/Venues'
+*                               $ref: '#/components/schemas/VenueSelectList'
 * 
 */
 router.get(`${base}/select-list`, (req, res) => {
@@ -93,12 +93,44 @@ router.get(`${base}/count`, (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not load counts: " + err }));
 });
 
+
+/**
+* @openapi
+* /api/venues/id/{id}:
+*   get:
+*       summary: Returns a venue by id
+*       tags: [Venues]
+*       description: Returns a venue by id
+*       parameters:
+*           - in: path
+*             name: id
+*             required: true
+*             description: The venue id
+*       responses:
+*           200:
+*               description: A venue by id
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/Venue'
+* 
+*/
+router.get(`${base}/id/:id`, (req, res) => {
+    if (req.isAuthenticated()) {
+        Venue.findById(req.params.id)
+            .then((result) => res.json(result))
+            .catch((err) => res.json({ success: false, message: "Could not load venue. Error: " + err }));
+    } else {
+        res.status(401).send("User is not authenticated");
+    }
+});
+
 /**
 * @openapi
 * /api/venues/{name}:
 *   get:
 *       summary: Returns a venue by name
-*       tags: [Check-Ins]
+*       tags: [Venues]
 *       description: Returns a venue by name
 *       parameters:
 *           - in: path

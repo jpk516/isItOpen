@@ -10,13 +10,13 @@ import { useNavigate } from "react-router-dom";
 import VenueService from '../services/venue-service';
 import TagService from '../services/tag-service';
 
-
 function CheckIn({onCheckIn}) {
-    const navigate = useNavigate();
+    const defaultObject = { open: true, comment: '', venue: '', tags: [] };
     const [errorMessage, setErrorMessage] = useState('');
-    const [checkInDetails, setCheckInDetails] = useState({ open: true, comment: '', venue: '', tags: [] });
+    const [validated, setValidated] = useState(false);
+    const [checkInDetails, setCheckInDetails] = useState(defaultObject);
     const [venueSelectList, setVenueSelectList] = useState([]);
-    const [tags, setTags] = useState(["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]);
+    const [tags, setTags] = useState([]);
 
     useEffect(() => {
         VenueService.getSelectList().then(response => {
@@ -25,31 +25,43 @@ function CheckIn({onCheckIn}) {
             console.log(error)
         })
         
-        // TagService.getAll().then(response => {
-        //     setTags(response.data);
-        // }).catch(error => {
-        //     console.log(error)
-        // })
+        TagService.getAll().then(response => {
+            setTags(response.data);
+        }).catch(error => {
+            console.log(error)
+        })
     }, [])
 
     const handleTagClick = (tag) => {
         let updatedTags;
-        if (checkInDetails?.tags?.includes(tag)) {
-            updatedTags = checkInDetails.tags.filter((clickedTag) => clickedTag !== tag);
+        if (checkInDetails?.tags?.includes(tag.name)) {
+            updatedTags = checkInDetails.tags.filter((clickedTag) => clickedTag !== tag.name);
         } else {
-            updatedTags = [...checkInDetails.tags, tag];
+            updatedTags = [...checkInDetails.tags, tag.name];
         }
         setCheckInDetails({ ...checkInDetails, tags: updatedTags });
     };
 
-    const handleCheckIn = () => {
-        CheckInService.add(checkInDetails)
-            .then(response => {
-                setCheckInDetails({ open: false, comment: '', venue: '' });
-            })
-            .catch(error => {
-                setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
-            })
+    const handleCheckIn = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+        const form = event.currentTarget;
+        if (form.reportValidity() === false) {
+            return;
+        }
+
+        CheckInService.add(checkInDetails).then(response => {
+            setCheckInDetails(defaultObject);
+            if (onCheckIn) {
+                onCheckIn();
+            }
+            setValidated(false);
+            setErrorMessage('');
+        })
+        .catch(error => {
+            setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
+        })
     }
 
     const handleOpenChange = (isOpen) => {
@@ -64,7 +76,7 @@ function CheckIn({onCheckIn}) {
         <Card>
             <Card.Body>
                 <Card.Title className="pb-3">What's Up? Are they still serving?</Card.Title>
-                <Form>
+                <Form noValidate validated={validated} onSubmit={handleCheckIn}>
                     <Form.Group className="mb-3" controlId="formIsOpen">
                         <ButtonGroup>
                             <Button variant={checkInDetails.open ? "success" : "outline-secondary"} onClick={() => handleOpenChange(true)}>Yup! It's open.</Button>
@@ -77,14 +89,14 @@ function CheckIn({onCheckIn}) {
                             <Form.Label>What's It Like?</Form.Label>
                             <Stack direction="horizontal" gap={2} className='mt-2 mb-4'>
                             {tags.map((tag) => (
-                                <h5 key={tag}>
+                                <h5 key={tag._id}>
                                     <Badge
-                                        id={tag}
-                                        bg={checkInDetails?.tags?.includes(tag) ? "success" : "secondary"}
+                                        id={tag._id}
+                                        bg={checkInDetails?.tags?.includes(tag.name) ? "success" : "secondary"}
                                         onClick={() => handleTagClick(tag)}
                                         style={{ cursor: "pointer" }}
                                     >
-                                        {tag}
+                                        {tag.name}
                                     </Badge>
                                 </h5>
                             ))}
@@ -92,14 +104,14 @@ function CheckIn({onCheckIn}) {
                         </Form.Group>
                     }
 
-                    <Form.Group className="mb-3">
+                    <Form.Group className="mb-3" controlId="formCheckInComment">
                         <Form.Label>Any other juicy details?</Form.Label>
                         <Form.Control as="textarea" rows={3} placeholder="Something something something" value={checkInDetails.comment} onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })} />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formVenue">
+                    <Form.Group className="mb-3" controlId="formCheckInVenue">
                         <Form.Label>Venue</Form.Label>
-                        <Form.Control as="select" value={checkInDetails.venue} onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}>
+                        <Form.Control as="select" value={checkInDetails.venue} onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })} required>
                             <option value="">Select venue</option>
                             {venueSelectList.map((venue) => (
                                 <option key={venue._id} value={venue._id}>{venue.name}</option>
@@ -108,7 +120,7 @@ function CheckIn({onCheckIn}) {
                     </Form.Group>
 
                     <div className="d-grid gap-2">
-                        <Button variant="primary" size="lg" onClick={handleCheckIn}>
+                        <Button variant="primary" size="lg" type="submit">
                             Check In
                         </Button>
                     </div>

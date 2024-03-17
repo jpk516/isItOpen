@@ -1,4 +1,20 @@
 const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+const placeTypes = process.env.PLACE_TYPES || 'restaurant|night_club|cafe|bar|bakery|bowling_alley|casino|movie_theater';
+
+const getNearbyPlaces = (location, radius) => {
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.lat},${location.lng}&radius=${radius}&type=${placeTypes}&key=${apiKey}`;
+  
+    return fetch(searchUrl)
+      .then(response => response.json())
+      .then(data => {
+        const places = data.results;
+        return places;
+      })
+      .catch(err => {
+        console.error('Error fetching nearby places:', err);
+        throw err;
+      });
+};
 
 const getHours = (placeName) => {
     const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeName)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
@@ -7,11 +23,16 @@ const getHours = (placeName) => {
       .then(response => response.json())
       .then(data => {
         const placeId = data.candidates[0].place_id;
-        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=opening_hours&key=${apiKey}`;
-  
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`;
+
         return fetch(detailsUrl)
           .then(response => response.json())
-          .then(details => details.result.opening_hours.weekday_text)
+          .then(details => {
+            console.log(details);
+            //console.log(details?.result?.opening_hours?.isOpen())
+            const hours = details?.result?.opening_hours?.weekday_text ?? [];
+            return hours;
+          })
           .catch(err => {
             console.error('Error fetching place details:', err);
             throw err;
@@ -31,6 +52,7 @@ const getHours = (placeName) => {
   const placesService = {
     getHours,
     getReviews,
+    getNearbyPlaces
   };
   
 module.exports = placesService;
