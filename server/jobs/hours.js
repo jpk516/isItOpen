@@ -4,27 +4,38 @@ const Venue = require("../models/venue");
 const placesService = require('../services/places');
 
 function processSchedule(hoursArray) {
-    const placeholderDate = '2024-01-01';
+    const placeholderDate = '2000-01-01';
   
     return hoursArray.map((entry, index) => {
         const [day, times] = entry.split(': ');
-        const [startTime, endTime] = times.split(' - ');
 
-        // Create Date objects for start and end times. Adjust index (day of week) appropriately if needed.
-        // Note: JavaScript counts months from 0, so January is month 0.
-        const startDate = new Date(`${placeholderDate} ${startTime} GMT-0000`);
-        startDate.setDate(startDate.getDate() + index); // Adjust the day based on the index
+        // Check if the day is marked as 'Closed'
+        if (times === 'Closed') {
+            return {
+                day,
+                open: null,
+                close: null,
+            };
+        }
 
-        const endDate = new Date(`${placeholderDate} ${endTime} GMT-0000`);
-        endDate.setDate(endDate.getDate() + index); // Adjust the day based on the index
+        const [startTimeString, endTimeString] = times.split(' – ');
+        // Combine the standard date with the provided times to create Date objects
+        console.log(`Processing ${day} with ${startTimeString} - ${endTimeString}`);
+        const startTime = new Date(`${placeholderDate} ${startTimeString}`);
+        const endTime = new Date(`${placeholderDate} ${endTimeString}`);
 
+        // Adjust for cases where end time is past midnight
+        if (endTime <= startTime) {
+            endTime.setDate(endTime.getDate() + 1);
+        }
         return {
             day,
-            startTime: startDate,
-            endTime: endDate
+            open: startTime,
+            close: endTime
         };
     });
-  }
+}
+
 
 const updateAll = async () => {
     let venues = await Venue.find();
@@ -32,7 +43,7 @@ const updateAll = async () => {
         try {
             let hours = await placesService.getHours(venue.name);
             venue.hours = processSchedule(hours);
-
+            console.log(`Updated hours for ${venue.name} to ${JSON.stringify(venue.hours)}`);
         } catch (error) {
             console.error(`Failed to update hours for ${venue.name}: ${error}`);
         }
@@ -43,3 +54,9 @@ const updateAll = async () => {
         await venue.save();
     }));
 }
+
+const hoursService = {
+    updateAll
+};
+
+module.exports = hoursService;

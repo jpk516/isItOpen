@@ -4,6 +4,7 @@ const pointSchema = require('./pointSchema');
 
 const Venue = new Schema({
     name: { type: String, unique: true, index: true, required: true },
+    google_place_id: { type: String, required: false },
     description: { type: String, required: true },
     phone: { type: String, required: false },
     email: { type: String, required: false },
@@ -23,8 +24,8 @@ const Venue = new Schema({
     hours: { 
         type: [{
             day: { type: String, enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] },
-            startTime: { type: Date },
-            endTime: { type: Date }
+            open: { type: Date },
+            close: { type: Date }
         }],
         required: false
      },
