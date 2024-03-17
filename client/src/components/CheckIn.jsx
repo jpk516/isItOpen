@@ -13,10 +13,11 @@ import TagService from '../services/tag-service';
 
 function CheckIn({onCheckIn}) {
     const navigate = useNavigate();
+    const defaultObject = { open: true, comment: '', venue: '', tags: [] };
     const [errorMessage, setErrorMessage] = useState('');
-    const [checkInDetails, setCheckInDetails] = useState({ open: true, comment: '', venue: '', tags: [] });
+    const [checkInDetails, setCheckInDetails] = useState(defaultObject);
     const [venueSelectList, setVenueSelectList] = useState([]);
-    const [tags, setTags] = useState(["Closing Up", "Rowdy", "Casual", "Budget Friendly", "Upscale"]);
+    const [tags, setTags] = useState([]);
 
     useEffect(() => {
         VenueService.getSelectList().then(response => {
@@ -25,19 +26,19 @@ function CheckIn({onCheckIn}) {
             console.log(error)
         })
         
-        // TagService.getAll().then(response => {
-        //     setTags(response.data);
-        // }).catch(error => {
-        //     console.log(error)
-        // })
+        TagService.getAll().then(response => {
+            setTags(response.data);
+        }).catch(error => {
+            console.log(error)
+        })
     }, [])
 
     const handleTagClick = (tag) => {
         let updatedTags;
-        if (checkInDetails?.tags?.includes(tag)) {
-            updatedTags = checkInDetails.tags.filter((clickedTag) => clickedTag !== tag);
+        if (checkInDetails?.tags?.includes(tag.name)) {
+            updatedTags = checkInDetails.tags.filter((clickedTag) => clickedTag !== tag.name);
         } else {
-            updatedTags = [...checkInDetails.tags, tag];
+            updatedTags = [...checkInDetails.tags, tag.name];
         }
         setCheckInDetails({ ...checkInDetails, tags: updatedTags });
     };
@@ -45,7 +46,7 @@ function CheckIn({onCheckIn}) {
     const handleCheckIn = () => {
         CheckInService.add(checkInDetails)
             .then(response => {
-                setCheckInDetails({ open: false, comment: '', venue: '' });
+                setCheckInDetails(defaultObject);
             })
             .catch(error => {
                 setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
@@ -77,14 +78,14 @@ function CheckIn({onCheckIn}) {
                             <Form.Label>What's It Like?</Form.Label>
                             <Stack direction="horizontal" gap={2} className='mt-2 mb-4'>
                             {tags.map((tag) => (
-                                <h5 key={tag}>
+                                <h5 key={tag._id}>
                                     <Badge
-                                        id={tag}
-                                        bg={checkInDetails?.tags?.includes(tag) ? "success" : "secondary"}
+                                        id={tag._id}
+                                        bg={checkInDetails?.tags?.includes(tag.name) ? "success" : "secondary"}
                                         onClick={() => handleTagClick(tag)}
                                         style={{ cursor: "pointer" }}
                                     >
-                                        {tag}
+                                        {tag.name}
                                     </Badge>
                                 </h5>
                             ))}
