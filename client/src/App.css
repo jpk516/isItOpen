@@ -1,5 +1,5 @@
 .nav-margin {
-  margin-top: 100px;
+  padding-top: 100px;
   min-height: 600px;
 }
 
@@ -9,7 +9,15 @@
   position: relative;
 }
 
+.check-in-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
 
+.check-in-status {
+  width: 100px;
+  text-align: center;
+}
 
 .info-window-content {
   font-family: 'Arial', sans-serif;

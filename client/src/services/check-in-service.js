@@ -6,6 +6,9 @@ const CheckInService = {
     getAll: () => {
         return api.get(base)
     },
+    getRecent: (limit) => {
+        return api.get(`${base}/recent/${limit}`)
+    },
     count: () => {
         return api.get(`${base}/count`)
     },

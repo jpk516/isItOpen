@@ -1,39 +1,44 @@
 import React from 'react';
-import { Card, ListGroup, Badge } from 'react-bootstrap';
+import { Card, CardGroup, ListGroup, Badge, Col, Row } from 'react-bootstrap';
 
 function CheckInList({ checkIns }) {
+
+    // order the check-ins by date
+    checkIns.sort((a, b) => {
+        return new Date(b.created) - new Date(a.created);
+    });
+
   return (
-    <ListGroup>
-        {checkIns.map((checkIn) => (
-            <ListGroup.Item key={checkIn._id}>
-                <Card>
-                <Card.Header>
-                    Venue ID: {checkIn.venue} - {checkIn.open ? 'Open' : 'Closed'}
-                </Card.Header>
-                    <Card.Body>
-                        <Card.Title>Check-in Details</Card.Title>
-                        <Card.Text>
-                            User ID: {checkIn.user}
-                        </Card.Text>
-                        <Card.Text>
-                            Comment: {checkIn.comment || 'No comment provided'}
-                        </Card.Text>
-                        <Card.Text>
-                            Created: {new Date(checkIn.created).toLocaleString()}
-                        </Card.Text>
-                        <Card.Text>
-                            Tags: 
-                            {checkIn.tags.map((tag, index) => (
+    <>
+        <Row>
+            {checkIns.map((checkIn) => (
+                <Col md={6} key={checkIn._id}>
+                    <Row className="g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <Col className="p-4 d-flex flex-column position-static">
+                            <strong className="d-inline-block mb-2 text-primary-emphasis">{checkIn.venue.type}</strong>
+                            <h3 className="mb-0">{checkIn.venue.name}</h3>
+                            <div className="mb-1 text-body-secondary">{new Date(checkIn.created).toLocaleString()}</div>
+                            <div>
+                                {checkIn.tags.map((tag, index) => (
                                 <Badge pill bg="secondary" className="ms-1" key={index}>
                                     {tag}
                                 </Badge>
-                            ))}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-            </ListGroup.Item>
-        ))}
-    </ListGroup>
+                                ))}
+                            </div>
+                            <a href="#" className="icon-link mt-3">
+                                View
+                            </a>
+                        </Col>
+                        <Col className={checkIn.open ? "col-auto d-none d-lg-block bg-success" : "col-auto d-none d-lg-block bg-accent2"}>
+                            <div className="check-in-status">
+                            </div>
+                        </Col>
+                    </Row>
+                </Col>
+            ))}
+        </Row>
+        
+    </>
   );
 }
 

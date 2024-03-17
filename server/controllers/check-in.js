@@ -61,7 +61,12 @@ router.get(base, (req, res) => {
 * 
 */
 router.get(`${base}/recent/:limit?`, (req, res) => {
-    CheckIn.find({}).sort({createdAt: -1}).limit(req?.params?.limit ?? 20)
+    CheckIn.find({})
+        .sort({created: -1})
+        .limit(req?.params?.limit ?? 20)
+        .populate('venue')
+        .populate({ path: 'user', select: 'username -_id'})
+        .exec()
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not load check-ins: " + err }));
 });
