@@ -20,6 +20,14 @@ const Venue = new Schema({
         required: false,
         index: '2dsphere'
     },
+    hours: { 
+        type: [{
+            day: { type: String, enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] },
+            startTime: { type: Date },
+            endTime: { type: Date }
+        }],
+        required: false
+     },
     created: { type: Date, default: Date.now },
     modified: { type: Date, default: Date.now }
 });
