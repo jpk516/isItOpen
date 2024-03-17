@@ -35,7 +35,7 @@ function ManageVenue() {
                 </Col>
                 <Col>
                     <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <NavLink to="/venues/" className="btn btn-primary me-md-2" role="button">Back</NavLink>
+                        <NavLink to="/admin/" className="btn btn-primary me-md-2" role="button">Back</NavLink>
                     </div>
                 </Col>
                 <hr />
