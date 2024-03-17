@@ -8,6 +8,7 @@ import Register from './views/Register';
 import Venues from './views/Venues';
 import Admin from './views/Admin';
 import ManageVenue from './views/ManageVenue';
+import Achievements from './views/Achievements';
 import BRList from './views/BRList';
 import Settings from './views/Settings';
 import Container from 'react-bootstrap/esm/Container';
@@ -44,6 +45,7 @@ function App() {
             <Route exact path="/settings" element={<Settings />}></Route>
             <Route exact path="/fav" element={<Fav />}></Route>
             <Route exact path="/admin" element={<Admin />}></Route>
+            <Route exact path="/achievements" element={<Achievements />}></Route>
           </Routes>
           <div className="mt-5"></div>
         </Container>

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
 import {
   AdvancedMarker,
   Marker,
@@ -21,8 +23,14 @@ const icons = {
 };
 
 function IIOMarker({ venue }) {
+  const navigate = useNavigate();
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
+
+  // will go to public venue once that is checked in
+  function handleVenueClick(name) {
+    navigate(`/venues/manage/${name}`)
+  }
 
   const img = document.createElement('img');
   img.src = icons[venue.type]?.icon || '';
@@ -49,6 +57,7 @@ function IIOMarker({ venue }) {
         <h3>{venue.name}</h3>
         <p>Serves: {venue.type}</p>
         <p className="status-open">Status: Open</p>
+        <button className="btn btn-sm btn-secondary" onClick={() => handleVenueClick(venue.name)}>View</button>
         </div>
 
         </InfoWindow>

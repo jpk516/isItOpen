@@ -68,12 +68,36 @@ function VenueForm() {
                                     value={venueDetails.name} required
                                     onChange={e => setVenueDetails({ ...venueDetails, name: e.target.value })} />
                             </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueType">
+                                <Form.Label>Type</Form.Label>
+                                <Form.Select value={venueDetails.type}
+                                    onChange={e => setVenueDetails({ ...venueDetails, type: e.target.value })}>
+                                    <option value="">Select type</option>
+                                    <option value="Bar">Bar</option>
+                                    <option value="Restaurant">Restaurant</option>
+                                    <option value="Music Venue">Music Venue</option>
+                                </Form.Select>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueEmail">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email"
+                                    value={venueDetails.email}
+                                    onChange={e => setVenueDetails({ ...venueDetails, email: e.target.value })} />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formVenueWebsite">
+                                <Form.Label>Website</Form.Label>
+                                <Form.Control type="text" placeholder="Enter website"
+                                    value={venueDetails.website}
+                                    onChange={e => setVenueDetails({ ...venueDetails, website: e.target.value })} />
+                            </Form.Group>
                             <Form.Group className="mb-3" controlId="formVenueDescription">
                                 <Form.Label>Description</Form.Label>
                                 <Form.Control as="textarea" rows={3} placeholder="Enter a description of the venue"
                                     value={venueDetails.description} required
                                     onChange={e => setVenueDetails({ ...venueDetails, description: e.target.value })} />
                             </Form.Group>
+                        </Col>
+                        <Col md={6}>
                             <Form.Group className="mb-3" controlId="formVenueAddress">
                                 <Form.Label>Address</Form.Label>
                                 <Form.Control type="text" placeholder="Enter address"
@@ -86,8 +110,6 @@ function VenueForm() {
                                     value={venueDetails.city} required
                                     onChange={e => setVenueDetails({ ...venueDetails, city: e.target.value })} />
                             </Form.Group>
-                        </Col>
-                        <Col md={6}>
                             <Form.Group className="mb-3" controlId="formVenueState">
                                 <Form.Label>State</Form.Label>
                                 <Form.Control type="text" placeholder="Enter state"
@@ -105,28 +127,6 @@ function VenueForm() {
                                 <Form.Control type="text" placeholder="Enter phone"
                                     value={venueDetails.phone}
                                     onChange={e => setVenueDetails({ ...venueDetails, phone: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueEmail">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email"
-                                    value={venueDetails.email}
-                                    onChange={e => setVenueDetails({ ...venueDetails, email: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueWebsite">
-                                <Form.Label>Website</Form.Label>
-                                <Form.Control type="text" placeholder="Enter website"
-                                    value={venueDetails.website}
-                                    onChange={e => setVenueDetails({ ...venueDetails, website: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueType">
-                                <Form.Label>Type</Form.Label>
-                                <Form.Select value={venueDetails.type}
-                                    onChange={e => setVenueDetails({ ...venueDetails, type: e.target.value })}>
-                                    <option value="">Select type</option>
-                                    <option value="Bar">Bar</option>
-                                    <option value="Restaurant">Restaurant</option>
-                                    <option value="Music Venue">Music Venue</option>
-                                </Form.Select>
                             </Form.Group>
                         </Col>
                     </Row>

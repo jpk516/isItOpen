@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Tabs, Tab } from 'react-bootstrap';
 
 import VenueForm from '../components/VenueForm'
 import CheckIn from '../components/CheckIn';
@@ -38,27 +39,31 @@ function ManageVenue() {
                         <NavLink to="/admin/" className="btn btn-primary me-md-2" role="button">Back</NavLink>
                     </div>
                 </Col>
-                <hr />
             </Row>
-            <Row className="mb-3">
-                <Col>
-                    <VenueDetails venue={venueDetails} />
-                </Col>
-                <Col>
-                    <CheckIn venue="Venue" />
-                </Col>
-            </Row>
-            <Row className="mb-3">
-                <Col lg={10}>
-                    <VenueForm />
-                </Col>
-                <Col>
-                    <Achievement text="Gold Star" tooltipText="Achieved for excellence!" color="warning" />
-                    <Achievement text="x10 Checkins" tooltipText="What a super star!" color="primary" />
-                    <Achievement text="x20 Checkins" tooltipText="Achieved for excellence!" color="accent2" />
-                </Col>
-            </Row>
-            
+            <Tabs defaultActiveKey="edit" id="admin-panel-tabs" className="mb-3">
+                <Tab eventKey="edit" title="Edit">
+                    <Row className="mb-3">
+                        <Col lg={10}>
+                            <VenueForm />
+                        </Col>
+                    </Row>
+                </Tab>
+                <Tab eventKey="checkins" title="Moderate Check-ins">
+                    <Row className="mb-3">
+                        
+                    </Row>
+                </Tab>
+                <Tab eventKey="public" title="Public View">
+                    <Row className="mb-3">
+                        <Col>
+                            <VenueDetails venue={venueDetails} />
+                        </Col>
+                        <Col>
+                            <CheckIn venue="Venue" />
+                        </Col>
+                    </Row>
+                </Tab>
+            </Tabs>
         </Container>
     );
 }
