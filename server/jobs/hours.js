@@ -55,8 +55,10 @@ const updateAll = async () => {
     }));
 }
 
-const hoursService = {
-    updateAll
-};
-
-module.exports = hoursService;
+module.exports = (agenda) => {
+    agenda.define('update hours', async (job, done) => {
+        console.log('Updating hours...');
+        await updateAll();
+        done();
+    });
+}

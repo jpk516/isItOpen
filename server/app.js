@@ -8,7 +8,6 @@ const cors = require('cors');
 const passport = require('passport')
 const bodyParser = require("body-parser")
 const LocalStrategy = require('passport-local').Strategy
-
 const port = process.env.port || 8000
 const mongoUrl = process.env.MONGO_URI
 const debug = process.env.DEBUG_MODE === 'true' || false;
@@ -84,6 +83,9 @@ if (debug) {
     // serve swagger ui
     const specs = swaggerJsdoc(options);
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+    // start agenda. this will probably be moved to a worker process
+    const agenda = require('./jobs/agenda');
 }
 
 app.get('/', (req, res) => res.send('IIO API Running...'))

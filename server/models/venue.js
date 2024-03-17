@@ -29,6 +29,7 @@ const Venue = new Schema({
         }],
         required: false
      },
+    active: { type: Boolean, default: true, required: true, index: true },
     created: { type: Date, default: Date.now },
     modified: { type: Date, default: Date.now }
 });
