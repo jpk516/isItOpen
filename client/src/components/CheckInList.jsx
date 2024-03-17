@@ -26,7 +26,7 @@ function CheckInList({ checkIns }) {
                                 ))}
                             </div>
                             {checkIn.comment && 
-                                <p class="card-text mb-auto">{checkIn.comment}</p>
+                                <p className="card-text mb-auto">{checkIn.comment}</p>
                             }
                             <a href="#" className="icon-link mt-3">
                                 View
