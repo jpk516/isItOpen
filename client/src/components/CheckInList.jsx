@@ -10,9 +10,9 @@ function CheckInList({ checkIns }) {
 
   return (
     <>
-        <Row>
+        <Row className="g-4">
             {checkIns.map((checkIn) => (
-                <Col md={6} key={checkIn._id}>
+                <Col xs={12} md={6} key={checkIn._id}>
                     <Row className="g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                         <Col className="p-4 d-flex flex-column position-static">
                             <strong className="d-inline-block mb-2 text-primary-emphasis">{checkIn.venue.type}</strong>
@@ -25,6 +25,9 @@ function CheckInList({ checkIns }) {
                                 </Badge>
                                 ))}
                             </div>
+                            {checkIn.comment && 
+                                <p class="card-text mb-auto">{checkIn.comment}</p>
+                            }
                             <a href="#" className="icon-link mt-3">
                                 View
                             </a>

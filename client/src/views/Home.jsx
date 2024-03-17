@@ -39,7 +39,7 @@ function Home() {
         <Container>
             <Row className="mb-3">
                 <Col>
-                    <h2>What's Open?</h2>
+                    <h2>What's Hot?</h2>
                 </Col>
                 <hr />
             </Row>
@@ -54,7 +54,7 @@ function Home() {
 
             <Row className="mt-3 mb-3">
                 <Col>
-                    <h2>What's Hot?</h2>
+                    <h2>What's Up? <small>10 latest updates</small></h2>
                 </Col>
                 <hr />
             </Row>
