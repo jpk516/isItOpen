@@ -10,11 +10,10 @@ import { useNavigate } from "react-router-dom";
 import VenueService from '../services/venue-service';
 import TagService from '../services/tag-service';
 
-
 function CheckIn({onCheckIn}) {
-    const navigate = useNavigate();
     const defaultObject = { open: true, comment: '', venue: '', tags: [] };
     const [errorMessage, setErrorMessage] = useState('');
+    const [validated, setValidated] = useState(false);
     const [checkInDetails, setCheckInDetails] = useState(defaultObject);
     const [venueSelectList, setVenueSelectList] = useState([]);
     const [tags, setTags] = useState([]);
@@ -43,14 +42,26 @@ function CheckIn({onCheckIn}) {
         setCheckInDetails({ ...checkInDetails, tags: updatedTags });
     };
 
-    const handleCheckIn = () => {
-        CheckInService.add(checkInDetails)
-            .then(response => {
-                setCheckInDetails(defaultObject);
-            })
-            .catch(error => {
-                setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
-            })
+    const handleCheckIn = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setValidated(true);
+        const form = event.currentTarget;
+        if (form.reportValidity() === false) {
+            return;
+        }
+
+        CheckInService.add(checkInDetails).then(response => {
+            setCheckInDetails(defaultObject);
+            if (onCheckIn) {
+                onCheckIn();
+            }
+            setValidated(false);
+            setErrorMessage('');
+        })
+        .catch(error => {
+            setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
+        })
     }
 
     const handleOpenChange = (isOpen) => {
@@ -65,7 +76,7 @@ function CheckIn({onCheckIn}) {
         <Card>
             <Card.Body>
                 <Card.Title className="pb-3">What's Up? Are they still serving?</Card.Title>
-                <Form>
+                <Form noValidate validated={validated} onSubmit={handleCheckIn}>
                     <Form.Group className="mb-3" controlId="formIsOpen">
                         <ButtonGroup>
                             <Button variant={checkInDetails.open ? "success" : "outline-secondary"} onClick={() => handleOpenChange(true)}>Yup! It's open.</Button>
@@ -93,14 +104,14 @@ function CheckIn({onCheckIn}) {
                         </Form.Group>
                     }
 
-                    <Form.Group className="mb-3">
+                    <Form.Group className="mb-3" controlId="formCheckInComment">
                         <Form.Label>Any other juicy details?</Form.Label>
                         <Form.Control as="textarea" rows={3} placeholder="Something something something" value={checkInDetails.comment} onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })} />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formVenue">
+                    <Form.Group className="mb-3" controlId="formCheckInVenue">
                         <Form.Label>Venue</Form.Label>
-                        <Form.Control as="select" value={checkInDetails.venue} onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}>
+                        <Form.Control as="select" value={checkInDetails.venue} onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })} required>
                             <option value="">Select venue</option>
                             {venueSelectList.map((venue) => (
                                 <option key={venue._id} value={venue._id}>{venue.name}</option>
@@ -109,7 +120,7 @@ function CheckIn({onCheckIn}) {
                     </Form.Group>
 
                     <div className="d-grid gap-2">
-                        <Button variant="primary" size="lg" onClick={handleCheckIn}>
+                        <Button variant="primary" size="lg" type="submit">
                             Check In
                         </Button>
                     </div>
