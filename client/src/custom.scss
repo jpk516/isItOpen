@@ -1,0 +1,38 @@
+$white: #ffffff;
+
+$theme-colors: (
+    "light":      #dadcde,
+    "dark":       #191526,
+    "primary":    #273c7a,
+    "secondary":  #456fb1,
+    "info":       #6f88ab,
+    "accent1":    #46464e,
+    "accent2":    #b36e66,
+    "accent3":    #a5aeb6,
+    "success":    #2ea264,
+    "warning":    #e1cb2f,
+    "danger":     #ed2519,
+);
+
+@import 'bootstrap/scss/bootstrap';
+
+// Global styles
+
+.pointer:hover {
+    cursor: pointer;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn svg {
+    vertical-align: middle;
+}

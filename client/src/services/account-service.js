@@ -2,25 +2,25 @@ import api from '../services/axios-service.js'
 
 const AccountService = {
     isAuthenticated: () => {
-        return api.get(`account/`)
+        return api.get(`accounts/`)
     },
     count: () => {
-        return api.get(`/account/count`)
+        return api.get(`/accounts/count`)
     },
     register: (userName, password) => {
-        return api.post(`/account/register`, {
+        return api.post(`/accounts/register`, {
             username: userName,
             password: password
         })
     },
     authenticate: (userName, password) => {
-        return api.post(`/account/login`, {
+        return api.post(`/accounts/login`, {
             username: userName,
             password: password
         })
     },
     logOut: () => {
-        return api.delete(`/account/logout`)
+        return api.delete(`/accounts/logout`)
     }
 }
 

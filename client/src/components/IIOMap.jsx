@@ -1,23 +1,26 @@
 import React from 'react';
-import {APIProvider, Map, Marker} from '@vis.gl/react-google-maps';
-import mapStyles from '../styles/mapStyles'; //import style sheet for the map
+import {APIProvider, Map, Marker, MapControl, ControlPosition} from '@vis.gl/react-google-maps';
+import IIOMarker from './IIOMarker';
 
-function IIOMap() {
-    return (
-      <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
-              <Map
-                defaultCenter={{lat: 38.9517, lng: -92.3341}} //Set latitude and longitude to Columbia Missouri
-                defaultZoom={15}
-                style={{height: '600px' }}
-                gestureHandling={'greedy'}
-                disableDefaultUI={true}
-                options={{styles:mapStyles}} //add styling to the map from the mapStyles.js file
-                
-              >
-              <Marker position={{lat: 38.9506, lng: -92.3268}}></Marker>
-              </Map>
-        </APIProvider>
-    );
-  }
+function IIOMap({venues}) {
+  return (
+    <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
+      <Map
+        defaultCenter={{lat: 38.9517, lng: -92.3341}} //Set latitude and longitude to Columbia Missouri
+        defaultZoom={15}
+        style={{height: '600px' }}
+        gestureHandling={'greedy'}
+        disableDefaultUI={true}
+		    mapId="7af4d03122461ee8"
+      >
+      {venues.map((venue, index) => {
+        return (
+          <IIOMarker key={venue._id} venue={venue} />
+        )
+      })}
+      </Map>
+    </APIProvider>
+  );
+}
   
-  export default IIOMap;
+export default IIOMap;

@@ -4,30 +4,63 @@ import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
 import IIOMap from '../components/IIOMap';
 import VenueList from '../components/VenueList';
+import VenueService from '../services/venue-service';
+import CheckInService from '../services/check-in-service';
+import CheckInList from '../components/CheckInList';
+import { useState, useEffect } from 'react';
 
 function Home() {
+    const [venues, setVenues] = useState([]);
+    const [checkIns, setCheckIns] = useState([]);
+    
+    useEffect(() => {
+        getVenues();
+        getCheckIns();
+    }, [])
+
+    const getVenues = () => {
+        VenueService.getAll().then(response => {
+            setVenues(response.data);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getCheckIns = () => {
+        CheckInService.getRecent(10).then(response => {
+            setCheckIns(response.data);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+
     return (
         <Container>
             <Row className="mb-3">
                 <Col>
-                    <h2>Welcome</h2>
+                    <h2>What's Hot?</h2>
                 </Col>
                 <hr />
             </Row>
             <Row>
                 <Col>
-                    <Alert variant="info">
-                        Is it open? We aren't sure yet because we don't have anything else made yet.
-                    </Alert>
-                    <IIOMap />
+                    <IIOMap venues={venues} />
                 </Col>
                 <Col lg={4}>
                     <VenueList />
                 </Col>
             </Row>
-            <Row>
+
+            <Row className="mt-3 mb-3">
                 <Col>
-                    
+                    <h2>What's Up? <small>10 latest updates</small></h2>
+                </Col>
+                <hr />
+            </Row>
+            <Row className="check-in-container">
+                <Col>
+                    <CheckInList checkIns={checkIns} />
                 </Col>
             </Row>
         </Container>

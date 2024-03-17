@@ -1,9 +1,16 @@
+/**
+ * @fileoverview This file contains the account controller for handling user 
+ * authentication and account management. We use the passport library to handle 
+ * user authentication and session management.
+ * 
+ * @module controllers/account
+ */
 const express = require('express')
 const router = express.Router()
 const passport = require('passport');
 const User = require("../models/user");
 
-router.get("/api/account/", (req, res) => {
+router.get("/api/accounts/", (req, res) => {
     if (req.isAuthenticated()) {
         res.json({ success: true, message: "User is authenticated", user: req.user });
     } else {
@@ -11,14 +18,14 @@ router.get("/api/account/", (req, res) => {
     }
 });
 
-router.get("/api/account/count", (req, res) => {
+router.get("/api/accounts/count", (req, res) => {
     User.estimatedDocumentCount()
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not load counts: " + err }));
 });
 
 
-router.post("/api/account/register", (req, res) => {
+router.post("/api/accounts/register", (req, res) => {
     User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
         if (err) {
             res.json({ success: false, message: "Your account could not be saved. Error: " + err });
@@ -36,7 +43,39 @@ router.post("/api/account/register", (req, res) => {
     });
 });
 
-router.post("/api/account/login", (req, res) => {
+
+/**
+* @openapi
+* /api/accounts/login:
+*   post:
+*       summary: Log in the user
+*       tags: [Accounts]
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       type: object
+*                       properties:
+*                           username:
+*                               type: string
+*                           password:
+*                               type: string
+*       responses:
+*           200:
+*               description: Login Result Message
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/ActionResult'
+*           400:
+*               description: Invalid request body
+*           401:
+*               description: Unauthorized
+*           500:
+*               description: Error occurred during login
+*/
+router.post("/api/accounts/login", (req, res) => {
     if (!req.body.username) {
         res.json({ success: false, message: "Username was not given" })
     }
@@ -67,14 +106,30 @@ router.post("/api/account/login", (req, res) => {
     }
 });
 
-router.delete("/api/account/logout", (req, res) => {
+/**
+ * @openapi
+ * /api/accounts/logout:
+ *   delete:
+ *      summary: Log out the current user
+ *      tags: [Accounts]
+ *      responses:
+ *          200:
+ *              description: Logout Result Message
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/ActionResult'
+ *          500:
+ *              description: Error occurred during logout
+ */
+router.delete("/api/accounts/logout", (req, res) => {
     req.logout(function(err) {
         if (err) { 
             res.json({ success: false, message: err }) 
         } else {
-            res.json({ success: true, message: "logout successful" })
+            res.json({ success: true, message: "Logout successful" })
         }
-      });
+    });
 });
 
-module.exports = router
+module.exports = router;
