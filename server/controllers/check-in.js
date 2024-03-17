@@ -37,6 +37,35 @@ router.get(base, (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not load check-ins: " + err }));
 });
 
+/**
+* @openapi
+* /api/check-ins/recent/{limit}:
+*   get:
+*       summary: Returns the most recent check-ins
+*       tags: [Check-Ins]
+*       description: Returns the most recent check-ins
+*       parameters:
+*           - in: path
+*             name: limit
+*             required: false
+*             description: The number of recent check-ins to return. (default 20)
+*       responses:
+*           200:
+*               description: A list of recent check-ins
+*               content:
+*                   application/json:
+*                       schema:
+*                           type: array
+*                           items:
+*                               $ref: '#/components/schemas/CheckIn'
+* 
+*/
+router.get(`${base}/recent/:limit?`, (req, res) => {
+    CheckIn.find({}).sort({createdAt: -1}).limit(req?.params?.limit ?? 20)
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not load check-ins: " + err }));
+});
+
 
 /**
 * @openapi
