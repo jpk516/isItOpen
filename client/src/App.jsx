@@ -45,7 +45,7 @@ function App() {
             <Route exact path="/settings" element={<Settings />}></Route>
             <Route exact path="/fav" element={<Fav />}></Route>
             <Route exact path="/admin" element={<Admin />}></Route>
-            <Route exact path="/achievements" element={<Admin />}></Route>
+            <Route exact path="/achievements" element={<Achievements />}></Route>
           </Routes>
           <div className="mt-5"></div>
         </Container>
