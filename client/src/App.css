@@ -9,14 +9,54 @@
   position: relative;
 }
 
+.fontSelector {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
 
+.fontSelector label {
+  margin-right: 0.5rem;
+  font-weight: bold;
+  color: #e2e2e2; /* Adjust the color value as needed */
+}
+
+.fontSelector select {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid #456fb1; /* Adjust the color value as needed */
+  background-color: #191526; /* Adjust the color value as needed */
+  color: #e2e2e2; /* Adjust the color value as needed */
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.fontSelector select:hover,
+.fontSelector select:focus {
+  background-color: #1f1f38; /* Adjust the color value as needed */
+  border-color: #273c7a; /* Adjust the color value as needed */
+}
+
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 .info-window-content {
   font-family: 'Arial', sans-serif;
   line-height: 1.6;
   color: #333;
   font-size: 14px;
+  animation: slideDown .6s ease-out forwards;
 }
+
 
 .info-window-content h3 {
   margin: 0;

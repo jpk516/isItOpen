@@ -18,6 +18,17 @@ $theme-colors: (
 
 // Global styles
 
+:root {
+    --font-family-default: 'Helvetica Neue', sans-serif;
+    --font-family-alternate: 'Times New Roman', serif;
+    // ... Add more fonts as needed
+  }
+  
+  // Apply the font family globally
+  body {
+    font-family: var(--font-family-default);
+  }
+
 .pointer:hover {
     cursor: pointer;
 }
