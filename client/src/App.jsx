@@ -1,6 +1,5 @@
-import './App.css';
+// import './App.css';
 import MessageToast from './components/MessageToast';
-import Header from './components/TopNav'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './views/Home';
 import Login from './views/Login';
@@ -11,15 +10,67 @@ import ManageVenue from './views/ManageVenue';
 import Achievements from './views/Achievements';
 import BRList from './views/BRList';
 import Settings from './views/Settings';
-import Container from 'react-bootstrap/esm/Container';
 import AccountService from './services/account-service';
 import { useEffect, useState } from 'react';
 import Fav from './views/Favorites';
-import Dashboard from './components/Dashboard';
+import TopNav from './components/TopNav';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import IIOMap from './components/IIOMap';
+import Orders from './components/Orders';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState("");
+
+  const getPreferredTheme = () => {
+    console.log('getPreferredTheme');
+    // Check for saved theme in localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme;
+    }
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    // Fall back to system preference if no saved theme
+    if (prefersDarkMode) {
+        return 'dark';
+    } else {
+        return 'light';
+    } 
+  };
+
+  const makeTheme = (mode) => {
+    return createTheme({
+        palette: {
+            mode: mode,
+        },
+    });
+  }
+
+const [userTheme, setMode] = useState(makeTheme(getPreferredTheme()));
+const onThemeChange = (newMode) => {
+    setMode(makeTheme(newMode));
+}
 
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
@@ -31,9 +82,25 @@ function App() {
   })
 
   return (
-    <div className="App">
-      <Router>
-        {/* <Routes>
+    <ThemeProvider theme={userTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        
+        <TopNav authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} onThemeChange={onThemeChange} />
+        <Box
+          component="main"
+          sx={{
+              backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
+          }}
+        >
+          <Router>
+        <Routes>
           <Route exact path="" element={<Home />}></Route>
           <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
           <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
@@ -44,36 +111,12 @@ function App() {
           <Route exact path="/fav" element={<Fav />}></Route>
           <Route exact path="/admin" element={<Admin />}></Route>
           <Route exact path="/achievements" element={<Achievements />}></Route>
-        </Routes> */}
-        {/* <Header authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} />
-        <Container className='nav-margin'>
-          <MessageToast message="test" bg="warning" show={false}/>
-          <Routes>
-            <Route exact path="" element={<Home />}></Route>
-            <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-            <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-            <Route exact path="/venues" element={<Venues />}></Route>
-            <Route exact path="/venues/manage/:name?" element={<ManageVenue />}></Route>
-            <Route exact path="/brlist" element={<BRList />}></Route>
-            <Route exact path="/settings" element={<Settings />}></Route>
-            <Route exact path="/fav" element={<Fav />}></Route>
-            <Route exact path="/admin" element={<Admin />}></Route>
-            <Route exact path="/achievements" element={<Achievements />}></Route>
-          </Routes>
-          <div className="mt-5"></div>
-        </Container>
-        <Container>
-          <footer className="d-flex flex-wrap justify-content-between align-items-center py-2 my-2 border-top">
-            <div className="col-md-4 d-flex align-items-center">
-              <span className="mb-3 mb-md-0 text-muted">&copy; 2024 Is It Open?</span>
-            </div>
-            <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
-            </ul>
-          </footer>
-        </Container> */}
-        <Dashboard />
+        </Routes>
       </Router>
-    </div>
+          <Toolbar />
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }
 

@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountService from '../services/account-service';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -53,8 +52,7 @@ export default function MuiLoginForm({ authenticated, onAuthChange }) {
 
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
@@ -121,6 +119,5 @@ export default function MuiLoginForm({ authenticated, onAuthChange }) {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
   );
 }
