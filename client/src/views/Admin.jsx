@@ -2,6 +2,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { NavLink } from 'react-router-dom';
 import VenueList from '../components/VenueList';
@@ -16,15 +17,16 @@ function Admin() {
     };
 
     return (
-        <div className="admin-panel">
+        <>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="admin panel tabs">
+                <Tabs value={value} onChange={handleChange} aria-label="admin panel tabs" centered>
                     <Tab value="venues" label="Venues" />
                     <Tab value="tags" label="Tags" />
                     <Tab value="users" label="Users" />
                     {/* Add more tabs as needed for different forms */}
                 </Tabs>
             </Box>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {value === 'venues' && (
                 <Box>
                     <Grid container spacing={2} className="mb-3">
@@ -41,7 +43,9 @@ function Admin() {
             )}
             {value === 'tags' && <ManageTags />}
             {value === 'users' && <p>Users form will be here</p>}
-        </div>
+            </Container>
+            
+        </>
     );
 }
 
