@@ -13,9 +13,9 @@ function CheckInList({ checkIns }) {
     return (
         <Grid container spacing={4}>
             {checkIns.map((checkIn) => (
-                <Grid item xs={12} md={6} key={checkIn._id}>
-                    <Card variant="outlined" className="h-100">
-                        <Box className="d-flex flex-column h-100">
+                <Grid item xs={12} md={4} key={checkIn._id}>
+                    <Card variant="outlined">
+                        <Box>
                             <CardContent>
                                 <Typography variant="subtitle2" color="primary" gutterBottom>
                                     {checkIn.venue.type}
@@ -28,7 +28,7 @@ function CheckInList({ checkIns }) {
                                 </Typography>
                                 <div>
                                     {checkIn.tags.map((tag, index) => (
-                                        <Chip label={tag} color="secondary" size="small" key={index} className="me-1" />
+                                        <Chip label={tag} color="secondary" size="small" key={index} sx={{ m: .5 }} />
                                     ))}
                                 </div>
                                 {checkIn.comment && (
@@ -37,17 +37,12 @@ function CheckInList({ checkIns }) {
                                     </Typography>
                                 )}
                             </CardContent>
-                            <Box mt="auto" p={2}>
+                            <Box p={2}>
                                 <Typography variant="body2" color="primary" component="a" href="#">
                                     View
                                 </Typography>
                             </Box>
                         </Box>
-                        {checkIn.open ? (
-                            <Box className="d-none d-lg-block bg-success" sx={{ width: 20 }} />
-                        ) : (
-                            <Box className="d-none d-lg-block bg-accent2" sx={{ width: 20 }} />
-                        )}
                     </Card>
                 </Grid>
             ))}

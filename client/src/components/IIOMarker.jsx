@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { Button } from '@mui/material';
 
 import {
   AdvancedMarker,
@@ -57,7 +58,7 @@ function IIOMarker({ venue }) {
         <h3>{venue.name}</h3>
         <p>Serves: {venue.type}</p>
         <p className="status-open">Status: Open</p>
-        <button className="btn btn-sm btn-secondary" onClick={() => handleVenueClick(venue.name)}>View</button>
+        <Button variant="contained" color="primary" onClick={() => handleVenueClick(venue.name)}>View</Button>
         </div>
 
         </InfoWindow>
