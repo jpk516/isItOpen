@@ -1,6 +1,5 @@
-// import './App.css';
-import MessageToast from './components/MessageToast';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react';
 import Home from './views/Home';
 import MuiHome from './views/MuiHome';
 import Login from './views/Login';
@@ -12,7 +11,6 @@ import Achievements from './views/Achievements';
 import BRList from './views/BRList';
 import Settings from './views/Settings';
 import AccountService from './services/account-service';
-import { useEffect, useState } from 'react';
 import Fav from './views/Favorites';
 import TopNav from './components/TopNav';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -22,6 +20,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
+
+// routing
 
 function Copyright(props) {
   return (
@@ -84,7 +84,7 @@ const onThemeChange = (newMode) => {
         <CssBaseline />
         <TopNav authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} onThemeChange={onThemeChange} />
         <Box
-          component="main"
+          // component="main"
           sx={{
               backgroundColor: (theme) =>
               theme.palette.mode === 'light'
@@ -96,7 +96,8 @@ const onThemeChange = (newMode) => {
           }}
         >
           <Toolbar />
-          <Router>
+          <Outlet></Outlet>
+          {/* <Router>
             <Routes>
               <Route exact path="" element={<MuiHome />}></Route>
               <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
@@ -109,7 +110,7 @@ const onThemeChange = (newMode) => {
               <Route exact path="/admin" element={<Admin />}></Route>
               <Route exact path="/achievements" element={<Achievements />}></Route>
             </Routes>
-          </Router>
+          </Router> */}
         </Box>
       </Box>
     </ThemeProvider>

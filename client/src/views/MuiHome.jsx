@@ -61,10 +61,9 @@ function MuiHome() {
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        height: 240,
                     }}
                     >
-                    {/* <Deposits /> */}
+                    <VenueList />
                     </Paper>
                 </Grid>
                 {/* Recent Orders */}

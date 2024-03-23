@@ -12,9 +12,13 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import AccountService from '../services/account-service';
-// import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MuiThemeSwitcher from './MuiThemeSwitcher';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
   // const navigate = useNavigate();

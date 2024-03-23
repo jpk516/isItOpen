@@ -1,40 +1,41 @@
-import Card from 'react-bootstrap/Card';
-import Table from 'react-bootstrap/Table';
-import ListGroup from 'react-bootstrap/ListGroup';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import Title from './Title';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-function VenueList({name}) {
+function VenueList({ name }) {
     const navigate = useNavigate();
-    const listName = name ? name : "Venues";
+    const listName = name ? name : 'Venues';
     const [venues, setVenues] = useState([]);
 
     useEffect(() => {
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {
-            console.log(error)
-        })
-    }, [])
+            console.log(error);
+        });
+    }, []);
 
     function handleRowClick(venue) {
-        navigate(`/venues/manage/${venue.name}`)
+        navigate(`/venues/manage/${venue.name}`);
     }
 
     return (
-        <Card>
-            <Card.Header>{listName}</Card.Header>
-            <ListGroup variant='flush'>
-                {venues.map((venue, index) => {
-                    return (
-                        <ListGroup.Item key={index} action onClick={() => handleRowClick(venue)}>
-                            {venue.name}
-                        </ListGroup.Item>
-                    )
-                })}
-                </ListGroup>
-        </Card>
+        <>
+        <Title>What's Open?</Title>
+        <List>
+            {venues.map((venue, index) => (
+                <ListItem key={index} disablePadding>
+                    <ListItemButton onClick={() => handleRowClick(venue)}>
+                        {venue.name}
+                    </ListItemButton>
+                </ListItem>
+            ))}
+        </List>
+        </>
     );
 }
 
