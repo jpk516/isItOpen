@@ -39,7 +39,7 @@ export default function MuiLoginForm({ authenticated, onAuthChange }) {
                 console.log(response);
                 if (response.data.success) {
                     console.log('success');
-                    onAuthChange(true);
+                    if (onAuthChange) onAuthChange(true);
                     navigate("/");
                 } else {
                     setLoginMessage(response.data.message)
