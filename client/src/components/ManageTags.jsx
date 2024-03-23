@@ -1,41 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Button, Row, Col, ListGroup } from 'react-bootstrap';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ConfirmModal from './ConfirmModal'; // Ensure ConfirmModal is compatible with MUI if it's a custom component
 import TagService from '../services/tag-service';
-import ConfirmModal from './ConfirmModal';
 
 function ManageTags() {
   const [tags, setTags] = useState([]);
-  const [currentTag, setCurrentTag] = useState({name: ''});
+  const [currentTag, setCurrentTag] = useState({ name: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
-  
+
   useEffect(() => {
-      fetchTags();
+    fetchTags();
   }, []);
 
   const fetchTags = async () => {
-      TagService.getAll().then(response => {
-          setTags(response.data);
-      }).catch(error => {
-          console.log(error)
-      })
+    TagService.getAll().then(response => {
+      setTags(response.data);
+    }).catch(error => {
+      console.log(error);
+    });
   };
 
   const handleSave = async () => {
-      if (isEditing) {
-          await TagService.update(currentTag);
-      } else {
-          await TagService.add(currentTag);
-      }
-      setCurrentTag({name: ''});
-      setIsEditing(false);
-      fetchTags();
+    if (isEditing) {
+      await TagService.update(currentTag);
+    } else {
+      await TagService.add(currentTag);
+    }
+    setCurrentTag({ name: '' });
+    setIsEditing(false);
+    fetchTags();
   };
 
   const handleEdit = (tag) => {
-      setCurrentTag(tag);
-      setIsEditing(true);
+    setCurrentTag(tag);
+    setIsEditing(true);
   };
 
   const showDeleteConfirmation = (id) => {
@@ -53,41 +61,40 @@ function ManageTags() {
   return (
     <>
       <Card>
-        <Card.Header>{isEditing ? 'Edit Tag' : 'Add Tag'}</Card.Header>
-        <Card.Body>
-          <Form>
-            <Row>
-              <Col md={8}>
-                <Form.Group controlId="formTagName">
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter tag text"
-                    value={currentTag.name}
-                    onChange={(e) => setCurrentTag({ ...currentTag, name: e.target.value })}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={4}>
-                <Button variant="primary" onClick={handleSave}>
-                  {isEditing ? 'Save Changes' : 'Add Tag'}
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-          <ListGroup className="mt-3">
+        <CardHeader title={isEditing ? 'Edit Tag' : 'Add Tag'} />
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={8}>
+              <TextField
+                fullWidth
+                label="Enter tag text"
+                value={currentTag.name}
+                onChange={(e) => setCurrentTag({ ...currentTag, name: e.target.value })}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Button variant="contained" color="primary" onClick={handleSave}>
+                {isEditing ? 'Save Changes' : 'Add Tag'}
+              </Button>
+            </Grid>
+          </Grid>
+          <List className="mt-3">
             {tags.map(tag => (
-              <ListGroup.Item key={tag._id}>
-                {tag.name}
-                <Button variant="info" size="sm" onClick={() => handleEdit(tag)} className="ms-2">
-                  Edit
-                </Button>
-                <Button variant="danger" size="sm" onClick={() => showDeleteConfirmation(tag._id)} className="ms-2">
-                  Delete
-                </Button>
-              </ListGroup.Item>
+              <ListItem key={tag._id} secondaryAction={
+                <>
+                  <Button variant="contained" color="info" onClick={() => handleEdit(tag)}>
+                    Edit
+                  </Button>
+                  <Button variant="contained" color="error" onClick={() => showDeleteConfirmation(tag._id)} sx={{ ml: 2 }}>
+                    Delete
+                  </Button>
+                </>
+              }>
+                <ListItemText primary={tag.name} />
+              </ListItem>
             ))}
-          </ListGroup>
-        </Card.Body>
+          </List>
+        </CardContent>
       </Card>
 
       <ConfirmModal
