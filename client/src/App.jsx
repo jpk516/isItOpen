@@ -15,6 +15,7 @@ import Container from 'react-bootstrap/esm/Container';
 import AccountService from './services/account-service';
 import { useEffect, useState } from 'react';
 import Fav from './views/Favorites';
+import Dashboard from './components/Dashboard';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -32,7 +33,19 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Header authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} />
+        {/* <Routes>
+          <Route exact path="" element={<Home />}></Route>
+          <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+          <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+          <Route exact path="/venues" element={<Venues />}></Route>
+          <Route exact path="/venues/manage/:name?" element={<ManageVenue />}></Route>
+          <Route exact path="/brlist" element={<BRList />}></Route>
+          <Route exact path="/settings" element={<Settings />}></Route>
+          <Route exact path="/fav" element={<Fav />}></Route>
+          <Route exact path="/admin" element={<Admin />}></Route>
+          <Route exact path="/achievements" element={<Achievements />}></Route>
+        </Routes> */}
+        {/* <Header authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} />
         <Container className='nav-margin'>
           <MessageToast message="test" bg="warning" show={false}/>
           <Routes>
@@ -57,7 +70,8 @@ function App() {
             <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
             </ul>
           </footer>
-        </Container>
+        </Container> */}
+        <Dashboard />
       </Router>
     </div>
   );
