@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import Orders from '../components/Orders';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Title from '../components/Title';
 
 function MuiHome() {
     const [venues, setVenues] = useState([]);
@@ -51,6 +52,7 @@ function MuiHome() {
                         
                     }}
                     >
+                    <Title>What's Hot?</Title>
                     <IIOMap></IIOMap>
                     </Paper>
                 </Grid>
