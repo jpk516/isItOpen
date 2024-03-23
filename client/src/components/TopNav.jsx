@@ -12,16 +12,10 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import AccountService from '../services/account-service';
-import { Link, useNavigate } from "react-router-dom";
 import MuiThemeSwitcher from './MuiThemeSwitcher';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 
 function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
-  // const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
       setOpen(!open);
@@ -122,10 +116,13 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
               sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
               px: [1],
               }}
           >
+              <Typography sx={{ml:2}} component="h2" variant="h5" color="primary">
+                Is It Open?
+              </Typography>
               <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
               </IconButton>
