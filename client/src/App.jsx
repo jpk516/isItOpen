@@ -2,6 +2,7 @@
 import MessageToast from './components/MessageToast';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './views/Home';
+import MuiHome from './views/MuiHome';
 import Login from './views/Login';
 import Register from './views/Register';
 import Venues from './views/Venues';
@@ -18,13 +19,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import IIOMap from './components/IIOMap';
-import Orders from './components/Orders';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import Container from '@mui/material/Container';
 
 function Copyright(props) {
   return (
@@ -85,7 +82,6 @@ const onThemeChange = (newMode) => {
     <ThemeProvider theme={userTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        
         <TopNav authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} onThemeChange={onThemeChange} />
         <Box
           component="main"
@@ -99,21 +95,21 @@ const onThemeChange = (newMode) => {
               overflow: 'auto',
           }}
         >
-          <Router>
-        <Routes>
-          <Route exact path="" element={<Home />}></Route>
-          <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-          <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-          <Route exact path="/venues" element={<Venues />}></Route>
-          <Route exact path="/venues/manage/:name?" element={<ManageVenue />}></Route>
-          <Route exact path="/brlist" element={<BRList />}></Route>
-          <Route exact path="/settings" element={<Settings />}></Route>
-          <Route exact path="/fav" element={<Fav />}></Route>
-          <Route exact path="/admin" element={<Admin />}></Route>
-          <Route exact path="/achievements" element={<Achievements />}></Route>
-        </Routes>
-      </Router>
           <Toolbar />
+          <Router>
+            <Routes>
+              <Route exact path="" element={<MuiHome />}></Route>
+              <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+              <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
+              <Route exact path="/venues" element={<Venues />}></Route>
+              <Route exact path="/venues/manage/:name?" element={<ManageVenue />}></Route>
+              <Route exact path="/brlist" element={<BRList />}></Route>
+              <Route exact path="/settings" element={<Settings />}></Route>
+              <Route exact path="/fav" element={<Fav />}></Route>
+              <Route exact path="/admin" element={<Admin />}></Route>
+              <Route exact path="/achievements" element={<Achievements />}></Route>
+            </Routes>
+          </Router>
         </Box>
       </Box>
     </ThemeProvider>
