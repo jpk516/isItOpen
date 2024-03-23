@@ -53,7 +53,7 @@ function MuiHome() {
                     }}
                     >
                     <Title>What's Hot?</Title>
-                    <IIOMap></IIOMap>
+                    <IIOMap venues={venues}></IIOMap>
                     </Paper>
                 </Grid>
                 {/* Recent Deposits */}
@@ -71,7 +71,8 @@ function MuiHome() {
                 {/* Recent Orders */}
                 <Grid item xs={12}>
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Orders />
+                        <Title>What's Up? <small>10 latest updates</small></Title>
+                        <CheckInList checkIns={checkIns} />
                     </Paper>
                 </Grid>
             </Grid>
