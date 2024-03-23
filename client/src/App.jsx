@@ -1,17 +1,6 @@
-import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import Home from './views/Home';
-import MuiHome from './views/MuiHome';
-import Login from './views/Login';
-import Register from './views/Register';
-import Venues from './views/Venues';
-import Admin from './views/Admin';
-import ManageVenue from './views/ManageVenue';
-import Achievements from './views/Achievements';
-import BRList from './views/BRList';
-import Settings from './views/Settings';
 import AccountService from './services/account-service';
-import Fav from './views/Favorites';
 import TopNav from './components/TopNav';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,22 +8,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
-import Container from '@mui/material/Container';
-
-// routing
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from './components/Copyright';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -84,7 +58,6 @@ const onThemeChange = (newMode) => {
         <CssBaseline />
         <TopNav authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} username={username} onThemeChange={onThemeChange} />
         <Box
-          // component="main"
           sx={{
               backgroundColor: (theme) =>
               theme.palette.mode === 'light'
@@ -97,20 +70,7 @@ const onThemeChange = (newMode) => {
         >
           <Toolbar />
           <Outlet></Outlet>
-          {/* <Router>
-            <Routes>
-              <Route exact path="" element={<MuiHome />}></Route>
-              <Route exact path="/login" element={<Login authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-              <Route exact path="/register" element={<Register authenticated={isAuthenticated} onAuthChange={setIsAuthenticated} />}></Route>
-              <Route exact path="/venues" element={<Venues />}></Route>
-              <Route exact path="/venues/manage/:name?" element={<ManageVenue />}></Route>
-              <Route exact path="/brlist" element={<BRList />}></Route>
-              <Route exact path="/settings" element={<Settings />}></Route>
-              <Route exact path="/fav" element={<Fav />}></Route>
-              <Route exact path="/admin" element={<Admin />}></Route>
-              <Route exact path="/achievements" element={<Achievements />}></Route>
-            </Routes>
-          </Router> */}
+          <Copyright sx={{ mt: 8, mb: 4 }} />
         </Box>
       </Box>
     </ThemeProvider>
