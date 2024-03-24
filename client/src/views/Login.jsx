@@ -5,8 +5,9 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { NavLink } from 'react-router-dom';
 import MuiLoginForm from '../components/MuiLoginForm';
+import UserContext from '../components/UserContext';
 
-function Login({ authenticated, onAuthChange }) {
+function Login() {
     return (
         // <Container>
         //     <Row className="justify-content-md-center">
@@ -25,7 +26,7 @@ function Login({ authenticated, onAuthChange }) {
         //         </Col>
         //     </Row>
         // </Container>
-        <MuiLoginForm authenticated={authenticated} onAuthChange={onAuthChange}  />
+        <MuiLoginForm authenticated={UserContext.authenticated} onAuthChange={onAuthChange}  />
     );
 }
 

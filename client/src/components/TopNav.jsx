@@ -4,7 +4,11 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LoginIcon from '@mui/icons-material/Login';
 import Badge from '@mui/material/Badge';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -14,12 +18,25 @@ import MuiDrawer from '@mui/material/Drawer';
 import AccountService from '../services/account-service';
 import MuiThemeSwitcher from './MuiThemeSwitcher';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link, useNavigate } from 'react-router-dom';
 
 function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
       setOpen(!open);
   };
+
+  // right menu
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenu = (event) => {
+    console.log(event.currentTarget)
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
   const drawerWidth = 240;
 
@@ -70,7 +87,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   function logOut() {
     AccountService.logOut().then(response => {
       onAuthChange(false)
-      //navigate('/login')
+      navigate('/login')
     })
   }
 
@@ -104,11 +121,51 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
             Dashboard
             </Typography>
             <MuiThemeSwitcher onChangeMode={onThemeChange}></MuiThemeSwitcher>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-              </Badge>
+            {authenticated && (
+            <div>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={logOut}>Logout</MenuItem>
+              </Menu>
+            </div>
+          )}
+          {!authenticated && (
+            <IconButton
+              size="large"
+              aria-label="login"
+              color="inherit"
+              component={Link} 
+              to={"/login"}
+            >
+              <LoginIcon />
             </IconButton>
+          
+          )}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
