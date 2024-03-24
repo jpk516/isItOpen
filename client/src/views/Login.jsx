@@ -26,7 +26,7 @@ function Login() {
         //         </Col>
         //     </Row>
         // </Container>
-        <MuiLoginForm authenticated={UserContext.authenticated} onAuthChange={onAuthChange}  />
+        <MuiLoginForm authenticated={UserContext.authenticated} onAuthChange={UserContext.onAuthChange}  />
     );
 }
 
