@@ -20,25 +20,7 @@ import MuiThemeSwitcher from './MuiThemeSwitcher';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 
-function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
-  const navigate = useNavigate();
-  const [open, setOpen] = useState(true);
-  const toggleDrawer = () => {
-      setOpen(!open);
-  };
-
-  // right menu
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenu = (event) => {
-    console.log(event.currentTarget)
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-
-  const drawerWidth = 240;
+const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -83,6 +65,24 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     },
   }),
 );
+
+
+function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(true);
+  const toggleDrawer = () => {
+      setOpen(!open);
+  };
+
+  // right menu
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleMenu = (event) => {
+    console.log(event.currentTarget)
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   function logOut() {
     AccountService.logOut().then(response => {
@@ -130,6 +130,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
                 aria-haspopup="true"
                 onClick={handleMenu}
                 color="inherit"
+                key={'right'}
+                id="right-menu-appbar"
               >
                 <AccountCircle />
               </IconButton>
