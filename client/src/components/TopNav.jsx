@@ -75,8 +75,20 @@ function TopNav({ onThemeChange }) {
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
       setOpen(!open);
-      console.log(user);
   };
+
+   // right menu
+   const [anchorEl, setAnchorEl] = useState(null);
+   const handleMenu = (event) => {
+    if (user.authenticated === false) {
+      navigate('/login')
+      return;
+    }
+    setAnchorEl(event.currentTarget);
+   };
+   const handleClose = () => {
+     setAnchorEl(null);
+   };
 
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
@@ -87,19 +99,10 @@ function TopNav({ onThemeChange }) {
     })
   }, [])
 
-
-  // right menu
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   function logOut() {
     AccountService.logOut().then(response => {
       setUser({authenticated: false, username: ''})
+      setAnchorEl(null);
       navigate('/login')
     })
   }
@@ -134,7 +137,6 @@ function TopNav({ onThemeChange }) {
             Dashboard - {user?.username}
             </Typography>
             <MuiThemeSwitcher onChangeMode={onThemeChange}></MuiThemeSwitcher>
-            {user?.authenticated && (
             <div>
               <IconButton
                 size="large"
@@ -160,19 +162,6 @@ function TopNav({ onThemeChange }) {
                 <MenuItem onClick={logOut}>Logout</MenuItem>
               </Menu>
             </div>
-          )}
-          {!user?.authenticated && (
-            <IconButton
-              size="large"
-              aria-label="login"
-              color="inherit"
-              component={Link} 
-              to={"/login"}
-            >
-              <LoginIcon />
-            </IconButton>
-          
-          )}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
