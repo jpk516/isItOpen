@@ -3,9 +3,12 @@ import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 import AccountService from '../services/account-service';
 import { useNavigate } from "react-router-dom";
+import UserContext from '../contexts/UserContext.jsx';
 
-function LoginForm({ authenticated, onAuthChange }) {
+
+function LoginForm() {
     const navigate = useNavigate();
+    const {user} = useContext(UserContext);
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
 
@@ -13,7 +16,7 @@ function LoginForm({ authenticated, onAuthChange }) {
         AccountService.authenticate(loginDetails.userName, loginDetails.password)
             .then(response => {
                 if (response.data.success) {
-                    onAuthChange(true);
+                    user({ user: {authenticated: true, username: loginDetails.userName} })
                     navigate("/");
                 } else {
                     setLoginMessage(response.data.message)
@@ -49,6 +52,13 @@ function LoginForm({ authenticated, onAuthChange }) {
                     Submit
                 </Button>
                 { loginMessage.length > 0 && 
+                    <Form.Text className="text-danger p-3">
+                        {loginMessage}
+                    </Form.Text>
+                }
+            </Form.Group>
+            <Form.Group>
+                { loginMessage.length > 0 &&
                     <Form.Text className="text-danger p-3">
                         {loginMessage}
                     </Form.Text>

@@ -12,23 +12,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import AccountService from '../services/account-service';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        Is It Open?
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-export default function MuiLoginForm({ authenticated, onAuthChange }) {
+export default function MuiLoginForm() {
+    const {user, setUser} = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
@@ -36,11 +25,15 @@ export default function MuiLoginForm({ authenticated, onAuthChange }) {
     const handleSubmit = () => {
         AccountService.authenticate(loginDetails.userName, loginDetails.password)
             .then(response => {
-                console.log(response);
                 if (response.data.success) {
                     console.log('success');
-                    if (onAuthChange) onAuthChange(true);
-                    navigate("/");
+                    try {
+                      setUser({ authenticated: true, username: loginDetails.userName })
+                      navigate("/");
+                    } catch (error) {
+                      console.log(error);
+                    }
+                    
                 } else {
                     setLoginMessage(response.data.message)
                 }

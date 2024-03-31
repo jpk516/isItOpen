@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -19,6 +19,8 @@ import AccountService from '../services/account-service';
 import MuiThemeSwitcher from './MuiThemeSwitcher';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext.jsx';
+
 
 const drawerWidth = 240;
 
@@ -67,17 +69,28 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
+function TopNav({ onThemeChange }) {
+  const { user, setUser } = useAppContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
       setOpen(!open);
+      console.log(user);
   };
+
+  useEffect(() => {
+    AccountService.isAuthenticated().then(response => {
+      setUser({authenticated: response.data.success, username: response.data.user.username})
+      console.log("in App.jsx, isAuthenticated: " + response.data.success)
+    }).catch(error => {
+        alert(`Error: ${error.response.data}`)
+    })
+  }, [])
+
 
   // right menu
   const [anchorEl, setAnchorEl] = useState(null);
   const handleMenu = (event) => {
-    console.log(event.currentTarget)
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -86,7 +99,7 @@ function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
 
   function logOut() {
     AccountService.logOut().then(response => {
-      onAuthChange(false)
+      setUser({authenticated: false, username: ''})
       navigate('/login')
     })
   }
@@ -118,10 +131,10 @@ function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-            Dashboard
+            Dashboard - {user?.username}
             </Typography>
             <MuiThemeSwitcher onChangeMode={onThemeChange}></MuiThemeSwitcher>
-            {authenticated && (
+            {user?.authenticated && (
             <div>
               <IconButton
                 size="large"
@@ -148,7 +161,7 @@ function TopNav({ authenticated, onAuthChange, onThemeChange, username }) {
               </Menu>
             </div>
           )}
-          {!authenticated && (
+          {!user?.authenticated && (
             <IconButton
               size="large"
               aria-label="login"

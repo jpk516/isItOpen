@@ -1,6 +1,7 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { Paper } from '@mui/material';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
@@ -18,7 +19,17 @@ function Admin() {
 
     return (
         <>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                        <Paper
+                        sx={{
+                            p: 2,
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                        >
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} aria-label="admin panel tabs" centered>
                     <Tab value="venues" label="Venues" />
                     <Tab value="tags" label="Tags" />
@@ -44,6 +55,11 @@ function Admin() {
             {value === 'tags' && <ManageTags />}
             {value === 'users' && <p>Users form will be here</p>}
             </Container>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Container>
+            
             
         </>
     );
