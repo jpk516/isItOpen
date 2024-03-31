@@ -148,7 +148,8 @@ function TopNav({ onThemeChange }) {
                 key={'right'}
                 id="right-menu-appbar"
               >
-                <AccountCircle />
+                {user?.authenticated &&  <AccountCircle /> }
+                {!user?.authenticated &&  <LoginIcon /> }
               </IconButton>
               <Menu
                 id="menu-appbar"
