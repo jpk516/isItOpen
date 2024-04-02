@@ -1,135 +1,130 @@
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
-import Stack from 'react-bootstrap/Stack';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CheckInService from '../services/check-in-service';
-import { useNavigate } from "react-router-dom";
 import VenueService from '../services/venue-service';
 import TagService from '../services/tag-service';
 
-function CheckIn({onCheckIn}) {
-    const defaultObject = { open: true, comment: '', venue: '', tags: [] };
-    const [errorMessage, setErrorMessage] = useState('');
-    const [validated, setValidated] = useState(false);
-    const [checkInDetails, setCheckInDetails] = useState(defaultObject);
-    const [venueSelectList, setVenueSelectList] = useState([]);
-    const [tags, setTags] = useState([]);
+function CheckIn({ isOpen, onClose, onCheckIn }) {
+  const defaultObject = { open: true, comment: '', venue: '', tags: [] };
+  const [checkInDetails, setCheckInDetails] = useState(defaultObject);
+  const [venueSelectList, setVenueSelectList] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
-    useEffect(() => {
-        VenueService.getSelectList().then(response => {
-            setVenueSelectList(response.data);
-        }).catch(error => {
-            console.log(error)
-        })
-        
-        TagService.getAll().then(response => {
-            setTags(response.data);
-        }).catch(error => {
-            console.log(error)
-        })
-    }, [])
+  useEffect(() => {
+    VenueService.getSelectList().then(response => {
+      setVenueSelectList(response.data);
+    }).catch(error => {
+      console.log(error);
+    });
 
-    const handleTagClick = (tag) => {
-        let updatedTags;
-        if (checkInDetails?.tags?.includes(tag.name)) {
-            updatedTags = checkInDetails.tags.filter((clickedTag) => clickedTag !== tag.name);
-        } else {
-            updatedTags = [...checkInDetails.tags, tag.name];
-        }
-        setCheckInDetails({ ...checkInDetails, tags: updatedTags });
-    };
+    TagService.getAll().then(response => {
+      setTags(response.data);
+    }).catch(error => {
+      console.log(error);
+    });
+  }, []);
 
-    const handleCheckIn = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setValidated(true);
-        const form = event.currentTarget;
-        if (form.reportValidity() === false) {
-            return;
-        }
+  const handleCheckIn = (event) => {
+    event.preventDefault();
+    CheckInService.add(checkInDetails).then(() => {
+      setCheckInDetails(defaultObject);
+      onClose(); // Close the modal on successful check-in
+      if (onCheckIn) {
+        onCheckIn();
+      }
+    }).catch(error => {
+      setErrorMessage(error.response?.data ?? "An error occurred, please try again.");
+    });
+  };
 
-        CheckInService.add(checkInDetails).then(response => {
-            setCheckInDetails(defaultObject);
-            if (onCheckIn) {
-                onCheckIn();
-            }
-            setValidated(false);
-            setErrorMessage('');
-        })
-        .catch(error => {
-            setErrorMessage(error.response?.data ?? "An error occurred, please try again.")
-        })
-    }
+  const handleTagClick = (tag) => {
+    const updatedTags = checkInDetails.tags.includes(tag.name)
+      ? checkInDetails.tags.filter(t => t !== tag.name)
+      : [...checkInDetails.tags, tag.name];
+    setCheckInDetails({ ...checkInDetails, tags: updatedTags });
+  };
 
-    const handleOpenChange = (isOpen) => {
-        setCheckInDetails({ ...checkInDetails, open: isOpen });
-    }
+  return (
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle>What's Up? Are they still serving?</DialogTitle>
+      <DialogContent>
+        <FormControl fullWidth margin="normal">
+          <ToggleButtonGroup
+            color="primary"
+            value={checkInDetails.open ? 'open' : 'closed'}
+            exclusive
+            onChange={(event, newAlignment) => {
+              setCheckInDetails({ ...checkInDetails, open: newAlignment === 'open' });
+            }}
+          >
+            <ToggleButton value="open">Yup! It's open.</ToggleButton>
+            <ToggleButton value="closed">Nope! They are done.</ToggleButton>
+          </ToggleButtonGroup>
+        </FormControl>
 
-    const handleTagsChange = (tags) => {
-        setCheckInDetails({ ...checkInDetails, tags });
-    };
+        {checkInDetails.open && (
+          <Stack direction="row" spacing={1} marginTop={2}>
+            {tags.map(tag => (
+              <Chip
+                key={tag._id}
+                label={tag.name}
+                color={checkInDetails.tags.includes(tag.name) ? 'primary' : 'default'}
+                onClick={() => handleTagClick(tag)}
+              />
+            ))}
+          </Stack>
+        )}
 
-    return (
-        <Card>
-            <Card.Body>
-                <Card.Title className="pb-3">What's Up? Are they still serving?</Card.Title>
-                <Form noValidate validated={validated} onSubmit={handleCheckIn}>
-                    <Form.Group className="mb-3" controlId="formIsOpen">
-                        <ButtonGroup>
-                            <Button variant={checkInDetails.open ? "success" : "outline-secondary"} onClick={() => handleOpenChange(true)}>Yup! It's open.</Button>
-                            <Button variant={!checkInDetails.open ? "danger" : "outline-secondary"} onClick={() => handleOpenChange(false)}>Nope! They are done.</Button>
-                        </ButtonGroup>
-                    </Form.Group>
-                    
-                    { checkInDetails.open && 
-                        <Form.Group className="mb-3">
-                            <Form.Label>What's It Like?</Form.Label>
-                            <Stack direction="horizontal" gap={2} className='mt-2 mb-4'>
-                            {tags.map((tag) => (
-                                <h5 key={tag._id}>
-                                    <Badge
-                                        id={tag._id}
-                                        bg={checkInDetails?.tags?.includes(tag.name) ? "success" : "secondary"}
-                                        onClick={() => handleTagClick(tag)}
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        {tag.name}
-                                    </Badge>
-                                </h5>
-                            ))}
-                            </Stack>
-                        </Form.Group>
-                    }
+        <TextField
+          margin="normal"
+          fullWidth
+          id="comment"
+          label="Any other juicy details?"
+          multiline
+          rows={3}
+          value={checkInDetails.comment}
+          onChange={e => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
+        />
 
-                    <Form.Group className="mb-3" controlId="formCheckInComment">
-                        <Form.Label>Any other juicy details?</Form.Label>
-                        <Form.Control as="textarea" rows={3} placeholder="Something something something" value={checkInDetails.comment} onChange={(e) => setCheckInDetails({ ...checkInDetails, comment: e.target.value })} />
-                    </Form.Group>
+        <FormControl fullWidth margin="normal">
+          <Select
+            value={checkInDetails.venue}
+            onChange={e => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Venue' }}
+          >
+            <MenuItem disabled value="">
+              <em>Select venue</em>
+            </MenuItem>
+            {venueSelectList.map(venue => (
+              <MenuItem key={venue._id} value={venue._id}>{venue.name}</MenuItem>
+            ))}
+          </Select>
+          <FormHelperText>Required</FormHelperText>
+        </FormControl>
 
-                    <Form.Group className="mb-3" controlId="formCheckInVenue">
-                        <Form.Label>Venue</Form.Label>
-                        <Form.Control as="select" value={checkInDetails.venue} onChange={(e) => setCheckInDetails({ ...checkInDetails, venue: e.target.value })} required>
-                            <option value="">Select venue</option>
-                            {venueSelectList.map((venue) => (
-                                <option key={venue._id} value={venue._id}>{venue.name}</option>
-                            ))}
-                        </Form.Control>
-                    </Form.Group>
-
-                    <div className="d-grid gap-2">
-                        <Button variant="primary" size="lg" type="submit">
-                            Check In
-                        </Button>
-                    </div>
-                    
-                    {errorMessage && <div className="text-danger">{errorMessage}</div>}
-                </Form>
-            </Card.Body>
-        </Card>
-    );
+        {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button variant="contained" onClick={handleCheckIn}>Check In</Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
 export default CheckIn;

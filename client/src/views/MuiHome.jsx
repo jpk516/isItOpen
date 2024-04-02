@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Orders from '../components/Orders';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Title from '../components/Title';

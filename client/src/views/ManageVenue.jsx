@@ -17,6 +17,7 @@ import Achievement from '../components/Achievement';
 
 function ManageVenue() {
     const [venueDetails, setVenueDetails] = useState({});
+    const [modalOpen, setModalOpen] = useState(false);
     const [value, setValue] = useState('edit');
     const { name } = useParams();
 
@@ -66,7 +67,8 @@ function ManageVenue() {
                         <VenueDetails venue={venueDetails} />
                     </Grid>
                     <Grid item lg={6}>
-                        <CheckIn venue="Venue" />
+                        <Button variant="contained" onClick={() => setModalOpen(true)}>Check In</Button>
+                        <CheckIn isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                     </Grid>
                 </Grid>
             )}
