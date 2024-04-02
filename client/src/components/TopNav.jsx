@@ -80,7 +80,7 @@ function TopNav({ onThemeChange }) {
    // right menu
    const [anchorEl, setAnchorEl] = useState(null);
    const handleMenu = (event) => {
-    if (user.authenticated === false) {
+    if (!user || user?.authenticated === false) {
       navigate('/login')
       return;
     }
@@ -92,10 +92,9 @@ function TopNav({ onThemeChange }) {
 
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
-      setUser({authenticated: response.data.success, username: response.data.user.username})
-      console.log("in App.jsx, isAuthenticated: " + response.data.success)
+      setUser({authenticated: response.data.success, username: response?.data?.user?.username ?? ''})
     }).catch(error => {
-        alert(`Error: ${error.response.data}`)
+        alert(`Error: ${error.data}`)
     })
   }, [])
 

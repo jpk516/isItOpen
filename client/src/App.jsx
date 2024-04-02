@@ -13,8 +13,6 @@ import Copyright from './components/Copyright';
 import AppContextProvider from './contexts/AppContext';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
   const getPreferredTheme = () => {
     console.log('getPreferredTheme');
     // Check for saved theme in localStorage
@@ -43,8 +41,6 @@ const [userTheme, setMode] = useState(makeTheme(getPreferredTheme()));
 const onThemeChange = (newMode) => {
     setMode(makeTheme(newMode));
 }
-
-
 
   return (
     <AppContextProvider>
