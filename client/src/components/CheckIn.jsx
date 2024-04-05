@@ -14,23 +14,15 @@ import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CheckInService from '../services/check-in-service';
-import VenueService from '../services/venue-service';
 import TagService from '../services/tag-service';
 
-function CheckIn({ isOpen, onClose, onCheckIn }) {
-  const defaultObject = { open: true, comment: '', venue: '', tags: [] };
+function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
+  const defaultObject = { open: true, comment: '', venue: venue?._id ?? '', tags: [] };
   const [checkInDetails, setCheckInDetails] = useState(defaultObject);
-  const [venueSelectList, setVenueSelectList] = useState([]);
   const [tags, setTags] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    VenueService.getSelectList().then(response => {
-      setVenueSelectList(response.data);
-    }).catch(error => {
-      console.log(error);
-    });
-
     TagService.getAll().then(response => {
       setTags(response.data);
     }).catch(error => {
@@ -60,7 +52,7 @@ function CheckIn({ isOpen, onClose, onCheckIn }) {
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>What's Up? Are they still serving?</DialogTitle>
+      <DialogTitle>What's Up at {venue.name}? Are they still serving?</DialogTitle>
       <DialogContent>
         <FormControl fullWidth margin="normal">
           <ToggleButtonGroup
@@ -99,23 +91,6 @@ function CheckIn({ isOpen, onClose, onCheckIn }) {
           value={checkInDetails.comment}
           onChange={e => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
         />
-
-        <FormControl fullWidth margin="normal">
-          <Select
-            value={checkInDetails.venue}
-            onChange={e => setCheckInDetails({ ...checkInDetails, venue: e.target.value })}
-            displayEmpty
-            inputProps={{ 'aria-label': 'Venue' }}
-          >
-            <MenuItem disabled value="">
-              <em>Select venue</em>
-            </MenuItem>
-            {venueSelectList.map(venue => (
-              <MenuItem key={venue._id} value={venue._id}>{venue.name}</MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>Required</FormHelperText>
-        </FormControl>
 
         {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
       </DialogContent>

@@ -68,7 +68,7 @@ function ManageVenue() {
                     </Grid>
                     <Grid item lg={6}>
                         <Button variant="contained" onClick={() => setModalOpen(true)}>Check In</Button>
-                        <CheckIn isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+                        <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                     </Grid>
                 </Grid>
             )}
