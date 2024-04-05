@@ -20,7 +20,7 @@ function TopNav({ authenticated, onAuthChange, username }) {
   }
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+    <Navbar bg="danger" variant="dark" expand="lg" fixed="top">
       <Container>
         <Navbar.Brand>
           <span style={{marginLeft:"5px"}}>Is It Open?</span>

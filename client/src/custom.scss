@@ -1,8 +1,8 @@
 $white: #ffffff;
 
 $theme-colors: (
-    "light":      #dadcde,
-    "dark":       #191526,
+    "light":      #f0f0f0,
+    "dark":       #120104,
     "primary":    #273c7a,
     "secondary":  #456fb1,
     "info":       #6f88ab,
@@ -11,12 +11,29 @@ $theme-colors: (
     "accent3":    #a5aeb6,
     "success":    #2ea264,
     "warning":    #e1cb2f,
-    "danger":     #ed2519,
+    "danger":     #4e4b4b,
 );
 
 @import 'bootstrap/scss/bootstrap';
 
 // Global styles
+:root{
+    --light-background :#ffffff;
+    --dark-background :red;
+}
+body{
+    background-color: var(--light-background);
+}
+.darkmode{
+    --light-background :#ffffff;
+    --dark-background :rgb(13, 29, 99);
+}
+.lightmode{
+    --light-background :#ffffff;
+}
+body{
+    background-color: var(--dark-background);
+}
 
 .pointer:hover {
     cursor: pointer;

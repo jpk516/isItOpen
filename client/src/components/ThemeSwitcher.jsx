@@ -32,6 +32,11 @@ const ThemeSwitcher = () => {
     // Update the data-bs-theme attribute on the html element and save to localStorage
     useEffect(() => {
         document.documentElement.setAttribute('data-bs-theme', theme);
+        if (theme === 'dark'){
+            document.body.classList.add('darkmode');
+        }else{
+            document.body.classList.remove('darkmode');
+        }
     }, [theme]);
 
     return (
