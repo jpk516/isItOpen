@@ -1,48 +1,53 @@
 import React from 'react';
-import { Card, CardGroup, ListGroup, Badge, Col, Row } from 'react-bootstrap';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
 
 function CheckInList({ checkIns }) {
+    // Order the check-ins by date
+    checkIns.sort((a, b) => new Date(b.created) - new Date(a.created));
 
-    // order the check-ins by date
-    checkIns.sort((a, b) => {
-        return new Date(b.created) - new Date(a.created);
-    });
-
-  return (
-    <>
-        <Row className="g-4">
+    return (
+        <Grid container spacing={4}>
             {checkIns.map((checkIn) => (
-                <Col xs={12} md={6} key={checkIn._id}>
-                    <Row className="g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <Col className="p-4 d-flex flex-column position-static">
-                            <strong className="d-inline-block mb-2 text-primary-emphasis">{checkIn.venue.type}</strong>
-                            <h3 className="mb-0">{checkIn.venue.name}</h3>
-                            <div className="mb-1 text-body-secondary">{new Date(checkIn.created).toLocaleString()}</div>
-                            <div>
-                                {checkIn.tags.map((tag, index) => (
-                                <Badge pill bg="secondary" className="ms-1" key={index}>
-                                    {tag}
-                                </Badge>
-                                ))}
-                            </div>
-                            {checkIn.comment && 
-                                <p className="card-text mb-auto">{checkIn.comment}</p>
-                            }
-                            <a href="#" className="icon-link mt-3">
-                                View
-                            </a>
-                        </Col>
-                        <Col className={checkIn.open ? "col-auto d-none d-lg-block bg-success" : "col-auto d-none d-lg-block bg-accent2"}>
-                            <div className="check-in-status">
-                            </div>
-                        </Col>
-                    </Row>
-                </Col>
+                <Grid item xs={12} md={4} key={checkIn._id}>
+                    <Card variant="outlined">
+                        <Box>
+                            <CardContent>
+                                <Typography variant="subtitle2" color="primary" gutterBottom>
+                                    {checkIn.venue.type}
+                                </Typography>
+                                <Typography variant="h6" component="div">
+                                    {checkIn.venue.name}
+                                </Typography>
+                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                    {new Date(checkIn.created).toLocaleString()}
+                                </Typography>
+                                <div>
+                                    {checkIn.tags.map((tag, index) => (
+                                        <Chip label={tag} color="secondary" size="small" key={index} sx={{ m: .5 }} />
+                                    ))}
+                                </div>
+                                {checkIn.comment && (
+                                    <Typography variant="body2" mt={2}>
+                                        {checkIn.comment}
+                                    </Typography>
+                                )}
+                            </CardContent>
+                            <Box p={2}>
+                                <Typography variant="body2" color="primary" component="a" href="#">
+                                    View
+                                </Typography>
+                            </Box>
+                        </Box>
+                    </Card>
+                </Grid>
             ))}
-        </Row>
-        
-    </>
-  );
+        </Grid>
+    );
 }
 
 export default CheckInList;

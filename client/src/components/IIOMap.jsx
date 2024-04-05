@@ -13,7 +13,7 @@ function IIOMap({venues}) {
         disableDefaultUI={true}
 		    mapId="7af4d03122461ee8"
       >
-      {venues.map((venue, index) => {
+      {venues?.map((venue, index) => {
         return (
           <IIOMarker key={venue._id} venue={venue} />
         )
