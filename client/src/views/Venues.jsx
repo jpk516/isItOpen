@@ -21,7 +21,7 @@ function Venues() {
 
 
     return (
-        <Container>
+        <>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Title>Venue List</Title>
@@ -32,7 +32,7 @@ function Venues() {
                     <VenueTable venues={venues} />
                 </Grid>
             </Grid>
-        </Container>
+        </>
     );
 }
 

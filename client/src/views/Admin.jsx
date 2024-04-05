@@ -19,48 +19,41 @@ function Admin() {
 
     return (
         <>
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Paper
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <Paper
                         sx={{
                             p: 2,
                             display: 'flex',
                             flexDirection: 'column',
                         }}
-                        >
+                    >
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="admin panel tabs" centered>
-                    <Tab value="venues" label="Venues" />
-                    <Tab value="tags" label="Tags" />
-                    <Tab value="users" label="Users" />
-                    {/* Add more tabs as needed for different forms */}
-                </Tabs>
-            </Box>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {value === 'venues' && (
-                <Box>
-                    <Grid container spacing={2} className="mb-3">
-                        <Grid item xs={12} md={12}>
-                            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <Button variant="contained" component={NavLink} to="/venues/manage">
-                                    Add Venue
-                                </Button>
-                            </div>
-                        </Grid>
-                    </Grid>
-                    <VenueList />
-                </Box>
-            )}
-            {value === 'tags' && <ManageTags />}
-            {value === 'users' && <p>Users form will be here</p>}
-            </Container>
-                        </Paper>
-                    </Grid>
+                            <Tabs value={value} onChange={handleChange} aria-label="admin panel tabs" centered>
+                                <Tab value="venues" label="Venues" />
+                                <Tab value="tags" label="Tags" />
+                                <Tab value="users" label="Users" />
+                            </Tabs>
+                        </Box>
+                        {value === 'venues' && (
+                        <Box>
+                            <Grid container spacing={2} className="mb-3">
+                                <Grid item xs={12} md={12}>
+                                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <Button variant="contained" component={NavLink} to="/venues/manage">
+                                            Add Venue
+                                        </Button>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                            <VenueList />
+                        </Box>
+                        )}
+                        {value === 'tags' && <ManageTags />}
+                        {value === 'users' && <p>Users form will be here</p>}
+                    </Paper>
                 </Grid>
-            </Container>
-            
-            
+            </Grid>
         </>
     );
 }
