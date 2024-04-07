@@ -11,8 +11,10 @@ import ManageTags from '../components/ManageTags';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
 import VenueTable from '../components/VenueTable';
+import { useNavigate } from 'react-router-dom';
 
 function Admin() {
+    const navigate = useNavigate();
     const [value, setValue] = useState('venues');
     const [venues, setVenues] = useState([]);
 
@@ -26,6 +28,10 @@ function Admin() {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const handleVenueClick = (params) => {
+        navigate(`/venues/manage/${params.row.name}`);
     };
 
     return (
@@ -50,7 +56,7 @@ function Admin() {
                                     </div>
                                 </Grid>
                             </Grid>
-                            <VenueTable venues={venues} />
+                            <VenueTable venues={venues} onVenueClick={handleVenueClick} />
                     </Box>
                         )}
                     {value === 'tags' && <ManageTags />}
