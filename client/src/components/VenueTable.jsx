@@ -15,7 +15,8 @@ function VenueTable({ venues, onVenueClick }) {
 
   const columns = [
     { field: 'name', headerName: 'Name', width: 200 },
-    { field: 'description', headerName: 'Description', width: 300 },
+    { field: 'type', headerName: 'Type', width: 130 },
+    { field: 'description', headerName: 'Description', width: 500 },
     { field: 'phone', headerName: 'Phone', width: 150 },
     { 
       field: 'email', 
@@ -43,18 +44,8 @@ function VenueTable({ venues, onVenueClick }) {
         </>
       )
     },
-    { field: 'type', headerName: 'Type', width: 130 },
-    { 
-      field: 'action', 
-      headerName: 'Action', 
-      width: 130,
-      renderCell: (params) => (
-        <button onClick={() => handleButtonClick(params)}>Click Me</button>
-      )
-    },
   ];
 
-  // Assuming 'venues' is an array of venue objects
   const rows = venues.map(venue => ({
     ...venue,
     id: venue._id,
@@ -72,7 +63,8 @@ function VenueTable({ venues, onVenueClick }) {
         columnVisibilityModel={{
           email: false,
           phone: false,
-      }}
+        }}
+        onRowClick={(data) => handleButtonClick(data)}
       />
     </div>
   );
