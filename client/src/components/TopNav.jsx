@@ -16,7 +16,7 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import AccountService from '../services/account-service';
-import MuiThemeSwitcher from './MuiThemeSwitcher';
+import ThemeSwitcher from './ThemeSwitcher.jsx';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext.jsx';
@@ -135,7 +135,7 @@ function TopNav({ onThemeChange }) {
             >
             Dashboard - {user?.username}
             </Typography>
-            <MuiThemeSwitcher onChangeMode={onThemeChange}></MuiThemeSwitcher>
+            <ThemeSwitcher onChangeMode={onThemeChange}></ThemeSwitcher>
             <div>
               <IconButton
                 size="large"

@@ -4,7 +4,7 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import IconButton from '@mui/material/IconButton';
 
-const MuiThemeSwitcher = ({ onChangeMode }) => {
+const ThemeSwitcher = ({ onChangeMode }) => {
     const theme = useTheme();
     const [mode, setMode] = useState(theme.palette.mode);
     
@@ -23,4 +23,4 @@ const MuiThemeSwitcher = ({ onChangeMode }) => {
     );
 };
 
-export default MuiThemeSwitcher;
+export default ThemeSwitcher;
