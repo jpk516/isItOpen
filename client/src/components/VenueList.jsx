@@ -20,7 +20,7 @@ function VenueList({ name }) {
     }, []);
 
     function handleRowClick(venue) {
-        navigate(`/venues/manage/${venue.name}`);
+        navigate(`/venues/${venue.name}`);
     }
 
     return (
