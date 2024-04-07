@@ -20,7 +20,7 @@ const VenueView = ({ venue }) => {
   return (
     <Card className="m-3">
       <Card.Header as="h5">{venue.name}</Card.Header>
-      <ListGroup variant="flush">
+      <ListGroup>
         <ListGroup.Item>
           <FaBuilding /> <strong>Address:</strong> {`${venue.address}, ${venue.city}, ${venue.state} ${venue.zip}`}
         </ListGroup.Item>

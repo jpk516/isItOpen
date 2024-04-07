@@ -8,10 +8,21 @@ import Grid from '@mui/material/Grid';
 import { NavLink } from 'react-router-dom';
 import VenueList from '../components/VenueList';
 import ManageTags from '../components/ManageTags';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import VenueService from '../services/venue-service';
+import VenueTable from '../components/VenueTable';
 
 function Admin() {
     const [value, setValue] = useState('venues');
+    const [venues, setVenues] = useState([]);
+
+    useEffect(() => {
+        VenueService.getAll().then(response => {
+            setVenues(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+    }, []);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -21,14 +32,7 @@ function Admin() {
         <>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Paper
-                        sx={{
-                            p: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs value={value} onChange={handleChange} aria-label="admin panel tabs" centered>
                                 <Tab value="venues" label="Venues" />
                                 <Tab value="tags" label="Tags" />
@@ -37,21 +41,20 @@ function Admin() {
                         </Box>
                         {value === 'venues' && (
                         <Box>
-                            <Grid container spacing={2} className="mb-3">
+                            <Grid container spacing={2}>
                                 <Grid item xs={12} md={12}>
-                                    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <Button variant="contained" component={NavLink} to="/venues/manage">
+                                    <div>
+                                        <Button variant="contained" component={NavLink} to="/venues/manage" sx={{margin: 2}}>
                                             Add Venue
                                         </Button>
                                     </div>
                                 </Grid>
                             </Grid>
-                            <VenueList />
-                        </Box>
+                            <VenueTable venues={venues} />
+                    </Box>
                         )}
-                        {value === 'tags' && <ManageTags />}
-                        {value === 'users' && <p>Users form will be here</p>}
-                    </Paper>
+                    {value === 'tags' && <ManageTags />}
+                    {value === 'users' && <p>Users form will be here</p>}
                 </Grid>
             </Grid>
         </>

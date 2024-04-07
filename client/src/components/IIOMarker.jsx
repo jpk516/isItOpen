@@ -30,7 +30,7 @@ function IIOMarker({ venue }) {
 
   // will go to public venue once that is checked in
   function handleVenueClick(name) {
-    navigate(`/venues/manage/${name}`)
+    navigate(`/venues/${name}`)
   }
 
   const img = document.createElement('img');
