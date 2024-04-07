@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ConfirmModal from './ConfirmModal'; // Ensure ConfirmModal is compatible with MUI if it's a custom component
+import ConfirmModal from './ConfirmModal';
 import TagService from '../services/tag-service';
 
 function ManageTags() {

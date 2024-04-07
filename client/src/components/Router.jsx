@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from '../App';
-import MuiHome from '../views/MuiHome';
+import Home from '../views/Home';
 import Login from '../views/Login';
 import Register from '../views/Register';
 import Venues from '../views/Venues';
@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     {
       element: <App />,
       children: [
-        { path: '/', element: <MuiHome /> },
+        { path: '/', element: <Home /> },
         { path: '/login', element: <Login /> },
         { path: '/register', element: <Register /> },
         { path: '/venues', element: <Venues /> },

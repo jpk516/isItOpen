@@ -1,19 +1,16 @@
 import React from 'react';
-import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Badge, Tooltip } from '@mui/material';
 
 const Achievement = ({ text, tooltipText, color = 'primary' }) => {
   return (
-    <div className="text-center p-2">
-      <OverlayTrigger
-        placement="top"
-        overlay={<Tooltip id={`tooltip-${text}`}>{tooltipText}</Tooltip>}
-      >
+    <div style={{ textAlign: 'center', padding: 8 }}>
+      <Tooltip title={tooltipText} placement="top">
         <h5>
-          <Badge bg={color}>
+          <Badge color={color} variant="dot">
             {text}
           </Badge>
         </h5>
-      </OverlayTrigger>
+      </Tooltip>
       <div>{text}</div>
     </div>
   );

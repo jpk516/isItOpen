@@ -1,8 +1,8 @@
-import MuiLoginForm from '../components/MuiLoginForm';
+import LoginForm from '../components/LoginForm';
 
 function Login() {
     return (
-        <MuiLoginForm  />
+        <LoginForm  />
     );
 }
 
