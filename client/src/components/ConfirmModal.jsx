@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 
 const ConfirmModal = ({ show, onHide, onConfirm, title, body }) => {
     return (
-        <Dialog open={show} onClose={onHide} centered>
+        <Dialog open={show} onClose={onHide}>
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>{body}</DialogContentText>
