@@ -32,11 +32,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Restaurants" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton component={Link} to={"/achievements"}>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Reports" />
+      <ListItemText primary="Leaderboard" />
     </ListItemButton>
   </React.Fragment>
 );
