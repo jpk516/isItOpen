@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 
 function CheckInList({ checkIns }) {
     // Order the check-ins by date
+    if (!checkIns) return null;
     checkIns.sort((a, b) => new Date(b.created) - new Date(a.created));
 
     return (
