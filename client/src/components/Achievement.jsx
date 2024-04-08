@@ -1,18 +1,55 @@
 import React from 'react';
+import { useState } from 'react';
 import { Badge, Tooltip } from '@mui/material';
+import Popover from '@mui/material/Popover';
+import { CheckCircle } from '@mui/icons-material';
+import { green } from '@mui/material/colors';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 
-const Achievement = ({ text, tooltipText, color = 'primary' }) => {
+const Achievement = ({ text, tooltipText, color = green[500], Icon = CheckCircle}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handlePopoverOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <div style={{ textAlign: 'center', padding: 8 }}>
-      <Tooltip title={tooltipText} placement="top">
-        <h5>
-          <Badge color={color} variant="dot">
-            {text}
-          </Badge>
-        </h5>
-      </Tooltip>
-      <div>{text}</div>
-    </div>
+    <Stack direction="column" spacing={1} justifyContent="center" alignItems="center"> 
+      <Avatar 
+        sx={{ bgcolor: color }}
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={handlePopoverClose}
+      >
+        <Icon />
+      </Avatar>
+      <Typography>{text}</Typography>
+      <Popover
+        sx={{
+          pointerEvents: 'none',
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        <Typography sx={{ p: 2 }}>{tooltipText}</Typography>
+      </Popover>
+    </Stack>
   );
 };
 
