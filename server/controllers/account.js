@@ -113,6 +113,13 @@ router.post("/api/accounts/login", (req, res) => {
     }
 });
 
+// TODO: ensure this is the current user or an admin
+router.put("/api/accounts/:id", (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
+});
+
 /**
  * @openapi
  * /api/accounts/logout:

@@ -16,6 +16,9 @@ const AccountService = {
             password: password
         })
     },
+    update: (user) => {
+        return api.put(`/accounts/`, user)
+    },
     authenticate: (userName, password) => {
         return api.post(`/accounts/login`, {
             username: userName,
