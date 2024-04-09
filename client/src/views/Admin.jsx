@@ -13,7 +13,7 @@ import VenueService from '../services/venue-service';
 import VenueTable from '../components/VenueTable';
 import AccountService from '../services/account-service';
 import { useNavigate } from 'react-router-dom';
-import UserTable from '../components/UserTable';
+import ManageUsers from '../components/ManageUsers';
 
 function Admin() {
     const navigate = useNavigate();
@@ -66,10 +66,10 @@ function Admin() {
                                 </Grid>
                             </Grid>
                             <VenueTable venues={venues} onVenueClick={handleVenueClick} />
-                    </Box>
+                        </Box>
                         )}
                     {value === 'tags' && <ManageTags />}
-                    {value === 'users' && <UserTable users={users} />}
+                    {value === 'users' && <ManageUsers />}
                 </Grid>
             </Grid>
         </>
