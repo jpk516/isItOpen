@@ -2,7 +2,10 @@ import api from '../services/axios-service.js'
 
 const AccountService = {
     isAuthenticated: () => {
-        return api.get(`accounts/`)
+        return api.get(`accounts/authenticated`)
+    },
+    getAll: () => {
+        return api.get(`/accounts`)
     },
     count: () => {
         return api.get(`/accounts/count`)

@@ -10,7 +10,14 @@ const router = express.Router()
 const passport = require('passport');
 const User = require("../models/user");
 
-router.get("/api/accounts/", (req, res) => {
+router.get("/api/accounts", (req, res) => {
+    // TODO: check for admin role
+    User.find({})
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not load users: " + err }));
+});
+
+router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
         res.json({ success: true, message: "User is authenticated", user: req.user });
     } else {
