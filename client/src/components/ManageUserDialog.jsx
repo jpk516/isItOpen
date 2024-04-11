@@ -13,6 +13,7 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
     // Populate form when the user prop changes
     if (user) {
       setEditedUser({
+        username: user.username || '',
         email: user.email || '',
         firstName: user.firstName || '',
         lastName: user.lastName || '',
@@ -36,6 +37,16 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Edit User</DialogTitle>
       <DialogContent>
+        <TextField
+          margin="dense"
+          name="username"
+          label="Username"
+          type="text"
+          fullWidth
+          variant="outlined"
+          value={editedUser.username}
+          onChange={handleChange}
+        />
         <TextField
           margin="dense"
           name="email"
