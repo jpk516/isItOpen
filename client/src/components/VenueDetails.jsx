@@ -23,8 +23,7 @@ const VenueView = ({ venue }) => {
   };
 
   return (
-    <Card sx={{ m: 3 }}>
-      <CardHeader title={venue.name} />
+    <Card sx={{ mt: 2 }}>
       <List>
         <ListItem>
           <ListItemIcon>

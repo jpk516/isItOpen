@@ -120,6 +120,9 @@ router.get(`${base}/count`, (req, res) => {
 router.get(`${base}/venue/:venue`, (req, res) => {
     if (req.isAuthenticated()) {
         CheckIn.find({venue: req.params.venue})
+            .populate('venue')
+            .populate({ path: 'user', select: 'username -_id'})
+            .exec()
             .then((result) => res.json(result))
             .catch((err) => res.json({ success: false, message: "Could not load check-ins. Error: " + err }));
     } else {
@@ -153,6 +156,9 @@ router.get(`${base}/venue/:venue`, (req, res) => {
 router.get(`${base}/user/:user`, (req, res) => {
     if (req.isAuthenticated()) {
         CheckIn.find({user: req.params.user})
+            .populate('venue')
+            .populate({ path: 'user', select: 'username -_id'})
+            .exec()
             .then((result) => res.json(result))
             .catch((err) => res.json({ success: false, message: "Could not load check-ins. Error: " + err }));
     } else {

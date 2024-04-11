@@ -11,16 +11,25 @@ import ManageTags from '../components/ManageTags';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
 import VenueTable from '../components/VenueTable';
+import AccountService from '../services/account-service';
 import { useNavigate } from 'react-router-dom';
+import ManageUsers from '../components/ManageUsers';
 
 function Admin() {
     const navigate = useNavigate();
     const [value, setValue] = useState('venues');
     const [venues, setVenues] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         VenueService.getAll().then(response => {
             setVenues(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+
+        AccountService.getAll().then(response => {
+            setUsers(response.data);
         }).catch(error => {
             console.log(error);
         });
@@ -57,10 +66,10 @@ function Admin() {
                                 </Grid>
                             </Grid>
                             <VenueTable venues={venues} onVenueClick={handleVenueClick} />
-                    </Box>
+                        </Box>
                         )}
                     {value === 'tags' && <ManageTags />}
-                    {value === 'users' && <p>Users form will be here</p>}
+                    {value === 'users' && <ManageUsers />}
                 </Grid>
             </Grid>
         </>

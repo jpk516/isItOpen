@@ -10,7 +10,14 @@ const router = express.Router()
 const passport = require('passport');
 const User = require("../models/user");
 
-router.get("/api/accounts/", (req, res) => {
+router.get("/api/accounts", (req, res) => {
+    // TODO: check for admin role
+    User.find({})
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not load users: " + err }));
+});
+
+router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
         res.json({ success: true, message: "User is authenticated", user: req.user });
     } else {
@@ -26,16 +33,20 @@ router.get("/api/accounts/count", (req, res) => {
 
 
 router.post("/api/accounts/register", (req, res) => {
-    User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
+    console.log(req.body)
+    User.register(new User(req.body), req.body.password, function (err, user) {
         if (err) {
+            console.log("error: " + err )
             res.json({ success: false, message: "Your account could not be saved. Error: " + err });
         }
         else {
             req.login(user, (er) => {
                 if (er) {
+                    console.log("error: " + er )
                     res.json({ success: false, message: er });
                 }
                 else {
+                    console.log("User registered: " + user)
                     res.json({ success: true, message: "Your account has been saved" });
                 }
             });
@@ -104,6 +115,13 @@ router.post("/api/accounts/login", (req, res) => {
             }
         })(req, res);
     }
+});
+
+// TODO: ensure this is the current user or an admin
+router.put("/api/accounts/:id", (req, res) => {
+    User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
 });
 
 /**
