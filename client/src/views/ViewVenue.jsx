@@ -76,7 +76,7 @@ function ViewVenue() {
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Title>What's Up?</Title>
-                            <CheckInList checkIns={checkIns} />
+                            <CheckInList checkIns={checkIns} isVenuePage={true} />
                         </Paper>
                     </Grid>
                 </Grid>

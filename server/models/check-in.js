@@ -7,7 +7,15 @@ const CheckIn = new Schema({
     comment: { type: String, required: false },
     open: { type: Boolean, required: false },
     tags: [{type: String, required: false}],
-    created: { type: Date, default: Date.now }
+    created: { type: Date, default: Date.now },
+    votes: [{
+        user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+        up: { type: Boolean, required: true },
+        created: { type: Date, default: Date.now }
+    }]
 });
+
+// enfore unique user votes per check-in
+CheckIn.index({ _id: 1, 'votes.user': 1 }, { unique: true });
 
 module.exports = mongoose.model('CheckIn', CheckIn);
