@@ -1,9 +1,9 @@
 import RegisterForm from '../components/RegisterForm'
 
-function Register({ authenticated, onAuthChange }) {
+function Register() {
     return (
         <>
-            <RegisterForm authenticated={authenticated} onAuthChange={onAuthChange} />
+            <RegisterForm />
         </>
     );
 }

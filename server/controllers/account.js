@@ -33,16 +33,20 @@ router.get("/api/accounts/count", (req, res) => {
 
 
 router.post("/api/accounts/register", (req, res) => {
-    User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
+    console.log(req.body)
+    User.register(new User(req.body), req.body.password, function (err, user) {
         if (err) {
+            console.log("error: " + err )
             res.json({ success: false, message: "Your account could not be saved. Error: " + err });
         }
         else {
             req.login(user, (er) => {
                 if (er) {
+                    console.log("error: " + er )
                     res.json({ success: false, message: er });
                 }
                 else {
+                    console.log("User registered: " + user)
                     res.json({ success: true, message: "Your account has been saved" });
                 }
             });

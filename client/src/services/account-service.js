@@ -10,11 +10,8 @@ const AccountService = {
     count: () => {
         return api.get(`/accounts/count`)
     },
-    register: (userName, password) => {
-        return api.post(`/accounts/register`, {
-            username: userName,
-            password: password
-        })
+    register: (user) => {
+        return api.post(`/accounts/register`, user)
     },
     update: (user) => {
         return api.put(`/accounts/`, user)

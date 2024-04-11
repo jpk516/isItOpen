@@ -12,17 +12,20 @@ import Container from '@mui/material/Container';
 import { useState } from 'react';
 import AccountService from '../services/account-service';
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from '../contexts/AppContext';
 
-function RegisterForm({ authenticated, onAuthChange }) {
+function RegisterForm() {
+    const {user, setUser} = useAppContext();
     const navigate = useNavigate();
-    const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
+    const [loginDetails, setLoginDetails] = useState({username: '', password: '', firstName: '', lastName: '', email: ''});
     const [loginMessage, setLoginMessage] = useState('');
 
     const handleSubmit = () => {
-        AccountService.register(loginDetails.userName, loginDetails.password)
+        AccountService.register(loginDetails)
             .then(response => {
+                console.log(response)
                 if (response.data.success) {
-                    onAuthChange(true);
+                    setUser({ authenticated: true, username: loginDetails.userame })
                     navigate("/");
                 } else {
                     setLoginMessage(response.data.message)
@@ -49,7 +52,7 @@ function RegisterForm({ authenticated, onAuthChange }) {
             <Typography component="h1" variant="h5">
                 Sign up
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Box component="form" noValidate sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -84,8 +87,8 @@ function RegisterForm({ authenticated, onAuthChange }) {
                         label="Username (visible in the app)"
                         name="username"
                         autoComplete="username"
-                        value={loginDetails.userName}
-                        onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
+                        value={loginDetails.username}
+                        onChange={e => setLoginDetails({...loginDetails, username: e.target.value})}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -115,7 +118,7 @@ function RegisterForm({ authenticated, onAuthChange }) {
                     </Grid>
                 </Grid>
                 <Button
-                type="submit"
+                onClick={handleSubmit}
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
