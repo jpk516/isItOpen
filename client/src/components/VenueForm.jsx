@@ -1,11 +1,18 @@
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import { useState, useEffect } from 'react';
-import VenueService from '../services/venue-service';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import VenueService from '../services/venue-service';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 function VenueForm() {
     const [validated, setValidated] = useState(false);
@@ -57,97 +64,152 @@ function VenueForm() {
 
     return (
         <Card>
-            <Card.Header>Manage Venue</Card.Header>
-            <Card.Body>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <Row>
-                        <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formVenueName">
-                                <Form.Label>Venue Name</Form.Label>
-                                <Form.Control type="text" placeholder="Enter venue name" disabled={venueDetails._id?.length > 0}
-                                    value={venueDetails.name} required
-                                    onChange={e => setVenueDetails({ ...venueDetails, name: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueType">
-                                <Form.Label>Type</Form.Label>
-                                <Form.Select value={venueDetails.type}
-                                    onChange={e => setVenueDetails({ ...venueDetails, type: e.target.value })}>
-                                    <option value="">Select type</option>
-                                    <option value="Bar">Bar</option>
-                                    <option value="Restaurant">Restaurant</option>
-                                    <option value="Music Venue">Music Venue</option>
-                                </Form.Select>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueEmail">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email"
-                                    value={venueDetails.email}
-                                    onChange={e => setVenueDetails({ ...venueDetails, email: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueWebsite">
-                                <Form.Label>Website</Form.Label>
-                                <Form.Control type="text" placeholder="Enter website"
-                                    value={venueDetails.website}
-                                    onChange={e => setVenueDetails({ ...venueDetails, website: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueDescription">
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control as="textarea" rows={3} placeholder="Enter a description of the venue"
-                                    value={venueDetails.description} required
-                                    onChange={e => setVenueDetails({ ...venueDetails, description: e.target.value })} />
-                            </Form.Group>
-                        </Col>
-                        <Col md={6}>
-                            <Form.Group className="mb-3" controlId="formVenueAddress">
-                                <Form.Label>Address</Form.Label>
-                                <Form.Control type="text" placeholder="Enter address"
-                                    value={venueDetails.address} required
-                                    onChange={e => setVenueDetails({ ...venueDetails, address: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueCity">
-                                <Form.Label>City</Form.Label>
-                                <Form.Control type="text" placeholder="Enter city"
-                                    value={venueDetails.city} required
-                                    onChange={e => setVenueDetails({ ...venueDetails, city: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueState">
-                                <Form.Label>State</Form.Label>
-                                <Form.Control type="text" placeholder="Enter state"
-                                    value={venueDetails.state} required
-                                    onChange={e => setVenueDetails({ ...venueDetails, state: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenueZip">
-                                <Form.Label>Zip Code</Form.Label>
-                                <Form.Control type="text" placeholder="Enter zip"
-                                    value={venueDetails.zip} required
-                                    onChange={e => setVenueDetails({ ...venueDetails, zip: e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="formVenuePhone">
-                                <Form.Label>Phone</Form.Label>
-                                <Form.Control type="text" placeholder="Enter phone"
-                                    value={venueDetails.phone}
-                                    onChange={e => setVenueDetails({ ...venueDetails, phone: e.target.value })} />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col className='text-end'>
-                            <Button variant="primary" type="submit">
+            <CardContent>
+                <Box
+                    component="form"
+                    noValidate
+                    validated={validated.toString()}
+                    onSubmit={handleSubmit}
+                    sx={{ mt: 1 }}
+                >
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Venue Name"
+                                name="name"
+                                autoComplete="name"
+                                autoFocus
+                                value={venueDetails.name}
+                                onChange={e => setVenueDetails({ ...venueDetails, name: e.target.value })}
+                                disabled={!!venueDetails._id}
+                            />
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel id="type-label">Type</InputLabel>
+                                <Select
+                                    labelId="type-label"
+                                    id="type"
+                                    value={venueDetails.type}
+                                    label="Type"
+                                    onChange={e => setVenueDetails({ ...venueDetails, type: e.target.value })}
+                                >
+                                    <MenuItem value=""><em>None</em></MenuItem>
+                                    <MenuItem value="Bar">Bar</MenuItem>
+                                    <MenuItem value="Restaurant">Restaurant</MenuItem>
+                                    <MenuItem value="Music Venue">Music Venue</MenuItem>
+                                    <MenuItem value="Other">Other</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                value={venueDetails.email}
+                                onChange={e => setVenueDetails({ ...venueDetails, email: e.target.value })}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="website"
+                                label="Website"
+                                name="website"
+                                autoComplete="website"
+                                value={venueDetails.website}
+                                onChange={e => setVenueDetails({ ...venueDetails, website: e.target.value })}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="description"
+                                label="Description"
+                                name="description"
+                                multiline
+                                rows={4}
+                                value={venueDetails.description}
+                                onChange={e => setVenueDetails({ ...venueDetails, description: e.target.value })}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={6}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="address"
+                                label="Address"
+                                name="address"
+                                autoComplete="address"
+                                value={venueDetails.address}
+                                onChange={e => setVenueDetails({ ...venueDetails, address: e.target.value })}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="city"
+                                label="City"
+                                name="city"
+                                autoComplete="city"
+                                value={venueDetails.city}
+                                onChange={e => setVenueDetails({ ...venueDetails, city: e.target.value })}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="state"
+                                label="State"
+                                name="state"
+                                autoComplete="state"
+                                value={venueDetails.state}
+                                onChange={e => setVenueDetails({ ...venueDetails, state: e.target.value })}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="zip"
+                                label="Zip Code"
+                                name="zip"
+                                autoComplete="zip"
+                                value={venueDetails.zip}
+                                onChange={e => setVenueDetails({ ...venueDetails, zip: e.target.value })}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="phone"
+                                label="Phone"
+                                name="phone"
+                                autoComplete="phone"
+                                value={venueDetails.phone}
+                                onChange={e => setVenueDetails({ ...venueDetails, phone: e.target.value })}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} className='text-end'>
+                            <Button type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
                                 Save Venue
                             </Button>
-                        </Col>
-                    </Row>
+                        </Grid>
+                    </Grid>
                     {errorMessage && (
-                        <Row>
-                            <Col>
-                                <Form.Text className="text-danger">
-                                    {errorMessage}
-                                </Form.Text>
-                            </Col>
-                        </Row>
+                        <Typography color="error" variant="body2">
+                            {errorMessage}
+                        </Typography>
                     )}
-                </Form>
-            </Card.Body>
+                </Box>
+            </CardContent>
         </Card>
     );
 }

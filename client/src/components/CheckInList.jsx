@@ -25,63 +25,70 @@ function CheckInList({ checkIns, isVenuePage = false }) {
     // Placeholder functions for voting
     const handleUpvote = (checkInId) => {
         console.log('Upvoting', checkInId);
-        // Here you would have logic or a call to handle the upvote action
+        // Increment vote logic here
     };
 
     const handleDownvote = (checkInId) => {
         console.log('Downvoting', checkInId);
-        // Here you would have logic or a call to handle the downvote action
+        // Decrement vote logic here
     };
+
+    // Function to count votes
+    const countVotes = (votes, type) => votes.filter(vote => vote.vote === type).length;
 
     return (
         <Grid container spacing={4}>
-            {checkIns.map((checkIn) => (
-                <Grid item xs={12} md={4} key={checkIn._id}>
-                    <Card variant="outlined">
-                        <Box>
-                            <CardContent>
-                                <Typography variant="subtitle2" color="primary" gutterBottom>
-                                    {checkIn.venue.type}
-                                </Typography>
-                                <Typography variant="h6" component="div">
-                                    {checkIn.venue.name}
-                                </Typography>
-                                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {new Date(checkIn.created).toLocaleString()}
-                                </Typography>
-                                <div>
-                                    {checkIn.tags.map((tag, index) => (
-                                        <Chip label={tag} color="secondary" size="small" key={index} sx={{ m: .5 }} />
-                                    ))}
-                                </div>
-                                {checkIn.comment && (
-                                    <Typography variant="body2" mt={2}>
-                                        {checkIn.comment}
+            {checkIns.map((checkIn) => {
+                const upVotes = countVotes(checkIn.votes, 'up');
+                const downVotes = countVotes(checkIn.votes, 'down');
+
+                return (
+                    <Grid item xs={12} md={4} key={checkIn._id}>
+                        <Card variant="outlined">
+                            <Box>
+                                <CardContent>
+                                    <Typography variant="subtitle2" color="primary" gutterBottom>
+                                        {checkIn.venue.type}
                                     </Typography>
-                                )}
-                            </CardContent>
-                            <Box p={2} display="flex" justifyContent="space-between" alignItems="center">
-                                { !isVenuePage &&   
-                                <MuiLink component={Link} to={`/venues/${checkIn.venue.name}`} color="primary">
-                                    View Venue
-                                </MuiLink>
-                                }
-                                <Typography variant="body2" color="text.secondary">
-                                    {checkIn.votes.length} votes
-                                </Typography>
-                                <Box>
-                                    <IconButton onClick={() => handleUpvote(checkIn._id)} color="primary">
-                                        <ThumbUpAltIcon />
-                                    </IconButton>
-                                    <IconButton onClick={() => handleDownvote(checkIn._id)} color="secondary">
-                                        <ThumbDownAltIcon />
-                                    </IconButton>
+                                    <Typography variant="h6" component="div">
+                                        {checkIn.venue.name}
+                                    </Typography>
+                                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                                        {new Date(checkIn.created).toLocaleString()}
+                                    </Typography>
+                                    <div>
+                                        {checkIn.tags.map((tag, index) => (
+                                            <Chip label={tag} color="secondary" size="small" key={index} sx={{ m: .5 }} />
+                                        ))}
+                                    </div>
+                                    {checkIn.comment && (
+                                        <Typography variant="body2" mt={2}>
+                                            {checkIn.comment}
+                                        </Typography>
+                                    )}
+                                </CardContent>
+                                <Box p={2} display="flex" justifyContent="space-between" alignItems="center">
+                                    { !isVenuePage &&   
+                                    <MuiLink component={Link} to={`/venues/${checkIn.venue.name}`} color="primary">
+                                        View Venue
+                                    </MuiLink>
+                                    }
+                                    <Box>
+                                        <IconButton onClick={() => handleUpvote(checkIn._id)} color="primary">
+                                            <ThumbUpAltIcon />
+                                            <Typography variant="body2" sx={{ ml: 1 }}>{upVotes}</Typography>
+                                        </IconButton>
+                                        <IconButton onClick={() => handleDownvote(checkIn._id)} color="secondary">
+                                            <ThumbDownAltIcon />
+                                            <Typography variant="body2" sx={{ ml: 1 }}>{downVotes}</Typography>
+                                        </IconButton>
+                                    </Box>
                                 </Box>
                             </Box>
-                        </Box>
-                    </Card>
-                </Grid>
-            ))}
+                        </Card>
+                    </Grid>
+                );
+            })}
         </Grid>
     );
 }
