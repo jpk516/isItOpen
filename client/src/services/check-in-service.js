@@ -23,7 +23,10 @@ const CheckInService = {
     },
     update: (checkIn) => {
         return api.put(base, checkIn)
-    }
+    },
+    vote: (id, vote) => {
+        return api.post(`${base}/vote/${id}`, vote)
+    },
 }
 
 export default CheckInService

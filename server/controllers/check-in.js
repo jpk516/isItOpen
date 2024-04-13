@@ -205,4 +205,48 @@ router.post(base, (req, res, next) => {
         });
 });
 
+// add an vote to a check-in
+router.post(`${base}/vote/:id`, (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send("User is not authenticated");
+    }
+
+    // Fetch the check-in by ID
+    CheckIn.findById(req.params.id)
+        .then(checkIn => {
+            if (!checkIn) {
+                return res.status(404).send("Check-in not found");
+            }
+
+            // Find if the user has already voted
+            const existingVoteIndex = checkIn.votes.findIndex(vote => vote.user.equals(req.user._id));
+
+            if (existingVoteIndex > -1) {
+                // User has already voted, check if need to update the vote
+                if (checkIn.votes[existingVoteIndex].up !== req.body.up) {
+                    // Update the vote to the new value
+                    checkIn.votes[existingVoteIndex].up = req.body.up;
+                    checkIn.votes[existingVoteIndex].created = new Date();
+                } else {
+                    // Vote is the same, no action needed
+                    return res.status(204).send();
+                }
+            } else {
+                // Adding new vote as user hasn't voted yet
+                checkIn.votes.push({
+                    user: req.user._id,
+                    up: req.body.up,
+                    created: new Date()
+                });
+            }
+
+            // Save the updated document
+            checkIn.save()
+                .then(result => res.json(result))
+                .catch(err => res.status(500).send(err.message));
+        })
+        .catch(err => res.status(500).send(err.message));
+});
+
+
 module.exports = router

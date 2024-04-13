@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import MuiLink from '@mui/material/Link';
 import { Link } from 'react-router-dom';
+import CheckInService from '../services/check-in-service';
 
 function CheckInList({ checkIns, isVenuePage = false }) {
     const navigate = useNavigate();
@@ -25,12 +26,20 @@ function CheckInList({ checkIns, isVenuePage = false }) {
 
     const handleUpvote = (checkInId) => {
         console.log('Upvoting', checkInId);
-        // Increment vote logic here
+        CheckInService.vote(checkInId, { up: true }).then(() => {
+            console.log('Vote successful');
+        }).catch((error) => {
+            console.log('Error voting', error);
+        });
     };
 
     const handleDownvote = (checkInId) => {
         console.log('Downvoting', checkInId);
-        // Decrement vote logic here
+        CheckInService.vote(checkInId, { up: false }).then(() => {
+            console.log('Vote successful');
+        }).catch((error) => {
+            console.log('Error voting', error);
+        });
     };
 
     const countVotes = (votes, type) => votes.filter(vote => vote.vote === type).length;
