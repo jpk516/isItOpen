@@ -24,8 +24,8 @@ function RegisterForm() {
         AccountService.register(loginDetails)
             .then(response => {
                 console.log(response)
-                if (response.data.authenticated) {
-                    setAuth(response.data)
+                if (response.data.success) {
+                    setAuth({ authenticated: true, message: "You are logged in", user: response.data.user})
                     navigate("/");
                 } else {
                     setLoginMessage(response.data.message)

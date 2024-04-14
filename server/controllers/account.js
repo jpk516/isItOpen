@@ -33,7 +33,7 @@ router.get("/api/accounts/count", (req, res) => {
 
 
 router.post("/api/accounts/register", (req, res) => {
-    req.body.role = "user";
+    req.body.role = "User";
     User.register(new User(req.body), req.body.password, function (err, user) {
         if (err) {
             console.log("error: " + err )
@@ -47,7 +47,10 @@ router.post("/api/accounts/register", (req, res) => {
                 }
                 else {
                     console.log("User registered: " + user)
-                    res.json({ success: true, message: "Your account has been saved" });
+                    // remove salt & hash from user object before sending it to the client
+                    req.user.salt = undefined;
+                    req.user.hash = undefined;
+                    res.json({ success: true, message: "Your account has been saved", user: req.user });
                 }
             });
         }
