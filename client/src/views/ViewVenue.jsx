@@ -28,9 +28,6 @@ function ViewVenue() {
     const { name } = useParams();
 
     const getCheckIns = (id) => {
-        console.log('in');
-        //if (!venueDetails?._id) return;
-
         CheckInService.getByVenue(id).then(response => {
             setCheckIns(response.data);
         }).catch(error => {
