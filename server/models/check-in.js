@@ -8,6 +8,8 @@ const CheckIn = new Schema({
     open: { type: Boolean, required: false },
     tags: [{type: String, required: false}],
     created: { type: Date, default: Date.now },
+    upvoteCount: { type: Number, default: 0 },
+    downvoteCount: { type: Number, default: 0 },
     votes: [{
         user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         up: { type: Boolean, required: true },

@@ -14,7 +14,7 @@ import MuiLink from '@mui/material/Link';
 import { Link } from 'react-router-dom';
 import CheckInService from '../services/check-in-service';
 
-function CheckInList({ checkIns, isVenuePage = false }) {
+function CheckInList({ checkIns, onVote, isVenuePage = false }) {
     const navigate = useNavigate();
 
     const handleButtonClick = (name) => {
@@ -26,8 +26,8 @@ function CheckInList({ checkIns, isVenuePage = false }) {
 
     const handleUpvote = (checkInId) => {
         console.log('Upvoting', checkInId);
-        CheckInService.vote(checkInId, { up: true }).then(() => {
-            console.log('Vote successful');
+        CheckInService.vote(checkInId, { up: true }).then((response) => {
+            if (onVote && response.data) onVote(response.data);
         }).catch((error) => {
             console.log('Error voting', error);
         });
@@ -35,21 +35,24 @@ function CheckInList({ checkIns, isVenuePage = false }) {
 
     const handleDownvote = (checkInId) => {
         console.log('Downvoting', checkInId);
-        CheckInService.vote(checkInId, { up: false }).then(() => {
-            console.log('Vote successful');
+        CheckInService.vote(checkInId, { up: false }).then((response) => {
+            if (onVote && response.data) onVote(response.data);
         }).catch((error) => {
             console.log('Error voting', error);
         });
     };
 
-    const countVotes = (votes, type) => votes.filter(vote => vote.vote === type).length;
+    const getUserColor = (checkIn, isUpIcon) => {
+        if (checkIn.userVoteStatus.voted) {
+            return isUpIcon ? checkIn.userVoteStatus.up ? 'primary.main' : 'disabled.main' : checkIn.userVoteStatus.up ? 'disabled.main' : 'secondary.main';
+        } else {
+            return 'disabled.main';
+        }
+    };
 
     return (
         <Grid container spacing={4}>
             {checkIns.map((checkIn) => {
-                const upVotes = countVotes(checkIn.votes, 'up');
-                const downVotes = countVotes(checkIn.votes, 'down');
-
                 return (
                     <Grid item xs={12} md={4} key={checkIn._id}>
                         <Card variant="outlined">
@@ -86,13 +89,13 @@ function CheckInList({ checkIns, isVenuePage = false }) {
                                     </MuiLink>
                                 )}
                                 <Box>
-                                    <IconButton onClick={() => handleUpvote(checkIn._id)} color="primary">
+                                    <IconButton onClick={() => handleUpvote(checkIn._id)} sx={{color: getUserColor(checkIn, true)}}>
                                         <ThumbUpAltIcon />
-                                        <Typography variant="body2" sx={{ ml: 1 }}>{upVotes}</Typography>
+                                        <Typography variant="body2" sx={{ ml: 1 }}>{checkIn.upvoteCount}</Typography>
                                     </IconButton>
-                                    <IconButton onClick={() => handleDownvote(checkIn._id)} color="secondary">
+                                    <IconButton onClick={() => handleDownvote(checkIn._id)} sx={{color: getUserColor(checkIn, false)}}>
                                         <ThumbDownAltIcon />
-                                        <Typography variant="body2" sx={{ ml: 1 }}>{downVotes}</Typography>
+                                        <Typography variant="body2" sx={{ ml: 1 }}>{checkIn.downvoteCount}</Typography>
                                     </IconButton>
                                 </Box>
                             </Box>
