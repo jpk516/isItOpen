@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 
 export default function LoginForm() {
-    const {user, setUser} = useAppContext();
+    const {auth, setAuth} = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
@@ -28,7 +28,7 @@ export default function LoginForm() {
                 if (response.data.success) {
                     console.log('success');
                     try {
-                      setUser({ authenticated: true, username: loginDetails.userName })
+                      setAuth({ authenticated: true, message: "You are logged in", user: response.data.user })
                       navigate("/");
                     } catch (error) {
                       console.log(error);
@@ -65,10 +65,10 @@ export default function LoginForm() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
             onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
           />

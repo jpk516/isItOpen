@@ -70,7 +70,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 function TopNav({ onThemeChange }) {
-  const { user, setUser } = useAppContext();
+  const { auth, setAuth } = useAppContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -80,7 +80,7 @@ function TopNav({ onThemeChange }) {
    // right menu
    const [anchorEl, setAnchorEl] = useState(null);
    const handleMenu = (event) => {
-    if (!user || user?.authenticated === false) {
+    if (!auth || auth?.authenticated === false) {
       navigate('/login')
       return;
     }
@@ -92,7 +92,7 @@ function TopNav({ onThemeChange }) {
 
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
-      setUser({authenticated: response.data.success, username: response?.data?.user?.username ?? ''})
+      setAuth(response.data)
     }).catch(error => {
         alert(`Error: ${error.data}`)
     })
@@ -100,7 +100,7 @@ function TopNav({ onThemeChange }) {
 
   function logOut() {
     AccountService.logOut().then(response => {
-      setUser({authenticated: false, username: ''})
+      setAuth({authenticated: false, username: ''})
       setAnchorEl(null);
       navigate('/login')
     })
@@ -133,7 +133,7 @@ function TopNav({ onThemeChange }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-            Dashboard - {user?.username}
+            Dashboard - {auth?.user?.username}
             </Typography>
             <ThemeSwitcher onChangeMode={onThemeChange}></ThemeSwitcher>
             <div>
@@ -147,8 +147,8 @@ function TopNav({ onThemeChange }) {
                 key={'right'}
                 id="right-menu-appbar"
               >
-                {user?.authenticated &&  <AccountCircle /> }
-                {!user?.authenticated &&  <LoginIcon /> }
+                {auth?.authenticated &&  <AccountCircle /> }
+                {!auth?.authenticated &&  <LoginIcon /> }
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -183,6 +183,7 @@ function TopNav({ onThemeChange }) {
           <Divider />
           <List component="nav">
               {mainListItems}
+
               <Divider sx={{ my: 1 }} />
               {secondaryListItems}
           </List>

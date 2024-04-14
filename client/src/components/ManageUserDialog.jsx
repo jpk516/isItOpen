@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
 
 const ManageUserDialog = ({ open, onClose, user, onSave }) => {
   const [editedUser, setEditedUser] = useState({
+    _id: '',
     email: '',
     firstName: '',
     lastName: '',
     role: '',
+    username: '',
   });
 
   useEffect(() => {
     // Populate form when the user prop changes
     if (user) {
+      console.log(user);
       setEditedUser({
+        _id: user._id || '',
         username: user.username || '',
         email: user.email || '',
         firstName: user.firstName || '',
@@ -22,14 +26,9 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
     }
   }, [user]);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setEditedUser({ ...editedUser, [name]: value });
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSave(editedUser);
+    if (onSave) onSave(editedUser);
     onClose(); // Close the dialog after saving
   };
 
@@ -45,7 +44,7 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
           fullWidth
           variant="outlined"
           value={editedUser.username}
-          onChange={handleChange}
+          onChange={e => setEditedUser({ ...editedUser, username: e.target.value })}
         />
         <TextField
           margin="dense"
@@ -55,7 +54,7 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
           fullWidth
           variant="outlined"
           value={editedUser.email}
-          onChange={handleChange}
+          onChange={e => setEditedUser({ ...editedUser, email: e.target.value })}
         />
         <TextField
           margin="dense"
@@ -65,7 +64,7 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
           fullWidth
           variant="outlined"
           value={editedUser.firstName}
-          onChange={handleChange}
+          onChange={e => setEditedUser({ ...editedUser, firstName: e.target.value })}
         />
         <TextField
           margin="dense"
@@ -75,27 +74,22 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
           fullWidth
           variant="outlined"
           value={editedUser.lastName}
-          onChange={handleChange}
+          onChange={e => setEditedUser({ ...editedUser, lastName: e.target.value })}
         />
-        <TextField
-          margin="dense"
-          name="role"
-          label="Role"
-          select
-          fullWidth
-          variant="outlined"
-          value={editedUser.role}
-          onChange={handleChange}
-          SelectProps={{
-            native: true,
-          }}
-        >
-          {['Admin', 'User'].map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </TextField>
+        <FormControl fullWidth margin="dense">
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select
+                labelId="role-label"
+                id="role"
+                value={editedUser.role}
+                label="Role"
+                onChange={e => setEditedUser({ ...editedUser, role: e.target.value })}
+            >
+                <MenuItem value=""><em>None</em></MenuItem>
+                <MenuItem value="User">User</MenuItem>
+                <MenuItem value="Admin">Admin</MenuItem>
+            </Select>
+        </FormControl>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

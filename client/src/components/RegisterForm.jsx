@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppContext } from '../contexts/AppContext';
 
 function RegisterForm() {
-    const {user, setUser} = useAppContext();
+    const {auth, setAuth} = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({username: '', password: '', firstName: '', lastName: '', email: ''});
     const [loginMessage, setLoginMessage] = useState('');
@@ -25,7 +25,7 @@ function RegisterForm() {
             .then(response => {
                 console.log(response)
                 if (response.data.success) {
-                    setUser({ authenticated: true, username: loginDetails.userame })
+                    setAuth({ authenticated: true, message: "You are logged in", user: response.data.user})
                     navigate("/");
                 } else {
                     setLoginMessage(response.data.message)

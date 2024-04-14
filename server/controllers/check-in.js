@@ -259,30 +259,26 @@ router.post(`${base}/vote/:id`, (req, res) => {
         return res.status(401).send("User is not authenticated");
     }
 
-    // Fetch the check-in by ID
     CheckIn.findById(req.params.id)
         .then(checkIn => {
             if (!checkIn) {
                 return res.status(404).send("Check-in not found");
             }
-
-            console.log('Check-in found', checkIn);
-
-            // Find if the user has already voted
+            // have they voted yet?
             const existingVoteIndex = checkIn.votes.findIndex(vote => vote.user.equals(req.user._id));
 
             if (existingVoteIndex > -1) {
-                // User has already voted, check if need to update the vote
                 if (checkIn.votes[existingVoteIndex].up !== req.body.up) {
-                    // Update the vote to the new value
+                    // this is a changed voted
                     checkIn.votes[existingVoteIndex].up = req.body.up;
                     checkIn.votes[existingVoteIndex].created = new Date();
                 } else {
-                    // Vote is the same, no action needed
-                    return res.status(204).send();
+                    // this is the same vote, so really
+                    // a request to remove the vote
+                    checkIn.votes.splice(existingVoteIndex, 1);
                 }
             } else {
-                // Adding new vote as user hasn't voted yet
+                // this is a new vote
                 checkIn.votes.push({
                     user: req.user._id,
                     up: req.body.up,
@@ -296,7 +292,7 @@ router.post(`${base}/vote/:id`, (req, res) => {
             checkIn.upvoteCount = checkIn.votes.filter(vote => vote.up).length;
             checkIn.downvoteCount = checkIn.votes.filter(vote => !vote.up).length;
             
-            // Save the updated document
+            // save and return the user specific vote status
             checkIn.save()
                 .then(result => {
                     const resultsWithVoteStatus = setVoteStatus(result, req.user._id);
