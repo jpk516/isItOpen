@@ -53,6 +53,21 @@ function ViewVenue() {
         setValue(newValue);
     };
 
+    const replaceCheckIn = (checkIn) => {
+        const updatedCheckIns = checkIns.map(c => {
+            if (c._id === checkIn._id) {
+                return {
+                    ...c,
+                    upvoteCount: checkIn.upvoteCount,
+                    downvoteCount: checkIn.downvoteCount,
+                    userVoteStatus: checkIn.userVoteStatus
+                };
+            }
+            return c;
+        });
+        setCheckIns(updatedCheckIns);
+    };
+
     return (
         <>
             {/* Venue Loaded */}
@@ -76,7 +91,7 @@ function ViewVenue() {
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Title>What's Up?</Title>
-                            <CheckInList checkIns={checkIns} isVenuePage={true} />
+                            <CheckInList checkIns={checkIns} isVenuePage={true} onVote={(updated) => replaceCheckIn(updated)} />
                         </Paper>
                     </Grid>
                 </Grid>

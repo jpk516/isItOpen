@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import AccountService from '../services/account-service';
 import ConfirmModal from './ConfirmModal';
 import UserTable from './UserTable';
 import ManageUserDialog from './ManageUserDialog';
+import AccountService from '../services/account-service';
 
 
 function ManageUsers() {
     const [users, setUsers] = useState([]);
-    const [currentUser, setCurrentUser] = useState({ username: '', password: '', role: '' });
+    const defaultUser = { username: '', password: '', role: '', email: '', firstName: '', lastName: ''};
+    const [currentUser, setCurrentUser] = useState(defaultUser);
     const [isEditing, setIsEditing] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -28,14 +29,15 @@ function ManageUsers() {
     };
 
     const handleSave = async () => {
-        if (isEditing) {
-            await TagService.update(currentTag);
-        } else {
-            await TagService.add(currentTag);
-        }
-        setUsers({ username: '', password: '', role: '' });
-        setIsEditing(false);
-        fetchUsers();
+        AccountService.update(currentUser).then(response => {
+            setCurrentUser(defaultUser);
+            setIsEditing(false);
+            setShowEditModal(false);
+            fetchUsers();
+        }).catch(error => {
+            console.log(error);
+        });
+        
     };
 
     const handleEdit = (user) => {
@@ -69,7 +71,7 @@ function ManageUsers() {
                 </Grid>
             </Grid>
             <UserTable users={users} onClick={handleEdit} />
-            <ManageUserDialog user={currentUser} open={showEditModal} onClose={() => setShowEditModal(false)}  />
+            <ManageUserDialog user={currentUser} open={showEditModal} onClose={() => setShowEditModal(false)} onSave={handleSave}  />
         </Box>
 
         <ConfirmModal

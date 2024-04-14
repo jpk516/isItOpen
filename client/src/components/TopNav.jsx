@@ -158,7 +158,7 @@ function TopNav({ onThemeChange }) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem component={Link} to={"/settings"}>Settings</MenuItem>
                 <MenuItem onClick={logOut}>Logout</MenuItem>
               </Menu>
             </div>

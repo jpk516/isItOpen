@@ -61,14 +61,24 @@ router.get(base, (req, res) => {
 * 
 */
 router.get(`${base}/recent/:limit?`, (req, res) => {
+    if (req.isAuthenticated()) {
     CheckIn.find({})
         .sort({created: -1})
         .limit(req?.params?.limit ?? 20)
         .populate('venue')
         .populate({ path: 'user', select: 'username -_id'})
         .exec()
-        .then((result) => res.json(result))
+        .then(checkIns => {
+            if (checkIns?.length > 0) {
+                const resultsWithVoteStatus = setUserVoteStatus(checkIns, req.user._id);
+                return res.json(resultsWithVoteStatus);
+            }
+            return res.json(checkIns);
+        })
         .catch((err) => res.json({ success: false, message: "Could not load check-ins: " + err }));
+    } else {
+        res.status(401).send("User is not authenticated")
+    }
 });
 
 
@@ -120,10 +130,17 @@ router.get(`${base}/count`, (req, res) => {
 router.get(`${base}/venue/:venue`, (req, res) => {
     if (req.isAuthenticated()) {
         CheckIn.find({venue: req.params.venue})
+            .sort({created: -1})
             .populate('venue')
             .populate({ path: 'user', select: 'username -_id'})
             .exec()
-            .then((result) => res.json(result))
+            .then(checkIns => {
+                if (checkIns?.length > 0) {
+                    const resultsWithVoteStatus = setUserVoteStatus(checkIns, req.user._id);
+                    return res.json(resultsWithVoteStatus);
+                }
+                return res.json(checkIns);
+            })
             .catch((err) => res.json({ success: false, message: "Could not load check-ins. Error: " + err }));
     } else {
         res.status(401).send("User is not authenticated")
@@ -154,17 +171,48 @@ router.get(`${base}/venue/:venue`, (req, res) => {
 * 
 */
 router.get(`${base}/user/:user`, (req, res) => {
-    if (req.isAuthenticated()) {
-        CheckIn.find({user: req.params.user})
-            .populate('venue')
-            .populate({ path: 'user', select: 'username -_id'})
-            .exec()
-            .then((result) => res.json(result))
-            .catch((err) => res.json({ success: false, message: "Could not load check-ins. Error: " + err }));
-    } else {
-        res.status(401).send("User is not authenticated")
+    if (!req.isAuthenticated()) {
+        return res.status(401).send("User is not authenticated");
     }
+
+    CheckIn.find({user: req.params.user})
+        .populate('venue')
+        .populate({ path: 'user', select: 'username -_id'})
+        .exec()
+        .then(checkIns => {
+            if (checkIns?.length > 0) {
+                const resultsWithVoteStatus = setUserVoteStatus(checkIns, req.user._id);
+                return res.json(resultsWithVoteStatus);
+            }
+            return res.json(checkIns);
+        })
+        .catch(err => res.json({ success: false, message: "Could not load check-ins. Error: " + err }));
 });
+
+
+const setUserVoteStatus = (checkIns, userId) => {
+    return checkIns.map(checkIn => {
+        return setVoteStatus(checkIn, userId);
+    });
+}
+
+
+const setVoteStatus = (checkIn, userId) => {
+    checkIn.votes = checkIn.votes || [];
+    const userVote = checkIn.votes.find(vote => vote.user.equals(userId));
+    const userVoteStatus = userVote ? { voted: true, up: userVote.up } : { voted: false };
+    
+    // Convert check-in to a plain object to modify it
+    const checkInObject = checkIn.toObject();
+    
+    // Append userVoteStatus to the check-in object
+    checkInObject.userVoteStatus = userVoteStatus;
+    
+    // Remove the votes array to not send it in the response
+    delete checkInObject.votes;
+
+    return checkInObject;
+}
 
 /**
 * @openapi
@@ -204,5 +252,60 @@ router.post(base, (req, res, next) => {
             res.status(500).send(err.message)
         });
 });
+
+// add an vote to a check-in
+router.post(`${base}/vote/:id`, (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send("User is not authenticated");
+    }
+
+    // Fetch the check-in by ID
+    CheckIn.findById(req.params.id)
+        .then(checkIn => {
+            if (!checkIn) {
+                return res.status(404).send("Check-in not found");
+            }
+
+            console.log('Check-in found', checkIn);
+
+            // Find if the user has already voted
+            const existingVoteIndex = checkIn.votes.findIndex(vote => vote.user.equals(req.user._id));
+
+            if (existingVoteIndex > -1) {
+                // User has already voted, check if need to update the vote
+                if (checkIn.votes[existingVoteIndex].up !== req.body.up) {
+                    // Update the vote to the new value
+                    checkIn.votes[existingVoteIndex].up = req.body.up;
+                    checkIn.votes[existingVoteIndex].created = new Date();
+                } else {
+                    // Vote is the same, no action needed
+                    return res.status(204).send();
+                }
+            } else {
+                // Adding new vote as user hasn't voted yet
+                checkIn.votes.push({
+                    user: req.user._id,
+                    up: req.body.up,
+                    created: new Date()
+                });
+            }
+
+            // NOTE: right now I am recounting every time. this could be optimized
+            // to either add or remove 1 from the count based on the vote or
+            // only updated periodically if we have sync issues
+            checkIn.upvoteCount = checkIn.votes.filter(vote => vote.up).length;
+            checkIn.downvoteCount = checkIn.votes.filter(vote => !vote.up).length;
+            
+            // Save the updated document
+            checkIn.save()
+                .then(result => {
+                    const resultsWithVoteStatus = setVoteStatus(result, req.user._id);
+                    return res.json(resultsWithVoteStatus);
+                })
+                .catch(err => res.status(500).send(err.message));
+        })
+        .catch(err => res.status(500).send(err.message));
+});
+
 
 module.exports = router
