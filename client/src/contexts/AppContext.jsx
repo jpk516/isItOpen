@@ -3,16 +3,11 @@ import { createContext, useContext, useState } from 'react';
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [theme, setTheme] = useState('light');
-  
-    // const toggleTheme = () => setTheme(theme => theme === 'light' ? 'dark' : 'light');
-  
+    const [auth, setAuth] = useState(null);
+    
     const value = {
-        user,
-        setUser,
-        // theme,
-        // toggleTheme,
+      auth,
+      setAuth,
     };
   
     return (

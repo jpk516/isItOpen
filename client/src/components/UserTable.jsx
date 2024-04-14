@@ -56,7 +56,6 @@ const UserTable = ({ users, onClick }) => {
         rows={rows}
         columns={columns}
         pageSize={5}
-        checkboxSelection
         disableSelectionOnClick
         onRowClick={(data) => handleRowClick(data)}
       />

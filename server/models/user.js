@@ -7,7 +7,8 @@ const User = new Schema({
     firstName: String,
     lastName: String,
     role: { type: String, enum: ['Admin', 'User'], required: false, index: true },
-    created: { type: Date, default: Date.now }
+    created: { type: Date, default: Date.now },
+    disabled: { type: Boolean, default: false }
 });
 
 User.isAdmin = function() {

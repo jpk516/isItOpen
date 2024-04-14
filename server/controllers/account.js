@@ -19,9 +19,9 @@ router.get("/api/accounts", (req, res) => {
 
 router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
-        res.json({ success: true, message: "User is authenticated", user: req.user });
+        res.json({ authenticated: true, message: "User is authenticated", user: req.user });
     } else {
-        res.json({ success: false, message: "User is not authenticated" });
+        res.json({ authenticated: false, message: "User is not authenticated" });
     }
 });
 
@@ -108,7 +108,7 @@ router.post("/api/accounts/login", (req, res) => {
                             res.json({ success: false, message: er });
                         }
                         else {
-                            res.json({ success: true, message: "You are logged in" });
+                            res.json({ success: true, message: "You are logged in", user: user});
                         }
                     });
                 }
