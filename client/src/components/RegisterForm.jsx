@@ -13,6 +13,7 @@ import { useState } from 'react';
 import AccountService from '../services/account-service';
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from '../contexts/AppContext';
+import openLogo from '../assets/open.png';
 
 function RegisterForm() {
     const {auth, setAuth} = useAppContext();
@@ -56,9 +57,7 @@ function RegisterForm() {
                 alignItems: 'center',
             }}
             >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-            </Avatar>
+            <img src={openLogo} alt="Is it open logo" width="200" />
             <Typography component="h1" variant="h5">
                 Sign up
             </Typography>

@@ -20,6 +20,7 @@ import ThemeSwitcher from './ThemeSwitcher.jsx';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext.jsx';
+import openLogo from '../assets/open.png';
 
 
 const drawerWidth = 240;
@@ -127,6 +128,7 @@ function TopNav({ onThemeChange }) {
             >
               <MenuIcon />
             </IconButton>
+            <img src={openLogo} alt="Is it open logo" width="64" />
             <Typography
               component="h1"
               variant="h6"
@@ -134,7 +136,7 @@ function TopNav({ onThemeChange }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-            Dashboard - {auth?.user?.username}
+            Dashboard
             </Typography>
             <ThemeSwitcher onChangeMode={onThemeChange}></ThemeSwitcher>
             <div>
@@ -174,8 +176,8 @@ function TopNav({ onThemeChange }) {
               px: [1],
               }}
           >
-              <Typography sx={{ml:2}} component="h2" variant="h5" color="primary">
-                Is It Open?
+              <Typography sx={{ml:2}} component="h2" variant="h6" color="primary">
+                Navigation
               </Typography>
               <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />

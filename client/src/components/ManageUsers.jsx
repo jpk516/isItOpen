@@ -62,15 +62,6 @@ function ManageUsers() {
   return (
     <>
         <Box>
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={12}>
-                    <div>
-                        {/* <Button variant="contained" component={NavLink} to="/venues/manage" sx={{margin: 2}}>
-                            Add User
-                        </Button> */}
-                    </div>
-                </Grid>
-            </Grid>
             <UserTable users={users} onClick={handleEdit} />
             <ManageUserDialog user={currentUser} open={showEditModal} onClose={() => setShowEditModal(false)} onSave={(editedUser) => handleSave(editedUser)}  />
         </Box>
