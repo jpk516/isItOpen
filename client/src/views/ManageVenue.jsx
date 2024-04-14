@@ -36,7 +36,7 @@ function ManageVenue() {
     };
 
     return (
-        <Container>
+        <>
             <Grid container spacing={3} mb={3}>
                 <Grid item xs={12} md={6}>
                     <Typography variant="h4">Manage Venue</Typography>
@@ -56,7 +56,7 @@ function ManageVenue() {
             </Tabs>
             {value === 'edit' && (
                 <Grid container spacing={3}>
-                    <Grid item lg={10}>
+                    <Grid item lg={12}>
                         <VenueForm />
                     </Grid>
                 </Grid>
@@ -73,7 +73,7 @@ function ManageVenue() {
                 </Grid>
             )}
             {/* Additional content for other tabs can be added here */}
-        </Container>
+        </>
     );
 }
 
