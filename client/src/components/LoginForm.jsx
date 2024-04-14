@@ -22,14 +22,23 @@ export default function LoginForm() {
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
 
+    const getIsAuthenticated = () => {
+        AccountService.isAuthenticated().then(response => {
+            if (response.data.authenticated) {
+                setAuth(response.data)
+                navigate("/");
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
     const handleSubmit = () => {
         AccountService.authenticate(loginDetails.userName, loginDetails.password)
             .then(response => {
                 if (response.data.success) {
-                    console.log('success');
                     try {
-                      setAuth({ authenticated: true, message: "You are logged in", user: response.data.user })
-                      navigate("/");
+                      getIsAuthenticated();
                     } catch (error) {
                       console.log(error);
                     }

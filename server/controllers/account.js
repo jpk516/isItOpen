@@ -19,7 +19,7 @@ router.get("/api/accounts", (req, res) => {
 
 router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
-        res.json({ authenticated: true, message: "User is authenticated", user: req.user });
+        res.json({ authenticated: true, message: "User is authenticated", user: req.user, isAdmin: req?.user?.role === "Admin" ?? false});
     } else {
         res.json({ authenticated: false, message: "User is not authenticated" });
     }
@@ -50,7 +50,7 @@ router.post("/api/accounts/register", (req, res) => {
                     // remove salt & hash from user object before sending it to the client
                     req.user.salt = undefined;
                     req.user.hash = undefined;
-                    res.json({ success: true, message: "Your account has been saved", user: req.user });
+                    res.json({ success: true, message: "Your account has been saved" });
                 }
             });
         }
@@ -111,7 +111,7 @@ router.post("/api/accounts/login", (req, res) => {
                             res.json({ success: false, message: er });
                         }
                         else {
-                            res.json({ success: true, message: "You are logged in", user: user});
+                            res.json({ success: true, message: "You are logged in"});
                         }
                     });
                 }
