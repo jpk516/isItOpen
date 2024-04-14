@@ -278,8 +278,9 @@ router.post(`${base}/vote/:id`, (req, res) => {
                     checkIn.votes[existingVoteIndex].up = req.body.up;
                     checkIn.votes[existingVoteIndex].created = new Date();
                 } else {
-                    // Vote is the same, no action needed
-                    return res.status(204).send();
+                    // Vote is the same, so this is 
+                    // a request to remove the vote
+                    checkIn.votes.splice(existingVoteIndex, 1);
                 }
             } else {
                 // Adding new vote as user hasn't voted yet
