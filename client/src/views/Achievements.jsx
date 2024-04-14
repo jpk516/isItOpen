@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
-import Achievement from '../components/Achievement'; // Ensure this component is adapted to MUI if it uses any Bootstrap components
+import Achievement from '../components/Achievement';
 
 function Achievements() {
     return (
