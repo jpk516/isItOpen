@@ -69,7 +69,7 @@ function CheckInList({ checkIns, onVote, isVenuePage = false }) {
                                     {checkIn.venue.name}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                {checkIn.user.username} - {new Date(checkIn.created).toLocaleString()}
+                                {checkIn?.user?.username}{checkIn?.user?.username && " -"} {new Date(checkIn.created).toLocaleString()}
                                 </Typography>
                                 <div>
                                     {checkIn.tags.map((tag, index) => (
