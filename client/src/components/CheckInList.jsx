@@ -44,7 +44,7 @@ function CheckInList({ checkIns, onVote, isVenuePage = false }) {
 
     const getUserColor = (checkIn, isUpIcon) => {
         if (checkIn.userVoteStatus.voted) {
-            return isUpIcon ? checkIn.userVoteStatus.up ? 'primary.main' : 'disabled.main' : checkIn.userVoteStatus.up ? 'disabled.main' : 'secondary.main';
+            return isUpIcon ? checkIn.userVoteStatus.up ? 'secondary.main' : 'disabled.main' : checkIn.userVoteStatus.up ? 'disabled.main' : 'secondary.main';
         } else {
             return 'disabled.main';
         }
