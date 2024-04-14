@@ -40,11 +40,12 @@ const UserTable = ({ users, onClick }) => {
 
     // Adding an id property if not present
     const rows = users.map((user) => ({
+        _id: user._id || user.id,
         id: user._id || user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
-        role: user.role,
+        role: user.role || '',
         username: user.username,
         created: user.created ? new Date(user.created).toLocaleString() : '',
     }));

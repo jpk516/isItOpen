@@ -28,8 +28,9 @@ function ManageUsers() {
         });
     };
 
-    const handleSave = async () => {
-        AccountService.update(currentUser).then(response => {
+    const handleSave = (editedUser) => {
+        console.log(editedUser);
+        AccountService.update(editedUser).then(response => {
             setCurrentUser(defaultUser);
             setIsEditing(false);
             setShowEditModal(false);
@@ -71,7 +72,7 @@ function ManageUsers() {
                 </Grid>
             </Grid>
             <UserTable users={users} onClick={handleEdit} />
-            <ManageUserDialog user={currentUser} open={showEditModal} onClose={() => setShowEditModal(false)} onSave={handleSave}  />
+            <ManageUserDialog user={currentUser} open={showEditModal} onClose={() => setShowEditModal(false)} onSave={(editedUser) => handleSave(editedUser)}  />
         </Box>
 
         <ConfirmModal

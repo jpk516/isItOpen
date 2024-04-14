@@ -33,7 +33,7 @@ router.get("/api/accounts/count", (req, res) => {
 
 
 router.post("/api/accounts/register", (req, res) => {
-    console.log(req.body)
+    req.body.role = "user";
     User.register(new User(req.body), req.body.password, function (err, user) {
         if (err) {
             console.log("error: " + err )
@@ -118,8 +118,9 @@ router.post("/api/accounts/login", (req, res) => {
 });
 
 // TODO: ensure this is the current user or an admin
-router.put("/api/accounts/:id", (req, res) => {
-    User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+router.put("/api/accounts/", (req, res) => {
+    console.log("update user: " + req.body)
+    User.findByIdAndUpdate(req.body._id, req.body, { new: true })
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
 });
