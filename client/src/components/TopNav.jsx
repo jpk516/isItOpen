@@ -93,6 +93,7 @@ function TopNav({ onThemeChange }) {
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
       setAuth(response.data)
+      console.log(response.data)
     }).catch(error => {
         alert(`Error: ${error.data}`)
     })
@@ -183,9 +184,12 @@ function TopNav({ onThemeChange }) {
           <Divider />
           <List component="nav">
               {mainListItems}
-
-              <Divider sx={{ my: 1 }} />
-              {secondaryListItems}
+              {auth?.isAdmin &&
+                <>
+                  <Divider sx={{ my: 1 }} />
+                  {secondaryListItems}
+                </>
+              }
           </List>
       </Drawer>
     </>

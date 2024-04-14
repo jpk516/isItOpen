@@ -20,13 +20,23 @@ function RegisterForm() {
     const [loginDetails, setLoginDetails] = useState({username: '', password: '', firstName: '', lastName: '', email: ''});
     const [loginMessage, setLoginMessage] = useState('');
 
+    const getIsAuthenticated = () => {
+        AccountService.isAuthenticated().then(response => {
+            if (response.data.authenticated) {
+                setAuth(response.data)
+                navigate("/");
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
     const handleSubmit = () => {
         AccountService.register(loginDetails)
             .then(response => {
                 console.log(response)
                 if (response.data.success) {
-                    setAuth({ authenticated: true, message: "You are logged in", user: response.data.user})
-                    navigate("/");
+                    getIsAuthenticated();
                 } else {
                     setLoginMessage(response.data.message)
                 }
