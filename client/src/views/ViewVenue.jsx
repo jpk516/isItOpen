@@ -26,6 +26,7 @@ function ViewVenue() {
     const [modalOpen, setModalOpen] = useState(false);
     const [value, setValue] = useState('edit');
     const { name } = useParams();
+    let id = null;
 
     const getCheckIns = (id) => {
         CheckInService.getByVenue(id).then(response => {
@@ -78,7 +79,7 @@ function ViewVenue() {
                     <Grid item lg={6}>
                         <Box display="flex" justifyContent="flex-end">
                             <Button variant="contained" onClick={() => setModalOpen(true)}>Update Us!</Button>
-                            <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+                            <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} onCheckIn={() => getCheckIns(venueDetails._id)} />
                         </Box>
                         <VenueDetails venue={venueDetails} />
                     </Grid>
