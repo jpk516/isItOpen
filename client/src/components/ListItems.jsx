@@ -1,3 +1,4 @@
+//navigation menu
 import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -10,7 +11,8 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import StarIcon from '@mui/icons-material/Star';
 
 export const mainListItems = (
   <React.Fragment>
@@ -37,6 +39,12 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Leaderboard" />
+    </ListItemButton>
+    <ListItemButton component={Link} to={"/fav"}>
+      <ListItemIcon>
+        <StarIcon />
+      </ListItemIcon>
+      <ListItemText primary="Favorites" />
     </ListItemButton>
   </React.Fragment>
 );
