@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
+import CheckIfOpen from '../services/checkIfOpen';
+
 
 import {
   AdvancedMarker,
@@ -23,10 +25,11 @@ const icons = {
   },
 };
 
-function IIOMarker({ venue }) {
+function IIOMarker({ venue, checkIns}) {
   const navigate = useNavigate();
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
+
 
   // will go to public venue once that is checked in
   function handleVenueClick(name) {
@@ -35,6 +38,8 @@ function IIOMarker({ venue }) {
 
   const img = document.createElement('img');
   img.src = icons[venue.type]?.icon || '';
+
+  const isOpen = CheckIfOpen(venue, checkIns);
 
   return (
     <>
@@ -57,7 +62,7 @@ function IIOMarker({ venue }) {
         <div className="info-window-content">
         <h3>{venue.name}</h3>
         <p>Serves: {venue.type}</p>
-        <p className="status-open">Status: Open</p>
+        <p className={`status-${isOpen ? 'open' : 'closed'}`}>Status: {isOpen ? 'Open' : 'Closed'}</p>
         <Button variant="contained" color="primary" onClick={() => handleVenueClick(venue.name)}>View</Button>
         </div>
 

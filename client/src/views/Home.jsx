@@ -45,7 +45,7 @@ function Home() {
             </Row>
             <Row>
                 <Col>
-                    <IIOMap venues={venues} />
+                    <IIOMap venues={venues} checkIns={checkIns} />
                 </Col>
                 <Col lg={4}>
                     <VenueList />

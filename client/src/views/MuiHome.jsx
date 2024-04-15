@@ -52,7 +52,7 @@ function MuiHome() {
                     }}
                     >
                     <Title>What's Hot?</Title>
-                    <IIOMap venues={venues}></IIOMap>
+                    <IIOMap venues={venues} checkIns={checkIns}></IIOMap>
                     </Paper>
                 </Grid>
                 {/* Recent Deposits */}
