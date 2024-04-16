@@ -12,11 +12,11 @@ const CheckInService = {
     count: () => {
         return api.get(`${base}/count`)
     },
-    getByUser: (name) => {
-        return api.get(`${base}/user/${name}`)
+    getByUser: (id) => {
+        return api.get(`${base}/user/${id}`)
     },
-    getByVenue: (name) => {
-        return api.get(`${base}/venue/${name}`)
+    getByVenue: (id) => {
+        return api.get(`${base}/venue/${id}`)
     },
     add: (checkIn) => {
         return api.post(base, checkIn)

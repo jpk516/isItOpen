@@ -11,7 +11,8 @@ import Chip from '@mui/material/Chip';
 
 function CheckInTable({ checkIns, onVote }) {
     const navigate = useNavigate();
-
+    if (!checkIns) return null;
+    
     const handleUpvote = (checkInId) => {
         CheckInService.vote(checkInId, { up: true })
             .then(response => {
