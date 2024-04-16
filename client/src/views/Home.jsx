@@ -37,6 +37,21 @@ function Home() {
         })
     }
 
+    const replaceCheckIn = (checkIn) => {
+        const updatedCheckIns = checkIns.map(c => {
+            if (c._id === checkIn._id) {
+                return {
+                    ...c,
+                    upvoteCount: checkIn.upvoteCount,
+                    downvoteCount: checkIn.downvoteCount,
+                    userVoteStatus: checkIn.userVoteStatus
+                };
+            }
+            return c;
+        });
+        setCheckIns(updatedCheckIns);
+    };
+    
 
     return (
         <>
@@ -71,7 +86,7 @@ function Home() {
                 <Grid item xs={12}>
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                         <Title>What's Up? <small>10 latest updates</small></Title>
-                        <CheckInList checkIns={checkIns} />
+                        <CheckInList checkIns={checkIns} onVote={(update) => replaceCheckIn(update)} />
                     </Paper>
                 </Grid>
             </Grid>

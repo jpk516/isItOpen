@@ -15,21 +15,31 @@ import AccountService from '../services/account-service';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
+import openLogo from '../assets/open.png';
 
 export default function LoginForm() {
-    const {user, setUser} = useAppContext();
+    const {auth, setAuth} = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
+
+    const getIsAuthenticated = () => {
+        AccountService.isAuthenticated().then(response => {
+            if (response.data.authenticated) {
+                setAuth(response.data)
+                navigate("/");
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
 
     const handleSubmit = () => {
         AccountService.authenticate(loginDetails.userName, loginDetails.password)
             .then(response => {
                 if (response.data.success) {
-                    console.log('success');
                     try {
-                      setUser({ authenticated: true, username: loginDetails.userName })
-                      navigate("/");
+                      getIsAuthenticated();
                     } catch (error) {
                       console.log(error);
                     }
@@ -54,9 +64,7 @@ export default function LoginForm() {
           alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <img src={openLogo} alt="Is it open logo" width="200" />
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -65,10 +73,10 @@ export default function LoginForm() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
             onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
           />

@@ -19,9 +19,9 @@ router.get("/api/accounts", (req, res) => {
 
 router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
-        res.json({ success: true, message: "User is authenticated", user: req.user });
+        res.json({ authenticated: true, message: "User is authenticated", user: req.user, isAdmin: req?.user?.role === "Admin" ?? false});
     } else {
-        res.json({ success: false, message: "User is not authenticated" });
+        res.json({ authenticated: false, message: "User is not authenticated" });
     }
 });
 
@@ -33,7 +33,7 @@ router.get("/api/accounts/count", (req, res) => {
 
 
 router.post("/api/accounts/register", (req, res) => {
-    console.log(req.body)
+    req.body.role = "User";
     User.register(new User(req.body), req.body.password, function (err, user) {
         if (err) {
             console.log("error: " + err )
@@ -47,6 +47,9 @@ router.post("/api/accounts/register", (req, res) => {
                 }
                 else {
                     console.log("User registered: " + user)
+                    // remove salt & hash from user object before sending it to the client
+                    req.user.salt = undefined;
+                    req.user.hash = undefined;
                     res.json({ success: true, message: "Your account has been saved" });
                 }
             });
@@ -108,7 +111,7 @@ router.post("/api/accounts/login", (req, res) => {
                             res.json({ success: false, message: er });
                         }
                         else {
-                            res.json({ success: true, message: "You are logged in" });
+                            res.json({ success: true, message: "You are logged in"});
                         }
                     });
                 }
@@ -118,8 +121,9 @@ router.post("/api/accounts/login", (req, res) => {
 });
 
 // TODO: ensure this is the current user or an admin
-router.put("/api/accounts/:id", (req, res) => {
-    User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+router.put("/api/accounts/", (req, res) => {
+    console.log("update user: " + req.body)
+    User.findByIdAndUpdate(req.body._id, req.body, { new: true })
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
 });

@@ -26,11 +26,9 @@ function ViewVenue() {
     const [modalOpen, setModalOpen] = useState(false);
     const [value, setValue] = useState('edit');
     const { name } = useParams();
+    let id = null;
 
     const getCheckIns = (id) => {
-        console.log('in');
-        //if (!venueDetails?._id) return;
-
         CheckInService.getByVenue(id).then(response => {
             setCheckIns(response.data);
         }).catch(error => {
@@ -53,6 +51,21 @@ function ViewVenue() {
         setValue(newValue);
     };
 
+    const replaceCheckIn = (checkIn) => {
+        const updatedCheckIns = checkIns.map(c => {
+            if (c._id === checkIn._id) {
+                return {
+                    ...c,
+                    upvoteCount: checkIn.upvoteCount,
+                    downvoteCount: checkIn.downvoteCount,
+                    userVoteStatus: checkIn.userVoteStatus
+                };
+            }
+            return c;
+        });
+        setCheckIns(updatedCheckIns);
+    };
+
     return (
         <>
             {/* Venue Loaded */}
@@ -66,7 +79,7 @@ function ViewVenue() {
                     <Grid item lg={6}>
                         <Box display="flex" justifyContent="flex-end">
                             <Button variant="contained" onClick={() => setModalOpen(true)}>Update Us!</Button>
-                            <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+                            <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} onCheckIn={() => getCheckIns(venueDetails._id)} />
                         </Box>
                         <VenueDetails venue={venueDetails} />
                     </Grid>
@@ -76,7 +89,7 @@ function ViewVenue() {
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                             <Title>What's Up?</Title>
-                            <CheckInList checkIns={checkIns} isVenuePage={true} />
+                            <CheckInList checkIns={checkIns} isVenuePage={true} onVote={(updated) => replaceCheckIn(updated)} />
                         </Paper>
                     </Grid>
                 </Grid>

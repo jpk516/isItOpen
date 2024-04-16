@@ -13,20 +13,31 @@ import { useState } from 'react';
 import AccountService from '../services/account-service';
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from '../contexts/AppContext';
+import openLogo from '../assets/open.png';
 
 function RegisterForm() {
-    const {user, setUser} = useAppContext();
+    const {auth, setAuth} = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({username: '', password: '', firstName: '', lastName: '', email: ''});
     const [loginMessage, setLoginMessage] = useState('');
+
+    const getIsAuthenticated = () => {
+        AccountService.isAuthenticated().then(response => {
+            if (response.data.authenticated) {
+                setAuth(response.data)
+                navigate("/");
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    }
 
     const handleSubmit = () => {
         AccountService.register(loginDetails)
             .then(response => {
                 console.log(response)
                 if (response.data.success) {
-                    setUser({ authenticated: true, username: loginDetails.userame })
-                    navigate("/");
+                    getIsAuthenticated();
                 } else {
                     setLoginMessage(response.data.message)
                 }
@@ -46,9 +57,7 @@ function RegisterForm() {
                 alignItems: 'center',
             }}
             >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-            </Avatar>
+            <img src={openLogo} alt="Is it open logo" width="200" />
             <Typography component="h1" variant="h5">
                 Sign up
             </Typography>

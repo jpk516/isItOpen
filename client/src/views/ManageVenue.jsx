@@ -13,7 +13,6 @@ import VenueForm from '../components/VenueForm';
 import CheckIn from '../components/CheckIn';
 import VenueDetails from '../components/VenueDetails';
 import VenueService from '../services/venue-service';
-import Achievement from '../components/Achievement';
 
 function ManageVenue() {
     const [venueDetails, setVenueDetails] = useState({});
@@ -36,7 +35,7 @@ function ManageVenue() {
     };
 
     return (
-        <Container>
+        <>
             <Grid container spacing={3} mb={3}>
                 <Grid item xs={12} md={6}>
                     <Typography variant="h4">Manage Venue</Typography>
@@ -56,7 +55,7 @@ function ManageVenue() {
             </Tabs>
             {value === 'edit' && (
                 <Grid container spacing={3}>
-                    <Grid item lg={10}>
+                    <Grid item lg={12}>
                         <VenueForm />
                     </Grid>
                 </Grid>
@@ -72,8 +71,7 @@ function ManageVenue() {
                     </Grid>
                 </Grid>
             )}
-            {/* Additional content for other tabs can be added here */}
-        </Container>
+        </>
     );
 }
 

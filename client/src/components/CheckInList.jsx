@@ -12,8 +12,9 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 import MuiLink from '@mui/material/Link';
 import { Link } from 'react-router-dom';
+import CheckInService from '../services/check-in-service';
 
-function CheckInList({ checkIns, isVenuePage = false }) {
+function CheckInList({ checkIns, onVote, isVenuePage = false }) {
     const navigate = useNavigate();
 
     const handleButtonClick = (name) => {
@@ -25,22 +26,33 @@ function CheckInList({ checkIns, isVenuePage = false }) {
 
     const handleUpvote = (checkInId) => {
         console.log('Upvoting', checkInId);
-        // Increment vote logic here
+        CheckInService.vote(checkInId, { up: true }).then((response) => {
+            if (onVote && response.data) onVote(response.data);
+        }).catch((error) => {
+            console.log('Error voting', error);
+        });
     };
 
     const handleDownvote = (checkInId) => {
         console.log('Downvoting', checkInId);
-        // Decrement vote logic here
+        CheckInService.vote(checkInId, { up: false }).then((response) => {
+            if (onVote && response.data) onVote(response.data);
+        }).catch((error) => {
+            console.log('Error voting', error);
+        });
     };
 
-    const countVotes = (votes, type) => votes.filter(vote => vote.vote === type).length;
+    const getUserColor = (checkIn, isUpIcon) => {
+        if (checkIn.userVoteStatus.voted) {
+            return isUpIcon ? checkIn.userVoteStatus.up ? 'secondary.main' : 'disabled.main' : checkIn.userVoteStatus.up ? 'disabled.main' : 'secondary.main';
+        } else {
+            return 'disabled.main';
+        }
+    };
 
     return (
         <Grid container spacing={4}>
             {checkIns.map((checkIn) => {
-                const upVotes = countVotes(checkIn.votes, 'up');
-                const downVotes = countVotes(checkIn.votes, 'down');
-
                 return (
                     <Grid item xs={12} md={4} key={checkIn._id}>
                         <Card variant="outlined">
@@ -57,7 +69,7 @@ function CheckInList({ checkIns, isVenuePage = false }) {
                                     {checkIn.venue.name}
                                 </Typography>
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                    {new Date(checkIn.created).toLocaleString()}
+                                {checkIn?.user?.username}{checkIn?.user?.username && " -"} {new Date(checkIn.created).toLocaleString()}
                                 </Typography>
                                 <div>
                                     {checkIn.tags.map((tag, index) => (
@@ -77,13 +89,13 @@ function CheckInList({ checkIns, isVenuePage = false }) {
                                     </MuiLink>
                                 )}
                                 <Box>
-                                    <IconButton onClick={() => handleUpvote(checkIn._id)} color="primary">
+                                    <IconButton onClick={() => handleUpvote(checkIn._id)} sx={{color: getUserColor(checkIn, true)}}>
                                         <ThumbUpAltIcon />
-                                        <Typography variant="body2" sx={{ ml: 1 }}>{upVotes}</Typography>
+                                        <Typography variant="body2" sx={{ ml: 1 }}>{checkIn.upvoteCount}</Typography>
                                     </IconButton>
-                                    <IconButton onClick={() => handleDownvote(checkIn._id)} color="secondary">
+                                    <IconButton onClick={() => handleDownvote(checkIn._id)} sx={{color: getUserColor(checkIn, false)}}>
                                         <ThumbDownAltIcon />
-                                        <Typography variant="body2" sx={{ ml: 1 }}>{downVotes}</Typography>
+                                        <Typography variant="body2" sx={{ ml: 1 }}>{checkIn.downvoteCount}</Typography>
                                     </IconButton>
                                 </Box>
                             </Box>

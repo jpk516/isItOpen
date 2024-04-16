@@ -20,6 +20,7 @@ import ThemeSwitcher from './ThemeSwitcher.jsx';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext.jsx';
+import openLogo from '../assets/open.png';
 
 
 const drawerWidth = 240;
@@ -70,7 +71,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 function TopNav({ onThemeChange }) {
-  const { user, setUser } = useAppContext();
+  const { auth, setAuth } = useAppContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -80,7 +81,7 @@ function TopNav({ onThemeChange }) {
    // right menu
    const [anchorEl, setAnchorEl] = useState(null);
    const handleMenu = (event) => {
-    if (!user || user?.authenticated === false) {
+    if (!auth || auth?.authenticated === false) {
       navigate('/login')
       return;
     }
@@ -92,7 +93,8 @@ function TopNav({ onThemeChange }) {
 
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
-      setUser({authenticated: response.data.success, username: response?.data?.user?.username ?? ''})
+      setAuth(response.data)
+      console.log(response.data)
     }).catch(error => {
         alert(`Error: ${error.data}`)
     })
@@ -100,7 +102,7 @@ function TopNav({ onThemeChange }) {
 
   function logOut() {
     AccountService.logOut().then(response => {
-      setUser({authenticated: false, username: ''})
+      setAuth({authenticated: false, username: ''})
       setAnchorEl(null);
       navigate('/login')
     })
@@ -126,6 +128,7 @@ function TopNav({ onThemeChange }) {
             >
               <MenuIcon />
             </IconButton>
+            <img src={openLogo} alt="Is it open logo" width="64" />
             <Typography
               component="h1"
               variant="h6"
@@ -133,7 +136,7 @@ function TopNav({ onThemeChange }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-            Dashboard - {user?.username}
+            Dashboard
             </Typography>
             <ThemeSwitcher onChangeMode={onThemeChange}></ThemeSwitcher>
             <div>
@@ -147,8 +150,8 @@ function TopNav({ onThemeChange }) {
                 key={'right'}
                 id="right-menu-appbar"
               >
-                {user?.authenticated &&  <AccountCircle /> }
-                {!user?.authenticated &&  <LoginIcon /> }
+                {auth?.authenticated &&  <AccountCircle /> }
+                {!auth?.authenticated &&  <LoginIcon /> }
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -158,7 +161,7 @@ function TopNav({ onThemeChange }) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem component={Link} to={"/settings"}>Settings</MenuItem>
                 <MenuItem onClick={logOut}>Logout</MenuItem>
               </Menu>
             </div>
@@ -173,8 +176,8 @@ function TopNav({ onThemeChange }) {
               px: [1],
               }}
           >
-              <Typography sx={{ml:2}} component="h2" variant="h5" color="primary">
-                Is It Open?
+              <Typography sx={{ml:2}} component="h2" variant="h6" color="primary">
+                Navigation
               </Typography>
               <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
@@ -183,8 +186,12 @@ function TopNav({ onThemeChange }) {
           <Divider />
           <List component="nav">
               {mainListItems}
-              <Divider sx={{ my: 1 }} />
-              {secondaryListItems}
+              {auth?.isAdmin &&
+                <>
+                  <Divider sx={{ my: 1 }} />
+                  {secondaryListItems}
+                </>
+              }
           </List>
       </Drawer>
     </>

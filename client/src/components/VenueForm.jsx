@@ -54,7 +54,7 @@ function VenueForm() {
             serviceMethod(venueDetails)
                 .then(response => {
                     setVenueDetails(response.data);
-                    navigate("/venues");
+                    //navigate("/venues");
                 })
                 .catch(error => {
                     setErrorMessage(error.response?.data ?? "An error occurred, please try again.");
@@ -198,7 +198,7 @@ function VenueForm() {
                     </Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={12} className='text-end'>
-                            <Button type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }}>
+                            <Button type="submit" variant="contained" color="primary" sx={{ mt: 3, mb: 2 }} onClick={(evt) => handleSubmit(evt)}>
                                 Save Venue
                             </Button>
                         </Grid>
