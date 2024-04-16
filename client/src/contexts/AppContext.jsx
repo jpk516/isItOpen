@@ -8,6 +8,7 @@ export const AppContextProvider = ({ children }) => {
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+    const [pageTitle, setPageTitle] = useState('Dashboard');
     
     const toggleSnackbar = (message, severity) => {
       setSnackbarMessage(message);
@@ -19,6 +20,8 @@ export const AppContextProvider = ({ children }) => {
       auth,
       setAuth,
       toggleSnackbar,
+      pageTitle,
+      setPageTitle
     };
   
     return (

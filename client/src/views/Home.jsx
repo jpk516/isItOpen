@@ -11,12 +11,15 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Title from '../components/Title';
+import { useAppContext } from '../contexts/AppContext';
 
 function Home() {
+    const { setPageTitle } = useAppContext();
     const [venues, setVenues] = useState([]);
     const [checkIns, setCheckIns] = useState([]);
     
     useEffect(() => {
+        setPageTitle('Home');
         getVenues();
         getCheckIns();
     }, [])
