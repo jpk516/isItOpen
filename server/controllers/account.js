@@ -10,11 +10,18 @@ const router = express.Router()
 const passport = require('passport');
 const User = require("../models/user");
 
-router.get("/api/accounts/", (req, res) => {
+router.get("/api/accounts", (req, res) => {
+    // TODO: check for admin role
+    User.find({})
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not load users: " + err }));
+});
+
+router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
-        res.json({ success: true, message: "User is authenticated", user: req.user });
+        res.json({ authenticated: true, message: "User is authenticated", user: req.user, isAdmin: req?.user?.role === "Admin" ?? false});
     } else {
-        res.json({ success: false, message: "User is not authenticated" });
+        res.json({ authenticated: false, message: "User is not authenticated" });
     }
 });
 
@@ -26,16 +33,23 @@ router.get("/api/accounts/count", (req, res) => {
 
 
 router.post("/api/accounts/register", (req, res) => {
-    User.register(new User({ email: req.body.email, username: req.body.username }), req.body.password, function (err, user) {
+    req.body.role = "User";
+    User.register(new User(req.body), req.body.password, function (err, user) {
         if (err) {
+            console.log("error: " + err )
             res.json({ success: false, message: "Your account could not be saved. Error: " + err });
         }
         else {
             req.login(user, (er) => {
                 if (er) {
+                    console.log("error: " + er )
                     res.json({ success: false, message: er });
                 }
                 else {
+                    console.log("User registered: " + user)
+                    // remove salt & hash from user object before sending it to the client
+                    req.user.salt = undefined;
+                    req.user.hash = undefined;
                     res.json({ success: true, message: "Your account has been saved" });
                 }
             });
@@ -97,13 +111,21 @@ router.post("/api/accounts/login", (req, res) => {
                             res.json({ success: false, message: er });
                         }
                         else {
-                            res.json({ success: true, message: "You are logged in" });
+                            res.json({ success: true, message: "You are logged in"});
                         }
                     });
                 }
             }
         })(req, res);
     }
+});
+
+// TODO: ensure this is the current user or an admin
+router.put("/api/accounts/", (req, res) => {
+    console.log("update user: " + req.body)
+    User.findByIdAndUpdate(req.body._id, req.body, { new: true })
+        .then((result) => res.json(result))
+        .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
 });
 
 /**

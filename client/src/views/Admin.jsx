@@ -11,14 +11,29 @@ import ManageTags from '../components/ManageTags';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
 import VenueTable from '../components/VenueTable';
+import AccountService from '../services/account-service';
+import { useNavigate } from 'react-router-dom';
+import ManageUsers from '../components/ManageUsers';
+import { useAppContext } from '../contexts/AppContext';
 
 function Admin() {
+    const navigate = useNavigate();
+    const { setPageTitle } = useAppContext();
     const [value, setValue] = useState('venues');
     const [venues, setVenues] = useState([]);
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
+        setPageTitle('Admininstration');
+        
         VenueService.getAll().then(response => {
             setVenues(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+
+        AccountService.getAll().then(response => {
+            setUsers(response.data);
         }).catch(error => {
             console.log(error);
         });
@@ -26,6 +41,10 @@ function Admin() {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const handleVenueClick = (params) => {
+        navigate(`/venues/manage/${params.row.name}`);
     };
 
     return (
@@ -50,11 +69,11 @@ function Admin() {
                                     </div>
                                 </Grid>
                             </Grid>
-                            <VenueTable venues={venues} />
-                    </Box>
+                            <VenueTable venues={venues} onVenueClick={handleVenueClick} />
+                        </Box>
                         )}
                     {value === 'tags' && <ManageTags />}
-                    {value === 'users' && <p>Users form will be here</p>}
+                    {value === 'users' && <ManageUsers />}
                 </Grid>
             </Grid>
         </>

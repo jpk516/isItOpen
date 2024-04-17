@@ -5,14 +5,10 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const User = new Schema({
     email: String,
     firstName: String,
-    middleName: String,
     lastName: String,
-    phone: String,
     role: { type: String, enum: ['Admin', 'User'], required: false, index: true },
-    // created: {
-    //     type: Date,
-    //     default: Date.now
-    // }
+    created: { type: Date, default: Date.now },
+    disabled: { type: Boolean, default: false }
 });
 
 User.isAdmin = function() {

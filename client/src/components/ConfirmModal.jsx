@@ -1,22 +1,28 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+
 
 const ConfirmModal = ({ show, onHide, onConfirm, title, body }) => {
     return (
-        <Modal show={show} onHide={onHide} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>{title}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{body}</Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>
+        <Dialog open={show} onClose={onHide}>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogContent>
+                <DialogContentText>{body}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onHide} color="secondary">
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={onConfirm}>
+                <Button onClick={onConfirm} color="primary">
                     Confirm
                 </Button>
-            </Modal.Footer>
-        </Modal>
+            </DialogActions>
+        </Dialog>
     );
 };
 
