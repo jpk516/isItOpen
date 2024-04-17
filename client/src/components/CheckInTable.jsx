@@ -44,7 +44,7 @@ function CheckInTable({ checkIns, onVote, onDeleted }) {
         CheckInService.delete(idToDelete).then(response => {
             if (response.data.hidden) {
                 if (onDeleted) {
-                    onDeleted();
+                    onDeleted(response.data);
                 }
                 setShowConfirmModal(false);
             }

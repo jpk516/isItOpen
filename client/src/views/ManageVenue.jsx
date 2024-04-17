@@ -66,6 +66,11 @@ function ManageVenue() {
         setCheckIns(updatedCheckIns);
     };
 
+    const handleDeletedCheckIn = (checkIn) => {
+        const updatedCheckIns = checkIns.filter(c => c._id !== checkIn._id);
+        setCheckIns(updatedCheckIns);
+    }
+
     return (
         <>
             <Grid container spacing={3} mb={3}>
@@ -95,7 +100,7 @@ function ManageVenue() {
             {value === 'checkins' && (
                 <Grid container spacing={3}>
                     <Grid item lg={12}>
-                        <CheckInTable checkIns={checkIns} onVote={(updated) => replaceCheckIn(updated)} />
+                        <CheckInTable checkIns={checkIns} onVote={(updated) => replaceCheckIn(updated)} onDeleted={(deleted) => handleDeletedCheckIn(deleted)} />
                     </Grid>
                 </Grid>
             )}
