@@ -13,6 +13,7 @@ import Copyright from './components/Copyright';
 import AppContextProvider from './contexts/AppContext';
 
 function App() {
+  // TODO: move to app context
   const getPreferredTheme = () => {
     console.log('getPreferredTheme');
     // Check for saved theme in localStorage
