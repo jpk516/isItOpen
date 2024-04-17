@@ -30,15 +30,17 @@ function ManageVenue() {
         setPageTitle('Manage Venue');
         if (name && name.length > 0) {
             VenueService.get(name).then(response => {
-                setVenueDetails(response.data, getCheckIns());
+                setVenueDetails(response.data);
+                getCheckIns(response.data._id);
             }).catch(error => {
                 console.log(error.message);
             });
         }
     }, [name]);
 
-    const getCheckIns = () => {
-        CheckInService.getByVenue(venueDetails._id).then(response => {
+    const getCheckIns = (id) => {
+        if (!id) return;
+        CheckInService.getByVenue(id).then(response => {
             setCheckIns(response.data);
         }).catch(error => {
             console.log(error)
@@ -47,6 +49,21 @@ function ManageVenue() {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const replaceCheckIn = (checkIn) => {
+        const updatedCheckIns = checkIns.map(c => {
+            if (c._id === checkIn._id) {
+                return {
+                    ...c,
+                    upvoteCount: checkIn.upvoteCount,
+                    downvoteCount: checkIn.downvoteCount,
+                    userVoteStatus: checkIn.userVoteStatus
+                };
+            }
+            return c;
+        });
+        setCheckIns(updatedCheckIns);
     };
 
     return (
@@ -78,7 +95,7 @@ function ManageVenue() {
             {value === 'checkins' && (
                 <Grid container spacing={3}>
                     <Grid item lg={12}>
-                        <CheckInTable checkIns={checkIns} />
+                        <CheckInTable checkIns={checkIns} onVote={(updated) => replaceCheckIn(updated)} />
                     </Grid>
                 </Grid>
             )}
