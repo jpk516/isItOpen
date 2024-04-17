@@ -12,10 +12,19 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '18.x'
   displayName: 'Install Node.js'
 
 - script: |
+    cd client
     npm install
     npm run build
-  displayName: 'npm install and build'
+  displayName: 'Install dependencies and build client'
+
+- script: |
+    cd server
+    npm install
+  displayName: 'Install dependencies for server'
+
+# Additional steps would follow here to actually deploy the built artifacts to Azure
+
