@@ -14,7 +14,8 @@ const CheckIn = new Schema({
         user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         up: { type: Boolean, required: true },
         created: { type: Date, default: Date.now }
-    }]
+    }],
+    hidden: { type: Boolean, default: false }
 });
 
 // enfore unique user votes per check-in

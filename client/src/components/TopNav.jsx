@@ -71,7 +71,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 
 function TopNav({ onThemeChange }) {
-  const { auth, setAuth } = useAppContext();
+  const { auth, setAuth, pageTitle } = useAppContext();
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
@@ -136,7 +136,7 @@ function TopNav({ onThemeChange }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-            Dashboard
+            {pageTitle}
             </Typography>
             <ThemeSwitcher onChangeMode={onThemeChange}></ThemeSwitcher>
             <div>

@@ -14,14 +14,18 @@ import VenueTable from '../components/VenueTable';
 import AccountService from '../services/account-service';
 import { useNavigate } from 'react-router-dom';
 import ManageUsers from '../components/ManageUsers';
+import { useAppContext } from '../contexts/AppContext';
 
 function Admin() {
     const navigate = useNavigate();
+    const { setPageTitle } = useAppContext();
     const [value, setValue] = useState('venues');
     const [venues, setVenues] = useState([]);
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
+        setPageTitle('Admininstration');
+        
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {
