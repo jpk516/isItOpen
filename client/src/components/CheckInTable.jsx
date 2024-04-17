@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import CheckInService from '../services/check-in-service';
@@ -9,9 +10,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
+import ConfirmModal from './ConfirmModal';
 
-function CheckInTable({ checkIns, onVote }) {
+function CheckInTable({ checkIns, onVote, onDeleted }) {
     const navigate = useNavigate();
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [idToDelete, setIdToDelete] = useState('');
+
     if (!checkIns) return null;
 
     const handleUpvote = (checkInId) => {
@@ -30,11 +35,18 @@ function CheckInTable({ checkIns, onVote }) {
             .catch(error => console.error('Error voting', error));
     };
 
-    const handleDelete = (checkInId) => {
-        CheckInService.delete(checkInId).then(response => {
-            if (response.data.success) {
-                const updatedCheckIns = checkIns.filter(c => c._id !== checkInId);
-                onVote(updatedCheckIns);
+    const showDeleteConfirmation = (id) => {
+        setIdToDelete(id);
+        setShowConfirmModal(true);
+    };
+
+    const handleDelete = () => {
+        CheckInService.delete(idToDelete).then(response => {
+            if (response.data.hidden) {
+                if (onDeleted) {
+                    onDeleted();
+                }
+                setShowConfirmModal(false);
             }
         }).catch(error => console.error('Error deleting check-in', error));
     };
@@ -46,6 +58,7 @@ function CheckInTable({ checkIns, onVote }) {
             return 'disabled.main';
         }
     };
+    
 
     const columns = [
         { field: 'venueName', headerName: 'Venue', width: 200, renderCell: (params) => (
@@ -70,7 +83,7 @@ function CheckInTable({ checkIns, onVote }) {
                 <IconButton onClick={() => handleDownvote(params.id)} sx={{color: getUserColor(params.row, false)}}>
                     <ThumbDownAltIcon />
                 </IconButton>
-                <IconButton onClick={() => handleDelete(params.id)} sx={{color: 'error.main'}}>
+                <IconButton onClick={() => showDeleteConfirmation(params.id)} sx={{color: 'error.main'}}>
                     <DeleteIcon />
                 </IconButton>
             </>
@@ -97,6 +110,13 @@ function CheckInTable({ checkIns, onVote }) {
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5, 10, 20]}
+            />
+            <ConfirmModal
+                show={showConfirmModal}
+                onHide={() => setShowConfirmModal(false)}
+                onConfirm={handleDelete}
+                title="Confirm Delete"
+                body="Are you sure you want to delete this check-in?"
             />
         </div>
     );
