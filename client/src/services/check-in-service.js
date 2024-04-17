@@ -27,6 +27,9 @@ const CheckInService = {
     vote: (id, vote) => {
         return api.post(`${base}/vote/${id}`, vote)
     },
+    delete: (id) => {
+        return api.delete(`${base}/${id}`)
+    },
 }
 
 export default CheckInService

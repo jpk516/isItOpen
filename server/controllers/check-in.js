@@ -303,5 +303,29 @@ router.post(`${base}/vote/:id`, (req, res) => {
         .catch(err => res.status(500).send(err.message));
 });
 
+router.delete(`${base}/:id`, (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send("User is not authenticated");
+    }
+
+    CheckIn.findById(req.params.id)
+        .then(checkIn => {
+            if (!checkIn) {
+                return res.status(404).send("Check-in not found");
+            }
+            console.log(req.user);
+
+            if (checkIn.user.equals(req.user._id) || req.user.role === 'Admin') {
+                // set to hidden instead of deleting
+                checkIn.hidden = true;
+                checkIn.save()
+                    .then(result => res.json(result))
+                    .catch(err => res.status(500).send(err.message));
+            } else {
+                res.status(403).send("User is not authorized to delete this check-in");
+            }
+        })
+        .catch(err => res.status(500).send(err.message));
+});
 
 module.exports = router

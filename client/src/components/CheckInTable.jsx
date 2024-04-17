@@ -5,6 +5,7 @@ import CheckInService from '../services/check-in-service';
 import IconButton from '@mui/material/IconButton';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
@@ -27,6 +28,15 @@ function CheckInTable({ checkIns, onVote }) {
                 if (onVote && response.data) onVote(response.data);
             })
             .catch(error => console.error('Error voting', error));
+    };
+
+    const handleDelete = (checkInId) => {
+        CheckInService.delete(checkInId).then(response => {
+            if (response.data.success) {
+                const updatedCheckIns = checkIns.filter(c => c._id !== checkInId);
+                onVote(updatedCheckIns);
+            }
+        }).catch(error => console.error('Error deleting check-in', error));
     };
 
     const getUserColor = (checkIn, isUpIcon) => {
@@ -59,6 +69,9 @@ function CheckInTable({ checkIns, onVote }) {
                 </IconButton>
                 <IconButton onClick={() => handleDownvote(params.id)} sx={{color: getUserColor(params.row, false)}}>
                     <ThumbDownAltIcon />
+                </IconButton>
+                <IconButton onClick={() => handleDelete(params.id)} sx={{color: 'error.main'}}>
+                    <DeleteIcon />
                 </IconButton>
             </>
         )},
