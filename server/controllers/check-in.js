@@ -33,6 +33,8 @@ const base = '/api/check-ins'
 */
 router.get(base, (req, res) => {
     CheckIn.find({})
+        .sort({created: -1})
+        .where('hidden').ne(true)
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not load check-ins: " + err }));
 });
@@ -67,6 +69,7 @@ router.get(`${base}/recent/:limit?`, (req, res) => {
         .limit(req?.params?.limit ?? 20)
         .populate('venue')
         .populate({ path: 'user', select: 'username -_id'})
+        .where('hidden').ne(true)
         .exec()
         .then(checkIns => {
             if (checkIns?.length > 0) {
@@ -133,6 +136,7 @@ router.get(`${base}/venue/:venue`, (req, res) => {
             .sort({created: -1})
             .populate('venue')
             .populate({ path: 'user', select: 'username -_id'})
+            .where('hidden').ne(true)
             .exec()
             .then(checkIns => {
                 if (checkIns?.length > 0) {
@@ -176,8 +180,10 @@ router.get(`${base}/user/:user`, (req, res) => {
     }
 
     CheckIn.find({user: req.params.user})
+        .sort({created: -1})
         .populate('venue')
         .populate({ path: 'user', select: 'username -_id'})
+        .where('hidden').ne(true)
         .exec()
         .then(checkIns => {
             if (checkIns?.length > 0) {
@@ -303,5 +309,29 @@ router.post(`${base}/vote/:id`, (req, res) => {
         .catch(err => res.status(500).send(err.message));
 });
 
+router.delete(`${base}/:id`, (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send("User is not authenticated");
+    }
+
+    CheckIn.findById(req.params.id)
+        .then(checkIn => {
+            if (!checkIn) {
+                return res.status(404).send("Check-in not found");
+            }
+            console.log(req.user);
+
+            if (checkIn?.user?.equals(req.user._id) || req.user.role === 'Admin') {
+                // set to hidden instead of deleting
+                checkIn.hidden = true;
+                checkIn.save()
+                    .then(result => res.json(result))
+                    .catch(err => res.status(500).send(err.message));
+            } else {
+                res.status(403).send("User is not authorized to delete this check-in");
+            }
+        })
+        .catch(err => res.status(500).send(err.message));
+});
 
 module.exports = router
