@@ -25,7 +25,7 @@ const icons = {
   },
 };
 
-function IIOMarker({ venue, checkIns}) {
+function IIOMarker({venue, allCheckIns}) {
   const navigate = useNavigate();
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
@@ -39,7 +39,9 @@ function IIOMarker({ venue, checkIns}) {
   const img = document.createElement('img');
   img.src = icons[venue.type]?.icon || '';
 
-  const isOpen = CheckIfOpen(venue, checkIns);
+  const isOpen = CheckIfOpen(venue, allCheckIns);
+
+  //console.log(venue.name + "In IIOMarker is marked as " + isOpen);
 
   return (
     <>

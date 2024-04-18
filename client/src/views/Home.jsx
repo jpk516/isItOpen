@@ -1,4 +1,3 @@
-
 import IIOMap from '../components/IIOMap';
 import VenueList from '../components/VenueList';
 import VenueService from '../services/venue-service';
@@ -17,11 +16,13 @@ function Home() {
     const { setPageTitle } = useAppContext();
     const [venues, setVenues] = useState([]);
     const [checkIns, setCheckIns] = useState([]);
+    const [allCheckIns, setAllCheckIns] = useState([]);
     
     useEffect(() => {
         setPageTitle('Home');
         getVenues();
         getCheckIns();
+        getAllCheckIns();
     }, [])
 
     const getVenues = () => {
@@ -35,6 +36,14 @@ function Home() {
     const getCheckIns = () => {
         CheckInService.getRecent(10).then(response => {
             setCheckIns(response.data);
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
+    const getAllCheckIns = () => {
+        CheckInService.getAll(10).then(response => {
+            setAllCheckIns(response.data);
         }).catch(error => {
             console.log(error)
         })
@@ -57,18 +66,31 @@ function Home() {
     
 
     return (
-        <Container>
-            <Row className="mb-3">
-                <Col>
-                    <h2>What's Hot?</h2>
-                </Col>
-                <hr />
-            </Row>
-            <Row>
-                <Col>
-                    <IIOMap venues={venues} checkIns={checkIns}/>
-                </Col>
-                <Col lg={4}>
+        <>
+            <Grid container spacing={3}>
+            {/* Chart */}
+                <Grid item xs={12} md={8} lg={9}>
+                    <Paper
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        
+                    }}
+                    >
+                    <Title>What's Hot?</Title>
+                    <IIOMap venues={venues} allCheckIns={allCheckIns}></IIOMap>
+                    </Paper>
+                </Grid>
+                {/* Recent Deposits */}
+                <Grid item xs={12} md={4} lg={3}>
+                    <Paper
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                    >
                     <VenueList />
                     </Paper>
                 </Grid>

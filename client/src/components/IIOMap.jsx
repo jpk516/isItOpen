@@ -2,7 +2,7 @@ import React from 'react';
 import {APIProvider, Map, Marker, MapControl, ControlPosition} from '@vis.gl/react-google-maps';
 import IIOMarker from './IIOMarker';
 
-function IIOMap({venues, checkIns}) {
+function IIOMap({venues, allCheckIns}) {
 
   return (
     <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
@@ -16,7 +16,7 @@ function IIOMap({venues, checkIns}) {
       >
       {venues?.map((venue, index) => {
         return (
-          <IIOMarker key={venue._id} venue={venue}  checkIns={checkIns}/>
+          <IIOMarker key={venue._id} venue={venue} allCheckIns={allCheckIns}/>
         )
       })}
       </Map>

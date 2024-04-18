@@ -1,6 +1,6 @@
-function CheckIfOpen(venue, checkIns) {
+function CheckIfOpen(venue, allCheckIns) {
 
-
+  //console.log(allCheckIns);
   const now = new Date(); //gets date and utc date
   const nowUtc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
 
@@ -13,25 +13,29 @@ function CheckIfOpen(venue, checkIns) {
   endPeriod.setUTCDate(endPeriod.getUTCDate() + 1);  //sets end time to 3 AM the next day
 
 
-  const isReportedOpen = Array.isArray(checkIns) && checkIns.some(checkIn => { //checks for check ins 
+  const isReportedOpen = Array.isArray(allCheckIns) && allCheckIns.some(checkIn => { //checks for check ins 
     const checkInDate = new Date(checkIn.created);
     
-    return checkIn.venue.name === venue.name && checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open !== false; //returns true if check in is recent and open and within the 3AM-3AM window
+    return checkIn.venue === venue._id && checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open !== false; //returns true if check in is recent and open and within the 3AM-3AM window
   });
   
-  const isReportedClosed = Array.isArray(checkIns) && checkIns.some(checkIn => {
+  const isReportedClosed = Array.isArray(allCheckIns) && allCheckIns.some(checkIn => {
     const checkInDate = new Date(checkIn.created);
-    return checkIn.venue.name === venue.name && checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; // //returns false if check in is recent and closed and within the 3AM-3AM window
+    return checkIn.venue === venue._id && checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; // //returns false if check in is recent and closed and within the 3AM-3AM window
   });
   
   if (isReportedOpen) 
   {
+      //console.log(venue.name + " is checked in as open in checkIFOpen");
       return true;  //returns true if open
   } 
   else if (isReportedClosed) 
   {
+      //console.log(venue.name + " is checked in as closed in checkIFOpen");
       return false; //returns false if closed
   }
+
+  //console.log(venue.name + " is defaulting to hours");
 
  
   const currentDay = nowUtc.getUTCDay();
