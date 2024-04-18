@@ -35,7 +35,13 @@ const UserTable = ({ users, onClick }) => {
         headerName: 'Role',
         width: 110,
         editable: false,
-        }
+        },
+        {
+          field: 'disabled',
+          headerName: 'Disabled',
+          width: 110,
+          editable: false,
+        },
     ];
 
     // Adding an id property if not present
@@ -48,6 +54,7 @@ const UserTable = ({ users, onClick }) => {
         role: user.role || '',
         username: user.username,
         created: user.created ? new Date(user.created).toLocaleString() : '',
+        disabled: user.disabled ? 'Yes' : 'No',
     }));
 
   return (

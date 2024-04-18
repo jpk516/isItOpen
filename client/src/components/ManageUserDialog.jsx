@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, Select, FormControl, InputLabel, FormControlLabel, Switch } from '@mui/material';
 
 const ManageUserDialog = ({ open, onClose, user, onSave }) => {
   const [editedUser, setEditedUser] = useState({
@@ -90,6 +90,13 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
                 <MenuItem value="Admin">Admin</MenuItem>
             </Select>
         </FormControl>
+        <FormControlLabel
+              sx={{ mt: 1 }}
+              control={
+                <Switch checked={editedUser.disabled} onChange={e => setEditedUser({ ...editedUser, disabled: e.target.checked })} />
+              }
+              label="Disabled (Will not be able to login)"
+            />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

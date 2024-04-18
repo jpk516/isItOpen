@@ -18,7 +18,7 @@ import { useAppContext } from '../contexts/AppContext';
 import openLogo from '../assets/open.png';
 
 export default function LoginForm() {
-    const {auth, setAuth} = useAppContext();
+    const {auth, setAuth, toggleSnackbar } = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
@@ -30,7 +30,7 @@ export default function LoginForm() {
                 navigate("/");
             }
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar(error, 'error');
         })
     }
 
@@ -45,11 +45,11 @@ export default function LoginForm() {
                     }
                     
                 } else {
-                    setLoginMessage(response.data.message)
+                  toggleSnackbar(response.data.message, 'error');
                 }
             })
             .catch(error => {
-                setLoginMessage(error);
+                toggleSnackbar(error, 'error');
             })
     }
 
