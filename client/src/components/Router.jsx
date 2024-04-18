@@ -11,6 +11,7 @@ import Achievements from '../views/Achievements';
 import BRList from '../views/BRList';
 import Settings from '../views/Settings';
 import Fav from '../views/Favorites';
+import Test from '../views/Test';
 
 export const router = createBrowserRouter([
     {
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
         { path: '/brlist', element: <BRList /> },
         { path: '/settings', element: <Settings /> },
         { path: '/fav', element: <Fav /> },
+        { path: '/test', element: <Test /> },
       ]
     },
   ]);
