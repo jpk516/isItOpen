@@ -170,7 +170,7 @@ router.post('/api/accounts/favorites/', (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)
             .then((user) => {
-                user.favorites.push(req.body.venue._id);
+                user.favorites.push({ venue: req.body._id });
                 user.save()
                     .then((result) => res.json(result))
                     .catch((err) => res.json({ success: false, message: "Could not favorite venue: " + err }));
