@@ -45,6 +45,11 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
     const updatedTags = checkInDetails.tags.includes(tag.name)
       ? checkInDetails.tags.filter(t => t !== tag.name)
       : [...checkInDetails.tags, tag.name];
+      if(updatedTags.length > 5)
+      {
+        //how to send friendly message
+        updatedTags.splice(5);
+      }
     setCheckInDetails({ ...checkInDetails, tags: updatedTags });
   };
 
