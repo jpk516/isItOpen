@@ -6,19 +6,10 @@ import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
 import { useNavigate } from 'react-router-dom';
 
-function VenueList({ name }) {
+function VenueList({ name, venues }) {
     const navigate = useNavigate();
     const listName = name ? name : 'Venues';
-    const [venues, setVenues] = useState([]);
-
-    useEffect(() => {
-        VenueService.getAll().then(response => {
-            setVenues(response.data);
-        }).catch(error => {
-            console.log(error);
-        });
-    }, []);
-
+    
     function handleRowClick(venue) {
         navigate(`/venues/${venue.name}`);
     }
@@ -27,7 +18,7 @@ function VenueList({ name }) {
         <>
         <Title>What's Open?</Title>
         <List>
-            {venues.map((venue, index) => (
+            {venues?.map((venue, index) => (
                 <ListItem key={index} disablePadding>
                     <ListItemButton onClick={() => handleRowClick(venue)}>
                         {venue.name}

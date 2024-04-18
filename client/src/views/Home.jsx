@@ -83,7 +83,7 @@ function Home() {
                         flexDirection: 'column',
                     }}
                     >
-                    <VenueList />
+                    <VenueList venues={venues}/>
                     </Paper>
                 </Grid>
                 {/* Recent Orders */}
