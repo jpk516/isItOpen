@@ -154,4 +154,16 @@ router.delete("/api/accounts/logout", (req, res) => {
     });
 });
 
+// get favorites
+router.get("/api/accounts/favorites", (req, res) => {
+    if (req.isAuthenticated()) {
+        User.findById(req.user._id)
+            .populate("favorites")
+            .then((result) => res.json(result.favorites))
+            .catch((err) => res.json({ success: false, message: "Could not load favorites: " + err }));
+    } else {
+        res.json([]);
+    }
+});
+
 module.exports = router;
