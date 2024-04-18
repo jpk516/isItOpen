@@ -33,8 +33,8 @@ function Fav() {
     <DataGrid
       columns={[{ field: 'name' }]}
       rows={[
-        { id: 1, name: 'dummy' },
-        { id: 2, name: 'info' },
+        { id: 1, name: 'dummy', website:'website', status: "Open or not"},
+        { id: 2, name: 'info', website:'website', status: "Open or not"},
     ]}
   />
 </div>
