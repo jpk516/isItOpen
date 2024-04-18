@@ -7,6 +7,7 @@ const User = new Schema({
     firstName: String,
     lastName: String,
     role: { type: String, enum: ['Admin', 'User'], required: false, index: true },
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'Venue' }],
     created: { type: Date, default: Date.now },
     disabled: { type: Boolean, default: false }
 });

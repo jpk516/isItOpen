@@ -22,6 +22,15 @@ const AccountService = {
             password: password
         })
     },
+    getFavorites: (id) => {
+        return api.get(`/accounts/favorites/${id}`)
+    },
+    addFavorite: (id, venue) => {
+        return api.post(`/accounts/favorites/${id}`, venue)
+    },
+    deleteFavorite: (id, venue) => {
+        return api.delete(`/accounts/favorites/${id}`, venue)
+    },
     logOut: () => {
         return api.delete(`/accounts/logout`)
     }
