@@ -19,6 +19,7 @@ import CheckInService from "../services/check-in-service";
 import Achievement from '../components/Achievement';
 import IIOMap from "../components/IIOMap";
 import CheckInList from "../components/CheckInList";
+import VenueHours from "../components/VenueHours";
 
 function ViewVenue() {
     const [venueDetails, setVenueDetails] = useState({});
@@ -85,6 +86,7 @@ function ViewVenue() {
                             <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} onCheckIn={() => getCheckIns(venueDetails._id)} />
                         </Box>
                         <VenueDetails venue={venueDetails} checkIns={checkIns} />
+                        <VenueHours hours={venueDetails.hours}/>
                     </Grid>
                     <Grid item lg={6}>
                         <IIOMap venues={[venueDetails]} />
