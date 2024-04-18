@@ -3,6 +3,7 @@ import {APIProvider, Map, Marker, MapControl, ControlPosition} from '@vis.gl/rea
 import IIOMarker from './IIOMarker';
 
 function IIOMap({venues}) {
+
   return (
     <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
       <Map
@@ -15,7 +16,7 @@ function IIOMap({venues}) {
       >
       {venues?.map((venue, index) => {
         return (
-          <IIOMarker key={venue._id} venue={venue} />
+          <IIOMarker key={venue._id} venue={venue}/>
         )
       })}
       </Map>

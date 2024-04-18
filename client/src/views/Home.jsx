@@ -1,4 +1,3 @@
-
 import IIOMap from '../components/IIOMap';
 import VenueList from '../components/VenueList';
 import VenueService from '../services/venue-service';
@@ -17,6 +16,7 @@ function Home() {
     const { setPageTitle } = useAppContext();
     const [venues, setVenues] = useState([]);
     const [checkIns, setCheckIns] = useState([]);
+    const [allCheckIns, setAllCheckIns] = useState([]);
     
     useEffect(() => {
         setPageTitle('Home');
@@ -39,6 +39,7 @@ function Home() {
             console.log(error)
         })
     }
+
 
     const replaceCheckIn = (checkIn) => {
         const updatedCheckIns = checkIns.map(c => {

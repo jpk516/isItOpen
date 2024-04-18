@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper'
 import Title from '../components/Title';
-
+import CheckIfOpen from '../services/checkIfOpen';
 import VenueForm from '../components/VenueForm';
 import CheckIn from '../components/CheckIn';
 import VenueDetails from '../components/VenueDetails';
@@ -19,6 +19,7 @@ import CheckInService from "../services/check-in-service";
 import Achievement from '../components/Achievement';
 import IIOMap from "../components/IIOMap";
 import CheckInList from "../components/CheckInList";
+import VenueHours from "../components/VenueHours";
 
 function ViewVenue() {
     const [venueDetails, setVenueDetails] = useState({});
@@ -27,6 +28,7 @@ function ViewVenue() {
     const [value, setValue] = useState('edit');
     const { name } = useParams();
     let id = null;
+
 
     const getCheckIns = (id) => {
         CheckInService.getByVenue(id).then(response => {
@@ -66,6 +68,8 @@ function ViewVenue() {
         setCheckIns(updatedCheckIns);
     };
 
+
+
     return (
         <>
             {/* Venue Loaded */}
@@ -81,7 +85,8 @@ function ViewVenue() {
                             <Button variant="contained" onClick={() => setModalOpen(true)}>Update Us!</Button>
                             <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} onCheckIn={() => getCheckIns(venueDetails._id)} />
                         </Box>
-                        <VenueDetails venue={venueDetails} />
+                        <VenueDetails venue={venueDetails} checkIns={checkIns} />
+                        <VenueHours hours={venueDetails.hours}/>
                     </Grid>
                     <Grid item lg={6}>
                         <IIOMap venues={[venueDetails]} />
