@@ -26,7 +26,6 @@ const AccountService = {
         return api.get(`/accounts/favorites/`)
     },
     addFavorite: (venue) => {
-        console.log(venue)
         return api.post(`/accounts/favorites/`, venue)
     },
     deleteFavorite: (venue) => {

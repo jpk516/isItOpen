@@ -166,7 +166,7 @@ router.get("/api/accounts/favorites/", (req, res) => {
     }
 });
 
-router.post('api/accounts/favorites/', (req, res) => {
+router.post('/api/accounts/favorites/', (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)
             .then((user) => {
@@ -179,7 +179,7 @@ router.post('api/accounts/favorites/', (req, res) => {
     }
 });
 
-router.delete('api/accounts/favorites/', (req, res) => {
+router.delete('/api/accounts/favorites/', (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)
             .then((user) => {
