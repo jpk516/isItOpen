@@ -22,7 +22,6 @@ function Home() {
         setPageTitle('Home');
         getVenues();
         getCheckIns();
-        getAllCheckIns();
     }, [])
 
     const getVenues = () => {
@@ -41,13 +40,6 @@ function Home() {
         })
     }
 
-    const getAllCheckIns = () => {
-        CheckInService.getAll(10).then(response => {
-            setAllCheckIns(response.data);
-        }).catch(error => {
-            console.log(error)
-        })
-    }
 
     const replaceCheckIn = (checkIn) => {
         const updatedCheckIns = checkIns.map(c => {
@@ -79,7 +71,7 @@ function Home() {
                     }}
                     >
                     <Title>What's Hot?</Title>
-                    <IIOMap venues={venues} allCheckIns={allCheckIns}></IIOMap>
+                    <IIOMap venues={venues}></IIOMap>
                     </Paper>
                 </Grid>
                 {/* Recent Deposits */}

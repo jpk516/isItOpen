@@ -6,9 +6,13 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Link as RouterLink } from 'react-router-dom';
-import { FaBuilding, FaPhone, FaEnvelope, FaGlobe, FaMusic, FaUtensils, FaGlassMartiniAlt } from 'react-icons/fa';
+import { FaBuilding, FaPhone, FaEnvelope, FaGlobe, FaMusic, FaUtensils, FaGlassMartiniAlt, FaDoorOpen, FaDoorClosed} from 'react-icons/fa';
+import CheckIfOpen from '../services/checkIfOpen';
+import openIcon from '../assets/open-icon.png';
+import closedIcon from '../assets/closed-icon.png';
 
-const VenueView = ({ venue }) => {
+
+const VenueView = ({ venue, checkIns}) => {
   const getVenueTypeIcon = (type) => {
     switch (type) {
       case 'Bar':
@@ -20,7 +24,10 @@ const VenueView = ({ venue }) => {
       default:
         return null;
     }
+
   };
+  
+  const isOpen = CheckIfOpen(venue, checkIns)
 
   return (
     <Card sx={{ mt: 2 }}>
@@ -55,6 +62,18 @@ const VenueView = ({ venue }) => {
           </ListItemIcon>
           <ListItemText primary={<><strong>Type:</strong> {venue.type}</>} />
         </ListItem>
+        <ListItem>
+            <ListItemIcon>
+              {isOpen ? <FaDoorOpen /> : <FaDoorClosed />} 
+            </ListItemIcon>
+            <ListItemText 
+            primary={<><strong>Status:</strong> {isOpen ? "Open" : "Closed"}</>} />
+            <img 
+              src={isOpen ? openIcon : closedIcon} 
+              alt={isOpen ? "Open" : "Closed"} 
+              style={{ maxWidth: '100%', height: '100%'}}
+            />
+      </ListItem>
       </List>
     </Card>
   );

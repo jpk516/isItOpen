@@ -1,6 +1,7 @@
 function CheckIfOpen(venue, allCheckIns) {
 
-  //console.log(allCheckIns);
+  console.log(venue);
+
   const now = new Date(); //gets date and utc date
   const nowUtc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
 
@@ -9,6 +10,7 @@ function CheckIfOpen(venue, allCheckIns) {
   if (nowUtc.getUTCHours() < 3) {
       startPeriod.setUTCDate(startPeriod.getUTCDate() - 1); 
   }
+  
   const endPeriod = new Date(startPeriod);
   endPeriod.setUTCDate(endPeriod.getUTCDate() + 1);  //sets end time to 3 AM the next day
 
@@ -16,12 +18,12 @@ function CheckIfOpen(venue, allCheckIns) {
   const isReportedOpen = Array.isArray(allCheckIns) && allCheckIns.some(checkIn => { //checks for check ins 
     const checkInDate = new Date(checkIn.created);
     
-    return checkIn.venue === venue._id && checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open !== false; //returns true if check in is recent and open and within the 3AM-3AM window
+    return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open !== false; //returns true if check in is recent and open and within the 3AM-3AM window
   });
   
   const isReportedClosed = Array.isArray(allCheckIns) && allCheckIns.some(checkIn => {
     const checkInDate = new Date(checkIn.created);
-    return checkIn.venue === venue._id && checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; // //returns false if check in is recent and closed and within the 3AM-3AM window
+    return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; // //returns false if check in is recent and closed and within the 3AM-3AM window
   });
   
   if (isReportedOpen) 

@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
 import CheckIfOpen from '../services/checkIfOpen';
+import CheckInService from '../services/check-in-service'; 
+
 
 
 import {
@@ -25,10 +27,23 @@ const icons = {
   },
 };
 
-function IIOMarker({venue, allCheckIns}) {
+function IIOMarker({venue}) {
   const navigate = useNavigate();
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
+  const [checkIns, setCheckIns] = useState([]);
+
+  useEffect(() => {
+    getCheckIns();
+  }, [])
+
+  const getCheckIns = (id) => {
+    CheckInService.getByVenue(venue.id).then(response => {
+        setCheckIns(response.data);
+    }).catch(error => {
+        console.log(error);
+    });
+}
 
 
   // will go to public venue once that is checked in
@@ -39,7 +54,7 @@ function IIOMarker({venue, allCheckIns}) {
   const img = document.createElement('img');
   img.src = icons[venue.type]?.icon || '';
 
-  const isOpen = CheckIfOpen(venue, allCheckIns);
+  const isOpen = CheckIfOpen(venue, checkIns);
 
   //console.log(venue.name + "In IIOMarker is marked as " + isOpen);
 
