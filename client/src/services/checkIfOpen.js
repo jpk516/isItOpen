@@ -1,4 +1,4 @@
-function CheckIfOpen(venue, allCheckIns) {
+function CheckIfOpen(venue, checkIns) {
 
   console.log(venue);
 
@@ -15,15 +15,15 @@ function CheckIfOpen(venue, allCheckIns) {
   endPeriod.setUTCDate(endPeriod.getUTCDate() + 1);  //sets end time to 3 AM the next day
 
 
-  const isReportedOpen = Array.isArray(allCheckIns) && allCheckIns.some(checkIn => { //checks for check ins 
+  const isReportedOpen = Array.isArray(checkIns) && checkIns.some(checkIn => { //checks for check ins 
     const checkInDate = new Date(checkIn.created);
     
     return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open !== false; //returns true if check in is recent and open and within the 3AM-3AM window
   });
   
-  const isReportedClosed = Array.isArray(allCheckIns) && allCheckIns.some(checkIn => {
+  const isReportedClosed = Array.isArray(checkIns) && checkIns.some(checkIn => {
     const checkInDate = new Date(checkIn.created);
-    return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; // //returns false if check in is recent and closed and within the 3AM-3AM window
+    return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; //returns false if check in is recent and closed and within the 3AM-3AM window
   });
   
   if (isReportedOpen) 
@@ -39,7 +39,7 @@ function CheckIfOpen(venue, allCheckIns) {
 
   //console.log(venue.name + " is defaulting to hours");
 
- 
+  
   const currentDay = nowUtc.getUTCDay();
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const todaysHours = venue.hours.find(hourEntry => hourEntry.day === daysOfWeek[currentDay]); //gets current day and venue hours
@@ -56,6 +56,13 @@ function CheckIfOpen(venue, allCheckIns) {
 
   const closeTime = new Date(nowUtc);
   closeTime.setUTCHours(parseInt(closeTimeParts[0]), parseInt(closeTimeParts[1]), 0, 0);
+
+
+  console.log(venue.name);
+  console.log(`Open Time: ${openTime.toISOString()}`);
+  console.log(`Close Time: ${closeTime.toISOString()}`);
+  console.log(`Current UTC Time: ${nowUtc.toISOString()}`);
+
 
   if (closeTime < openTime) {
       closeTime.setUTCDate(closeTime.getUTCDate() + 1); 
