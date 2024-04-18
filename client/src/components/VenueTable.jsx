@@ -59,6 +59,7 @@ function VenueTable({ venues, onVenueClick }) {
         rows={rows}
         columns={columns}
         pageSize={10}
+        checkboxSelection
         rowsPerPageOptions={[10, 20, 50]}
         columnVisibilityModel={{
           email: false,
