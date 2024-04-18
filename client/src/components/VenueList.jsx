@@ -7,14 +7,31 @@ import StarOutline from '@mui/icons-material/StarOutline';
 import Title from './Title';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
+import AccountService from '../services/account-service';
 import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../contexts/AppContext';
 
 function VenueList({ name, venues }) {
+    const { toggleSnackbar } = useAppContext();
     const navigate = useNavigate();
     const listName = name ? name : 'Venues';
     
+    useEffect(() => {
+        
+    }, []);
+
     function handleRowClick(venue) {
         navigate(`/venues/${venue.name}`);
+    }
+
+    function handleFavoriteClick(venue) {
+        console.log(venue);
+        AccountService.addFavorite(venue).then(response => {
+            console.log(response);
+        }).catch(error => {
+            toggleSnackbar('An error occurred while adding the venue to your favorites.', 'error')
+        });
+
     }
 
     return (
@@ -24,12 +41,12 @@ function VenueList({ name, venues }) {
             {venues?.map((venue, index) => (
                 <ListItem key={index} disablePadding
                     secondaryAction={
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton edge="end" aria-label="delete" onClick={() => handleFavoriteClick(venue)}>
                       <StarOutline />
                     </IconButton>
                   }
                 >
-                    <ListItemButton onClick={() => handleRowClick(venue)}>
+                    <ListItemButton onClick={(venue) => handleRowClick(venue)}>
                         {venue.name}
                     </ListItemButton>
                 </ListItem>
