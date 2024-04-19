@@ -23,13 +23,13 @@ const AccountService = {
         })
     },
     getFavorites: (id) => {
-        return api.get(`/accounts/favorites/${id}`)
+        return api.get(`/accounts/favorites/`)
     },
-    addFavorite: (id, venue) => {
-        return api.post(`/accounts/favorites/${id}`, venue)
+    addFavorite: (venue) => {
+        return api.post(`/accounts/favorites/`, venue)
     },
-    deleteFavorite: (id, venue) => {
-        return api.delete(`/accounts/favorites/${id}`, venue)
+    deleteFavorite: (venue) => {
+        return api.delete(`/accounts/favorites/`, venue)
     },
     logOut: () => {
         return api.delete(`/accounts/logout`)

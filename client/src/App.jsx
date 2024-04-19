@@ -21,7 +21,7 @@ function App() {
     if (savedTheme) {
       return savedTheme;
     }
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const prefersDarkMode = true;//useMediaQuery('(prefers-color-scheme: dark)');
     // Fall back to system preference if no saved theme
     if (prefersDarkMode) {
         return 'dark';

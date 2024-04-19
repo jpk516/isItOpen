@@ -155,9 +155,9 @@ router.delete("/api/accounts/logout", (req, res) => {
 });
 
 // get favorites
-router.get("/api/accounts/favorites/:id", (req, res) => {
+router.get("/api/accounts/favorites/", (req, res) => {
     if (req.isAuthenticated()) {
-        User.findById(req.params.id)
+        User.findById(req.user._id)
             .populate("favorites")
             .then((result) => res.json(result.favorites))
             .catch((err) => res.json({ success: false, message: "Could not load favorites: " + err }));
@@ -166,11 +166,11 @@ router.get("/api/accounts/favorites/:id", (req, res) => {
     }
 });
 
-router.post('api/accounts/favorites/:id', (req, res) => {
+router.post('/api/accounts/favorites/', (req, res) => {
     if (req.isAuthenticated()) {
-        User.findById(req.params.id)
+        User.findById(req.user._id)
             .then((user) => {
-                user.favorites.push(req.body.venue);
+                user.favorites.push({ venue: req.body._id });
                 user.save()
                     .then((result) => res.json(result))
                     .catch((err) => res.json({ success: false, message: "Could not favorite venue: " + err }));
@@ -179,11 +179,11 @@ router.post('api/accounts/favorites/:id', (req, res) => {
     }
 });
 
-router.delete('api/accounts/favorites/:id', (req, res) => {
+router.delete('/api/accounts/favorites/', (req, res) => {
     if (req.isAuthenticated()) {
-        User.findById(req.params.id)
+        User.findById(req.user._id)
             .then((user) => {
-                user.favorites.pull(req.body.venue);
+                user.favorites.pull(req.body.venue._id);
                 user.save()
                     .then((result) => res.json(result))
                     .catch((err) => res.json({ success: false, message: "Could not unfavorite venue: " + err }));
