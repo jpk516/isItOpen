@@ -14,7 +14,7 @@ const debug = process.env.DEBUG_MODE === 'true' || false;
 const origin = process.env.ORIGIN || 'https://orca-app-muje4.ondigitalocean.app/'
 
 const corsOptions = {
-    origin: origin,
+    origin: "*",
     credentials: true
 }
 app.use(cors(corsOptions))
