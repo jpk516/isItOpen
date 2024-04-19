@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useMediaQuery } from 'react';
 import AccountService from './services/account-service';
 import TopNav from './components/TopNav';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
