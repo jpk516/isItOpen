@@ -12,6 +12,7 @@ const port = process.env.port || 8000
 const mongoUrl = process.env.MONGO_URI
 const debug = process.env.DEBUG_MODE === 'true' || false;
 const origin = process.env.ORIGIN || 'https://orca-app-muje4.ondigitalocean.app/'
+const secret = process.env.SESSION_SECRET || 'secret'
 
 const corsOptions = {
     origin: ['https://orca-app-muje4.ondigitalocean.app/', 'http://localhost:3000'],
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // auth & session setup
 app.use(session({
-    secret: process.env.SESSION_SECRET,
+    secret: secret,
     resave: false,
     saveUninitialized: false
 }))
@@ -103,5 +104,6 @@ async function connect() {
 
 app.listen(port, () => {
     connect()
+    console.log(`Allowing requests from ${corsOptions.origin}`)
     console.log(`App is running at http://localhost:${port}`)
 })
