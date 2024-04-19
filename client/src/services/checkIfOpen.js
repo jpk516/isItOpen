@@ -1,22 +1,22 @@
 function CheckIfOpen(venue, checkIns) {
-  //console.log(venue.name + " is being checked for open status");
+  console.log(venue.name + " is being checked for open status");
 
   const nowUtc = new Date();
 
-  //console.log(checkIns);
+  console.log(checkIns);
 
   // Define periods for checking check-ins
   const startPeriod = new Date(nowUtc);
-  startPeriod.setUTCHours(3, 0, 0, 0); 
-  if (nowUtc.getUTCHours() < 3) {
+  startPeriod.setUTCHours(9, 0, 0, 0); 
+  if (nowUtc.getUTCHours() < 9) {
       startPeriod.setUTCDate(startPeriod.getUTCDate() - 1); 
   }
   const endPeriod = new Date(startPeriod);
 
   endPeriod.setUTCDate(endPeriod.getUTCDate() + 1);
 
-  //console.log(startPeriod.toISOString());
-  //console.log(endPeriod.toISOString());
+  console.log(startPeriod.toISOString());
+  console.log(endPeriod.toISOString());
 
   if (checkIns.length > 0) 
   {
@@ -68,10 +68,10 @@ function CheckIfOpen(venue, checkIns) {
 
   const isOpenNow = nowUtc >= openTime && nowUtc < closeTime;
 
-  // console.log(`Open Time: ${openTime.toISOString()}`);
-  // console.log(`Adjusted Close Time: ${closeTime.toISOString()}`);
-  // console.log(`Current UTC Time: ${nowUtc.toISOString()}`);
-  // console.log('Is Open Now:', isOpenNow);
+  console.log(`Open Time: ${openTime.toISOString()}`);
+  console.log(`Adjusted Close Time: ${closeTime.toISOString()}`);
+  console.log(`Current UTC Time: ${nowUtc.toISOString()}`);
+  console.log('Is Open Now:', isOpenNow);
 
   return isOpenNow;
 }

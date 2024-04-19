@@ -1,10 +1,14 @@
-// import React, {useState} from 'react';
-// import {Text, StyleSheet} from 'react-native';
+import React from 'react';
+import ProfileUserBar from '../components/ProfileUserBar';
 
-function Settings(){
-    return("hello settings"
-    )
+function Profile() {
+
+  return (
+    <div>
+      <ProfileUserBar />
+      {/* Future settings options here */}
+    </div>
+  );
 }
 
-
-export default Settings;
+export default Profile;
