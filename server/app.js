@@ -11,9 +11,10 @@ const LocalStrategy = require('passport-local').Strategy
 const port = process.env.port || 8000
 const mongoUrl = process.env.MONGO_URI
 const debug = process.env.DEBUG_MODE === 'true' || false;
+const origin = process.env.ORIGIN || 'https://orca-app-muje4.ondigitalocean.app/'
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: origin,
     credentials: true
 }
 app.use(cors(corsOptions))
