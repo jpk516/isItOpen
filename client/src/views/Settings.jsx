@@ -1,11 +1,11 @@
 import React from 'react';
-import ProfileUserBar from '../components/ProfileUserBar';
+import ProfileCard from '../components/ProfileBar';
 
 function Profile() {
 
   return (
     <div>
-      <ProfileUserBar />
+      <ProfileCard />
       {/* Future settings options here */}
     </div>
   );
