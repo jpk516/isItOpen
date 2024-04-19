@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { useEffect, useState, useContext, useMediaQuery } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import AccountService from './services/account-service';
 import TopNav from './components/TopNav';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -21,7 +21,7 @@ function App() {
     if (savedTheme) {
       return savedTheme;
     }
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const prefersDarkMode = true;//useMediaQuery('(prefers-color-scheme: dark)');
     // Fall back to system preference if no saved theme
     if (prefersDarkMode) {
         return 'dark';
