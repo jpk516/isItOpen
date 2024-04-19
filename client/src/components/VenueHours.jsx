@@ -23,7 +23,7 @@ const VenueHours = ({ hours }) => {
       <CardContent>
         <List>
           {hours.map((hourEntry, index) => (
-            <ListItem>
+            <ListItem key={hourEntry._id || index}>
               <ListItemText 
                 primary={
                   <Typography variant="body1">

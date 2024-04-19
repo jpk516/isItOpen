@@ -13,9 +13,16 @@ import { FaUserAstronaut } from "react-icons/fa";
 import { BsCalendarDate } from "react-icons/bs";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Button from '@mui/material/Button';
+import { useState } from 'react';
+import ChangePasswordForm from './ChangePasswordForm'; 
 
 function ProfileCard() {
   const { auth } = useAppContext();
+  const [showForm, setShowForm] = useState(false);  // State to control form visibility
+
+  const handleShowForm = () => {
+    setShowForm(!showForm);  // Function to toggle the form visibility
+  };
 
   // Function to format date
   const formatDate = (dateString) => {
@@ -81,12 +88,13 @@ function ProfileCard() {
             </ListItemIcon>
             <ListItemText
               primary={
-                <Button variant="outlined" color="primary">
+                <Button variant="outlined" color="primary" onClick={handleShowForm}>
                   Change Password
                 </Button>
               }
             />
           </ListItem>
+          {showForm && <ChangePasswordForm />}
         </List>
       </CardContent>
     </Card>

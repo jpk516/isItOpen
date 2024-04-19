@@ -9,7 +9,7 @@ import ManageVenue from '../views/ManageVenue';
 import ViewVenue from "../views/ViewVenue";
 import Achievements from '../views/Achievements';
 import BRList from '../views/BRList';
-import Settings from '../views/Settings';
+import Profile from '../views/Profile';
 import Fav from '../views/Favorites';
 import Test from '../views/Test';
 
@@ -26,7 +26,7 @@ export const router = createBrowserRouter([
         { path: '/venues/manage/:name?', element: <ManageVenue /> },
         { path: '/achievements', element: <Achievements /> },
         { path: '/brlist', element: <BRList /> },
-        { path: '/settings', element: <Settings /> },
+        { path: '/profile', element: <Profile /> },
         { path: '/fav', element: <Fav /> },
         { path: '/test', element: <Test /> },
       ]

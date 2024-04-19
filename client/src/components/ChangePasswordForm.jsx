@@ -3,15 +3,35 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
+import AccountService from '../services/account-service';
+import { useAppContext } from '../contexts/AppContext'; 
 
-function ChangePasswordForm({ onSubmit }) {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+function ChangePasswordForm() {
+  const { toggleSnackbar } = useAppContext(); // Assuming you have a method to show snackbars
+  const [passwords, setPasswords] = useState({ password: '', confirmPassword: '' });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add validation logic here
-    onSubmit(password);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (passwords.password !== passwords.confirmPassword) {
+      toggleSnackbar("Passwords do not match", "error");
+      return;
+    }
+
+    // Here you can add more password validations as needed
+    
+    AccountService.update({ password: passwords.password })
+      .then(response => {
+        if (response.data.success) {
+          toggleSnackbar("Password updated successfully", "success");
+          // Perform additional actions on success, such as redirecting the user
+        } else {
+          toggleSnackbar(response.data.message, "error");
+        }
+      })
+      .catch(error => {
+        toggleSnackbar("Failed to update password", "error");
+      });
   };
 
   return (
@@ -21,16 +41,16 @@ function ChangePasswordForm({ onSubmit }) {
           <TextField
             label="New Password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={passwords.password}
+            onChange={(e) => setPasswords({ ...passwords, password: e.target.value })}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Confirm New Password"
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={passwords.confirmPassword}
+            onChange={(e) => setPasswords({ ...passwords, confirmPassword: e.target.value })}
             fullWidth
             margin="normal"
           />
@@ -43,30 +63,5 @@ function ChangePasswordForm({ onSubmit }) {
   );
 }
 
-function ProfileCard() {
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
-
-  const handlePasswordChange = () => {
-    setShowPasswordForm(true);
-  };
-
-  const handleSubmitPasswordChange = (newPassword) => {
-    // Implement logic to handle password change, such as making an API call
-    console.log('New password:', newPassword);
-    setShowPasswordForm(false); // Hide the form after submission
-  };
-
-  return (
-    <Card>
-      <CardContent>
-        {/* User details list here */}
-        <Button onClick={handlePasswordChange} variant="outlined" color="primary">
-          Change Password
-        </Button>
-        {showPasswordForm && <PasswordChangeForm onSubmit={handleSubmitPasswordChange} />}
-      </CardContent>
-    </Card>
-  );
-}
-
 export default ChangePasswordForm;
+
