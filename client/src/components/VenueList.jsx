@@ -46,7 +46,7 @@ function VenueList({ name, venues }) {
                     </IconButton>
                   }
                 >
-                    <ListItemButton onClick={(venue) => handleRowClick(venue)}>
+                    <ListItemButton onClick={() => handleRowClick(venue)}>
                         {venue.name}
                     </ListItemButton>
                 </ListItem>
