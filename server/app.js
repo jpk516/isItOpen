@@ -15,8 +15,12 @@ const origin = process.env.ORIGIN || 'https://orca-app-muje4.ondigitalocean.app/
 const secret = process.env.SESSION_SECRET || 'secret'
 
 const corsOptions = {
-    origin: ['https://orca-app-muje4.ondigitalocean.app/', 'http://localhost:3000'],
-    credentials: true
+    origin: ['https://orca-app-muje4.ondigitalocean.app', 'http://localhost:3000'],
+    credentials: true,
+    cookie : {
+        sameSite: 'none',
+        secure: true
+    }
 }
 app.use(cors(corsOptions))
 
