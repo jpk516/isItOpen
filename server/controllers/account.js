@@ -111,7 +111,9 @@ router.post("/api/accounts/login", (req, res) => {
                             res.json({ success: false, message: er });
                         }
                         else {
-                            res.json({ success: true, message: "You are logged in"});
+                            req.session.save(() => {
+                                res.json({ success: true, message: "You are logged in"});
+                            });
                         }
                     });
                 }
