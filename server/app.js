@@ -19,7 +19,7 @@ var http = require('http')
 var fs = require('fs')
 
 const corsOptions = {
-    origin: ['*.ondigitalocean.app', 'http://localhost:3000'],
+    origin: ['*.ondigitalocean.app', 'http://localhost:3000', '*.whatstarted.com'],
     credentials: true
 }
 app.use(cors(corsOptions))
