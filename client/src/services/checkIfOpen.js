@@ -1,74 +1,85 @@
 function CheckIfOpen(venue, checkIns) {
+  // console.log(venue.name + " is being checked for open status");
 
-  console.log(venue);
+  const nowUtc = new Date();
 
-  const now = new Date(); //gets date and utc date
-  const nowUtc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
+  //console.log(checkIns);
 
-  const startPeriod = new Date(nowUtc); //sets start period to 3 AM
-  startPeriod.setUTCHours(3, 0, 0, 0); 
-  if (nowUtc.getUTCHours() < 3) {
+  // Define periods for checking check-ins
+  const startPeriod = new Date(nowUtc);
+  startPeriod.setUTCHours(9, 0, 0, 0); 
+  if (nowUtc.getUTCHours() < 9) {
       startPeriod.setUTCDate(startPeriod.getUTCDate() - 1); 
   }
-  
   const endPeriod = new Date(startPeriod);
-  endPeriod.setUTCDate(endPeriod.getUTCDate() + 1);  //sets end time to 3 AM the next day
 
+  endPeriod.setUTCDate(endPeriod.getUTCDate() + 1);
 
-  const isReportedOpen = Array.isArray(checkIns) && checkIns.some(checkIn => { //checks for check ins 
-    const checkInDate = new Date(checkIn.created);
-    
-    return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open !== false; //returns true if check in is recent and open and within the 3AM-3AM window
-  });
-  
-  const isReportedClosed = Array.isArray(checkIns) && checkIns.some(checkIn => {
-    const checkInDate = new Date(checkIn.created);
-    return checkInDate >= startPeriod && checkInDate < endPeriod && checkIn.open === false; //returns false if check in is recent and closed and within the 3AM-3AM window
-  });
-  
-  if (isReportedOpen) 
+  // console.log(startPeriod.toISOString());
+  // console.log(endPeriod.toISOString());
+
+  if (checkIns.length > 0) 
   {
-      //console.log(venue.name + " is checked in as open in checkIFOpen");
-      return true;  //returns true if open
-  } 
-  else if (isReportedClosed) 
-  {
-      //console.log(venue.name + " is checked in as closed in checkIFOpen");
-      return false; //returns false if closed
+    const mostRecentCheckIn = checkIns[0];
+    const checkInDate = new Date(mostRecentCheckIn.created);
+
+    // Check if the most recent check-in is within the defined time period
+    if (checkInDate >= startPeriod && checkInDate < endPeriod) 
+    {
+      if (mostRecentCheckIn.open) {
+        console.log(`${venue.name} is checked in as open based on the most recent check-in.`);
+        return true;
+      } else {
+        console.log(`${venue.name} is checked in as closed based on the most recent check-in.`);
+        return false;
+      }
+    }
   }
 
   //console.log(venue.name + " is defaulting to hours");
 
-  
-  const currentDay = nowUtc.getUTCDay();
+  // Get today's hours based on current UTC day
+  const currentDayIndex = nowUtc.getUTCDay();
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const todaysHours = venue.hours.find(hourEntry => hourEntry.day === daysOfWeek[currentDay]); //gets current day and venue hours
+  const todaysHours = venue.hours.find(hourEntry => hourEntry.day === daysOfWeek[currentDayIndex]);
 
   if (!todaysHours || todaysHours.open === null) {
-      return false;  //if no hours posted return false
+    return false;
   }
 
-  const openTimeParts = todaysHours.open.split('T')[1].split(':'); //set up open and closed times
+  // Construct open and close times
+  const openTimeParts = todaysHours.open.split('T')[1].split(':');
   const closeTimeParts = todaysHours.close.split('T')[1].split(':');
-
   const openTime = new Date(nowUtc);
-  openTime.setUTCHours(parseInt(openTimeParts[0]), parseInt(openTimeParts[1]), 0, 0); 
+  openTime.setUTCHours(parseInt(openTimeParts[0]), parseInt(openTimeParts[1]), parseInt(openTimeParts[2]), 0);
 
-  const closeTime = new Date(nowUtc);
-  closeTime.setUTCHours(parseInt(closeTimeParts[0]), parseInt(closeTimeParts[1]), 0, 0);
-
-
-  console.log(venue.name);
-  console.log(`Open Time: ${openTime.toISOString()}`);
-  console.log(`Close Time: ${closeTime.toISOString()}`);
-  console.log(`Current UTC Time: ${nowUtc.toISOString()}`);
+  const closeTime = new Date(openTime); 
 
 
-  if (closeTime < openTime) {
-      closeTime.setUTCDate(closeTime.getUTCDate() + 1); 
+  if (nowUtc < openTime && nowUtc.getUTCHours() < parseInt(openTimeParts[0]) && nowUtc.getUTCHours() <= 9) {
+    openTime.setUTCDate(openTime.getUTCDate() - 1);
   }
+   
+  
+  // Check if we need to adjust open time to the previous day, hours refer to previous day as business is open past midnight
+  if (parseInt(closeTimeParts[0]) <= parseInt(openTimeParts[0])) {
+    closeTime.setUTCDate(closeTime.getUTCDate() + 1);  // Add a day if closes after midnight
+  }
+  
+  closeTime.setUTCHours(parseInt(closeTimeParts[0]), parseInt(closeTimeParts[1]), parseInt(closeTimeParts[2]), 0);
 
-  return nowUtc >= openTime && nowUtc <= closeTime; //returns true if current time is between open and close, and false if not
+  // console.log(openTimeParts[0]);
+  // console.log(nowUtc.getUTCHours());
+
+  const isOpenNow = nowUtc >= openTime && nowUtc <= closeTime;
+
+
+  // console.log(`Open Time: ${openTime.toISOString()}`);
+  // console.log(`Adjusted Close Time: ${closeTime.toISOString()}`);
+  // console.log(`Current UTC Time: ${nowUtc.toISOString()}`);
+  // console.log('Is Open Now:', isOpenNow);
+
+  return isOpenNow;
 }
 
 export default CheckIfOpen;

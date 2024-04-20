@@ -38,7 +38,7 @@ function IIOMarker({venue}) {
   }, [])
 
   const getCheckIns = (id) => {
-    CheckInService.getByVenue(venue.id).then(response => {
+    CheckInService.getByVenue(venue._id).then(response => {
         setCheckIns(response.data);
     }).catch(error => {
         console.log(error);

@@ -160,8 +160,7 @@ function TopNav({ onThemeChange }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem component={Link} to={"/settings"}>Settings</MenuItem>
+                <MenuItem component={Link} to={"/profile"}>Profile</MenuItem>
                 <MenuItem onClick={logOut}>Logout</MenuItem>
               </Menu>
             </div>
