@@ -131,6 +131,7 @@ router.get(`${base}/count`, (req, res) => {
 * 
 */
 router.get(`${base}/venue/:venue`, (req, res) => {
+    console.log("req details", req.isAuthenticated(), req.params.venue, req.user);
     if (req.isAuthenticated()) {
         CheckIn.find({venue: req.params.venue})
             .sort({created: -1})

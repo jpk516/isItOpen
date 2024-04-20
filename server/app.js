@@ -31,13 +31,17 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 let sessionSettings = {
     secret: secret,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
 }
 if (addCookieSettings) {
     sessionSettings.cookie = {
         secure: true,
         sameSite: 'none'
+    }
+} else {
+    sessionSettings.cookie = {
+        secure: false
     }
 }
 
