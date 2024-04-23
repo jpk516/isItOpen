@@ -94,7 +94,6 @@ function TopNav({ onThemeChange }) {
   useEffect(() => {
     AccountService.isAuthenticated().then(response => {
       setAuth(response.data)
-      console.log(response.data)
     }).catch(error => {
         alert(`Error: ${error.data}`)
     })

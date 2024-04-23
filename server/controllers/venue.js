@@ -44,7 +44,6 @@ router.get(base, (req, res) => {
                 // Convert each venue to a plain object and add favorite property
                 result = result.map(venue => {
                     const venueObject = venue.toObject();
-                    console.log(req.user.favorites);
                     venueObject.favorite = req.user.favorites.some(f => f.venue.equals(venue._id));
                     return venueObject;
                 });

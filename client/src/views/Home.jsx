@@ -33,7 +33,6 @@ function Home() {
     }
 
     const onFavoriteChange = (venue) => {
-        console.log("in change", venue);
         const updatedVenues = venues.map(v => {
             if (v._id === venue._id) {
                 return {

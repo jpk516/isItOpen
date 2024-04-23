@@ -110,6 +110,11 @@ router.post("/api/accounts/login", (req, res) => {
                         if (er) {
                             res.json({ success: false, message: er });
                         }
+                        else if (req.user.disabled) {
+                            req.logout(() => {
+                                res.json({ success: false, message: "Your account has been disabled. Please contact an administrator." });
+                            });
+                        }
                         else {
                             req.session.save(() => {
                                 res.json({ success: true, message: "You are logged in"});
