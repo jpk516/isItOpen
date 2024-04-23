@@ -250,5 +250,4 @@ router.put(base, (req, res, next) => {
     });
 });
 
-module.exports =
 module.exports = router

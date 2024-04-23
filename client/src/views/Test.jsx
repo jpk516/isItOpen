@@ -3,9 +3,11 @@ import { useAppContext } from '../contexts/AppContext';
 import { Button } from '@mui/material';
 import VenueService from '../services/venue-service';
 import VenueList from '../components/VenueList';
+import AccountService from '../services/account-service';
 
 function Test() {
     const {auth, setAuth, toggleSnackbar } = useAppContext();
+    const [favoriteVenues, setFavoriteVenues] = useState([]);
     const [venues, setVenues] = useState([]);
 
     useEffect(() => {
@@ -14,6 +16,13 @@ function Test() {
         }).catch(error => {
             console.log(error);
         });
+        
+        AccountService.getFavorites().then(response => {
+            setFavoriteVenues(response.data);
+        }).catch(error => {
+            console.log(error);
+        });
+
     }, []);
 
     const toggleMessage = () => {
@@ -30,6 +39,10 @@ function Test() {
         </div>
         <div>
             <VenueList venues={venues} />
+        </div>
+        <div>
+            <h2>Favorites</h2>
+            <VenueList venues={favoriteVenues} />
         </div>
     </>
     );

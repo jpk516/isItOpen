@@ -166,7 +166,17 @@ router.get("/api/accounts/favorites/", (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)
             .populate("favorites")
-            .then((result) => res.json(result.favorites))
+            .populate("favorites.venue")
+            .exec()
+            .then((result) => {
+                let favorites = result.favorites.map(f => f.venue);
+                result = favorites.map(venue => {
+                    const venueObject = venue.toObject();
+                    venueObject.favorite = req.user.favorites.some(f => f.venue.equals(venue._id));
+                    return venueObject;
+                });
+                res.json(result);
+            })
             .catch((err) => res.json({ success: false, message: "Could not load favorites: " + err }));
     } else {
         res.json([]);
