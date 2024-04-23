@@ -39,5 +39,4 @@ To start the react website cd to client folder and run:
 
 Project created with React + Vite template.
 
-Organization:
--------------
+
