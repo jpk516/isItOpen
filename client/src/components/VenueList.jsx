@@ -11,7 +11,7 @@ import AccountService from '../services/account-service';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 
-function VenueList({ name, venues, onFavoriteChange }) {
+function VenueList({ name, venues, onFavoriteChange}) {
     const { toggleSnackbar } = useAppContext();
     const navigate = useNavigate();
     const listName = name ? name : 'Venues';
