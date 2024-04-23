@@ -104,8 +104,13 @@ function TopNav({ onThemeChange }) {
     AccountService.logOut().then(response => {
       setAuth({authenticated: false, username: ''})
       setAnchorEl(null);
-      navigate('/login')
+      navigate('/login');
     })
+  }
+
+  function goToProfile() {
+    setAnchorEl(null);
+    navigate('/profile');
   }
 
   return (
@@ -160,7 +165,7 @@ function TopNav({ onThemeChange }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem component={Link} to={"/profile"}>Profile</MenuItem>
+                <MenuItem onClick={goToProfile}>Profile</MenuItem>
                 <MenuItem onClick={logOut}>Logout</MenuItem>
               </Menu>
             </div>
