@@ -40,10 +40,20 @@ const base = '/api/venues';
 router.get(base, (req, res) => {
     Venue.find({})
         .then((result) => {
-            res.json(result)
+            if (req.isAuthenticated()) {
+                // Convert each venue to a plain object and add favorite property
+                result = result.map(venue => {
+                    const venueObject = venue.toObject();
+                    console.log(req.user.favorites);
+                    venueObject.favorite = req.user.favorites.some(f => f.venue.equals(venue._id));
+                    return venueObject;
+                });
+            }
+            res.json(result);
         })
         .catch((err) => res.json({ success: false, message: "Could not load venues: " + err }));
 });
+
 
 /**
 * @openapi

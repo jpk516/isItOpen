@@ -32,6 +32,20 @@ function Home() {
         })
     }
 
+    const onFavoriteChange = (venue) => {
+        console.log("in change", venue);
+        const updatedVenues = venues.map(v => {
+            if (v._id === venue._id) {
+                return {
+                    ...v,
+                    favorite: venue.favorite
+                };
+            }
+            return v;
+        });
+        setVenues(updatedVenues);
+    }
+
     const getCheckIns = () => {
         CheckInService.getRecent(10).then(response => {
             setCheckIns(response.data);
@@ -83,7 +97,7 @@ function Home() {
                         flexDirection: 'column',
                     }}
                     >
-                    <VenueList venues={venues}/>
+                    <VenueList venues={venues} onFavoriteChange={(venue) => onFavoriteChange(venue)}/>
                     </Paper>
                 </Grid>
                 {/* Recent Orders */}

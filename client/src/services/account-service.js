@@ -29,7 +29,7 @@ const AccountService = {
         return api.post(`/accounts/favorites/`, venue)
     },
     deleteFavorite: (venue) => {
-        return api.delete(`/accounts/favorites/`, venue)
+        return api.delete(`/accounts/favorites/${venue._id}`)
     },
     logOut: () => {
         return api.delete(`/accounts/logout`)

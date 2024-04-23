@@ -11,7 +11,7 @@ import AccountService from '../services/account-service';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 
-function VenueList({ name, venues }) {
+function VenueList({ name, venues, onFavoriteChange }) {
     const { toggleSnackbar } = useAppContext();
     const navigate = useNavigate();
     const listName = name ? name : 'Venues';
@@ -24,14 +24,28 @@ function VenueList({ name, venues }) {
         navigate(`/venues/${venue.name}`);
     }
 
-    function handleFavoriteClick(venue) {
-        console.log(venue);
-        AccountService.addFavorite(venue).then(response => {
-            console.log(response);
-        }).catch(error => {
-            toggleSnackbar('An error occurred while adding the venue to your favorites.', 'error')
-        });
+    function handleFavoriteChange(venue) {
+        if (onFavoriteChange) {
+            onFavoriteChange(venue);
+        }
+    }
 
+    function handleFavoriteClick(venue) {
+        if (venue.favorite) {
+            AccountService.deleteFavorite(venue).then(response => {
+                venue.favorite = false;
+                handleFavoriteChange(venue);
+            }).catch(error => {
+                toggleSnackbar('An error occurred while removing the venue from your favorites.', 'error')
+            });
+        } else {
+            AccountService.addFavorite(venue).then(response => {
+                venue.favorite = true;
+                handleFavoriteChange(venue);
+            }).catch(error => {
+                toggleSnackbar('An error occurred while adding the venue to your favorites.', 'error')
+            });
+        }
     }
 
     return (
@@ -42,7 +56,7 @@ function VenueList({ name, venues }) {
                 <ListItem key={index} disablePadding
                     secondaryAction={
                     <IconButton edge="end" aria-label="delete" onClick={() => handleFavoriteClick(venue)}>
-                      <StarOutline />
+                        {venue.favorite ? <Star /> : <StarOutline />}
                     </IconButton>
                   }
                 >
