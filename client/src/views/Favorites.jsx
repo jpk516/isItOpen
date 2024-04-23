@@ -1,5 +1,6 @@
-//import * as React from 'react';
+import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import FavoritesList from "../components/FavoritesList"
 // import List from '@mui/material/List';
 // import ListItem from '@mui/material/ListItem';
 // import ListItemButton from '@mui/material/ListItemButton';
@@ -29,15 +30,17 @@ function Fav() {
     // thought process is to add an icon or marker thats 
     //clickable to the rows so they start an event to add it to a favorites list
     //they feed the list into another grid table on the fav page
-  <div>
-    <DataGrid
-      columns={[{ field: 'name' }]}
-      rows={[
-        { id: 1, name: 'dummy', website:'website', status: "Open or not"},
-        { id: 2, name: 'info', website:'website', status: "Open or not"},
-    ]}
-  />
-</div>
+
+    < FavoritesList />
+//   <div>
+//     <DataGrid
+//       columns={[{ field: 'name' }]}
+//       rows={[
+//         { id: 1, name: 'dummy', website:'website', status: "Open or not"},
+//         { id: 2, name: 'info', website:'website', status: "Open or not"},
+//     ]}
+//   />
+// </div>
    );
 }
 export default Fav;

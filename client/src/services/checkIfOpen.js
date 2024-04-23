@@ -27,10 +27,10 @@ function CheckIfOpen(venue, checkIns) {
     if (checkInDate >= startPeriod && checkInDate < endPeriod) 
     {
       if (mostRecentCheckIn.open) {
-        console.log(`${venue.name} is checked in as open based on the most recent check-in.`);
+        // console.log(`${venue.name} is checked in as open based on the most recent check-in.`); 
         return true;
       } else {
-        console.log(`${venue.name} is checked in as closed based on the most recent check-in.`);
+        // console.log(`${venue.name} is checked in as closed based on the most recent check-in.`);
         return false;
       }
     }
