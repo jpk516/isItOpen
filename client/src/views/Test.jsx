@@ -40,6 +40,10 @@ function Test() {
         <div>
             <VenueList venues={venues} />
         </div>
+        <div>
+            <h2>Favorites</h2>
+            <VenueList venues={favoriteVenues} />
+        </div>
     </>
     );
 }
