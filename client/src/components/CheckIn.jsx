@@ -13,12 +13,14 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CheckInService from '../services/check-in-service';
 import TagService from '../services/tag-service';
+import { useAppContext } from '../contexts/AppContext.jsx';
 
 function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
   const defaultObject = { open: true, comment: '', venue: venue?._id ?? '', tags: [] };
   const [checkInDetails, setCheckInDetails] = useState(defaultObject);
   const [tags, setTags] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const {toggleSnackbar  } = useAppContext();
 
   useEffect(() => {
     TagService.getAll().then(response => {
@@ -35,9 +37,10 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
       onClose(); // Close the modal on successful check-in
       if (onCheckIn) {
         onCheckIn();
+        toggleSnackbar('Successfully Checked IN', 'success');
       }
     }).catch(error => {
-      setErrorMessage(error.response?.data ?? "An error occurred, please try again.");
+      toggleSnackbar('An error occurred while removing the venue from your favorites.', 'error');
     });
   };
 
