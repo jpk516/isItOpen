@@ -16,6 +16,8 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import openLogo from '../assets/open.png';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function LoginForm() {
     const {auth, setAuth, toggleSnackbar } = useAppContext();
@@ -23,6 +25,7 @@ export default function LoginForm() {
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    
     const getIsAuthenticated = () => {
         AccountService.isAuthenticated().then(response => {
             if (response.data.authenticated) {
@@ -52,8 +55,9 @@ export default function LoginForm() {
                 toggleSnackbar(error, 'error');
             })
     }
+    
     const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
+      setShowPassword(!showPassword);
     };
 
   return (
