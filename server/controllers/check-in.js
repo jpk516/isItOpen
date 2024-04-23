@@ -319,8 +319,7 @@ router.delete(`${base}/:id`, (req, res) => {
             if (!checkIn) {
                 return res.status(404).send("Check-in not found");
             }
-            console.log(req.user);
-
+            
             if (checkIn?.user?.equals(req.user._id) || req.user.role === 'Admin') {
                 // set to hidden instead of deleting
                 checkIn.hidden = true;

@@ -9,6 +9,7 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
     lastName: '',
     role: '',
     username: '',
+    disabled: false,
   });
 
   useEffect(() => {
@@ -22,6 +23,7 @@ const ManageUserDialog = ({ open, onClose, user, onSave }) => {
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         role: user.role || '',
+        disabled: user.disabled || false,
       });
     }
   }, [user]);

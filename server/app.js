@@ -13,9 +13,13 @@ const mongoUrl = process.env.MONGO_URI
 const debug = process.env.DEBUG_MODE === 'true' || false;
 const origin = process.env.ORIGIN || 'https://orca-app-muje4.ondigitalocean.app/'
 const secret = process.env.SESSION_SECRET || 'secret'
+const addCookieSettings = process.env.ADD_COOKIE_SETTINGS === 'true' || false
+var https = require('https')
+var http = require('http')
+var fs = require('fs')
 
 const corsOptions = {
-    origin: ['*.ondigitalocean.app', 'http://localhost:3000'],
+    origin: ['*.ondigitalocean.app', 'http://localhost:3000', '*.whatstarted.com'],
     credentials: true
 }
 app.use(cors(corsOptions))
@@ -25,12 +29,24 @@ app.use(bodyParser.json())
 // from class. needed?
 app.use(bodyParser.urlencoded({extended: false}))
 
-// auth & session setup
-app.use(session({
+let sessionSettings = {
     secret: secret,
-    resave: false,
-    saveUninitialized: false,
-}))
+    resave: true,
+    saveUninitialized: true,
+}
+if (addCookieSettings) {
+    sessionSettings.cookie = {
+        secure: true,
+        sameSite: 'none'
+    }
+} else {
+    sessionSettings.cookie = {
+        secure: false
+    }
+}
+
+// auth & session setup
+app.use(session(sessionSettings))
 
 // setup passport
 app.use(passport.initialize())
@@ -107,3 +123,10 @@ app.listen(port, () => {
     console.log(`Allowing requests from ${corsOptions.origin}`)
     console.log(`App is running at http://localhost:${port}`)
 })
+
+// https.createServer({
+//     key: fs.readFileSync('./keys/localhost-key.pem'),
+//     cert: fs.readFileSync('./keys/localhost.pem')
+// }, app).listen(443, () => {
+//     console.log('HTTPS server running on port https://localhost:443');
+// })

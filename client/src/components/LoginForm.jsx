@@ -16,13 +16,16 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import openLogo from '../assets/open.png';
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function LoginForm() {
     const {auth, setAuth, toggleSnackbar } = useAppContext();
     const navigate = useNavigate();
     const [loginDetails, setLoginDetails] = useState({userName: '', password: ''});
     const [loginMessage, setLoginMessage] = useState('');
-
+    const [showPassword, setShowPassword] = useState(false);
+    
     const getIsAuthenticated = () => {
         AccountService.isAuthenticated().then(response => {
             if (response.data.authenticated) {
@@ -52,7 +55,10 @@ export default function LoginForm() {
                 toggleSnackbar(error, 'error');
             })
     }
-
+    
+    const handleTogglePassword = () => {
+      setShowPassword(!showPassword);
+    };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -81,16 +87,29 @@ export default function LoginForm() {
             onChange={e => setLoginDetails({...loginDetails, userName: e.target.value})}
           />
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange={e => setLoginDetails({...loginDetails, password: e.target.value})}
-          />
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="password"
+                    label="Password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'} 
+                    autoComplete="current-password"
+                    onChange={e => setLoginDetails({...loginDetails, password: e.target.value})}
+                    InputProps={{ 
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleTogglePassword} 
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"

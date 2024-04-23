@@ -14,6 +14,16 @@ const User = new Schema({
     disabled: { type: Boolean, default: false }
 });
 
+// enforce unique venue favorites
+User.index({ _id: 1, 'favorites.venue': 1 }, { unique: true });
+
+// enforce unique email
+User.index({ email: 1 }, { unique: true });
+
+User.virtual('fullName').get(function() {
+    return this.firstName + ' ' + this.lastName;
+});
+
 User.isAdmin = function() {
     return this.role === 'Admin';
 };

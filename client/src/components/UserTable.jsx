@@ -37,7 +37,7 @@ const UserTable = ({ users, onClick }) => {
         editable: false,
         },
         {
-          field: 'disabled',
+          field: 'disabledString',
           headerName: 'Disabled',
           width: 110,
           editable: false,
@@ -54,7 +54,8 @@ const UserTable = ({ users, onClick }) => {
         role: user.role || '',
         username: user.username,
         created: user.created ? new Date(user.created).toLocaleString() : '',
-        disabled: user.disabled ? 'Yes' : 'No',
+        disabled: user.disabled || false,
+        disabledString: user.disabled ? 'Yes' : 'No',
     }));
 
   return (

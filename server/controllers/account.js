@@ -110,8 +110,15 @@ router.post("/api/accounts/login", (req, res) => {
                         if (er) {
                             res.json({ success: false, message: er });
                         }
+                        else if (req.user.disabled) {
+                            req.logout(() => {
+                                res.json({ success: false, message: "Your account has been disabled. Please contact an administrator." });
+                            });
+                        }
                         else {
-                            res.json({ success: true, message: "You are logged in"});
+                            req.session.save(() => {
+                                res.json({ success: true, message: "You are logged in"});
+                            });
                         }
                     });
                 }
@@ -170,6 +177,12 @@ router.post('/api/accounts/favorites/', (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)
             .then((user) => {
+                if (!user.favorites) {
+                    user.favorites = [];
+                }
+                if (user.favorites.find(f => f.venue == req.body._id)) {
+                    return res.json({ success: false, message: "Venue already favorited" });
+                }
                 user.favorites.push({ venue: req.body._id });
                 user.save()
                     .then((result) => res.json(result))
@@ -179,11 +192,11 @@ router.post('/api/accounts/favorites/', (req, res) => {
     }
 });
 
-router.delete('/api/accounts/favorites/', (req, res) => {
+router.delete('/api/accounts/favorites/:id', (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)
             .then((user) => {
-                user.favorites.pull(req.body.venue._id);
+                user.favorites = user.favorites.filter(f => f.venue != req.params.id);
                 user.save()
                     .then((result) => res.json(result))
                     .catch((err) => res.json({ success: false, message: "Could not unfavorite venue: " + err }));

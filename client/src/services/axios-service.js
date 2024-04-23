@@ -2,7 +2,7 @@ import axios from "axios"
 
 const api = axios.create({
     withCredentials: true,
-    baseURL: "http://localhost:8099/api", //"https://monkfish-app-hajx4.ondigitalocean.app/api/", 
+    baseURL: "http://localhost:8099/api", //"https://monkfish-app-hajx4.ondigitalocean.app/api/", http://localhost:8099/api https://server.whatstarted.com/api
 })
 
 //https://stackoverflow.com/questions/71096083/react-js-add-middleware-to-redirect-to-login-when-axios-response-is-401
