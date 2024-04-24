@@ -7,3 +7,5 @@ const Achievement = new Schema({
     points: { type: Number, required: true, default: 0},
     created: { type: Date, default: Date.now }
 });
+
+module.exports = mongoose.model('Achievement', Achievement);
