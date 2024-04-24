@@ -4,7 +4,7 @@ let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_ACCOUNT,
-        pass: process.env.EMAIL_PASSWORD
+        pass: process.env.EMAIL_APP_PASSWORD
     }
 });
 
@@ -23,7 +23,7 @@ const sendMail = async (to, subject, text, html) => {
         }
     });
 
-    console.log("Message sent: %s", res.messageId);
+    //console.log("Message sent: %s", res);
 }
 
 module.exports = {
