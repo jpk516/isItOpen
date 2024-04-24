@@ -17,5 +17,12 @@ module.exports = {
             success: { type: 'boolean' },
             message: { type: 'string' }
         }
+    },
+    VenueSelectList: {
+        type: 'object',
+        properties: {
+            _id: { type: 'string' },
+            name: { type: 'string' }
+        }
     }
 };
