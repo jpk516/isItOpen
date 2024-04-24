@@ -13,9 +13,11 @@ import { useNavigate } from 'react-router-dom';
 import MuiLink from '@mui/material/Link';
 import { Link } from 'react-router-dom';
 import CheckInService from '../services/check-in-service';
+import { useAppContext } from '../contexts/AppContext'; 
 
 function CheckInList({ checkIns, onVote, isVenuePage = false }) {
     const navigate = useNavigate();
+    const {toggleSnackbar  } = useAppContext();
 
     const handleButtonClick = (name) => {
         navigate(`/venues/${name}`);
@@ -29,7 +31,7 @@ function CheckInList({ checkIns, onVote, isVenuePage = false }) {
         CheckInService.vote(checkInId, { up: true }).then((response) => {
             if (onVote && response.data) onVote(response.data);
         }).catch((error) => {
-            console.log('Error voting', error);
+            toggleSnackbar('Error Upvoting CheckIn', 'error');
         });
     };
 
@@ -38,7 +40,7 @@ function CheckInList({ checkIns, onVote, isVenuePage = false }) {
         CheckInService.vote(checkInId, { up: false }).then((response) => {
             if (onVote && response.data) onVote(response.data);
         }).catch((error) => {
-            console.log('Error voting', error);
+            toggleSnackbar('Error Downvoting CheckIn', 'error');
         });
     };
 

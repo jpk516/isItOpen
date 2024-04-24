@@ -22,6 +22,7 @@ function Admin() {
     const [value, setValue] = useState('venues');
     const [venues, setVenues] = useState([]);
     const [users, setUsers] = useState([]);
+    const {toggleSnackbar} = useAppContext();
 
     useEffect(() => {
         setPageTitle('Admininstration');
@@ -29,13 +30,13 @@ function Admin() {
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error occured getting all venues', 'error');
         });
 
         AccountService.getAll().then(response => {
             setUsers(response.data);
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error occured getting all users', 'error');
         });
     }, []);
 

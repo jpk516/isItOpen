@@ -18,7 +18,7 @@ function FavoritesList() {
         AccountService.getFavorites().then(response => {
             setFavorites(response.data);
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error getting user favorites', 'error');
         });
 
     }, []);
@@ -27,7 +27,7 @@ function FavoritesList() {
         console.log(favorite);
         if (favorite.favorite) { //if star is marked if statement is started
             AccountService.deleteFavorite(favorite) //calls on service to delete the favorite
-                .then(response => { // once favorite deleted deletes the selected favorite from the list 
+                .then(response => { // once favorite deleted the selected favorite from the list 
                     const updatedFavorites = favorites.filter(f => f._id !== favorite._id);
                     setFavorites(updatedFavorites); // Resets list without now gone favorite so list reloads
                     toggleSnackbar('Venue removed from favorites.', 'success'); //success message

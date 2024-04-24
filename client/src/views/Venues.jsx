@@ -7,15 +7,17 @@ import Title from '../components/Title';
 import VenueTable from '../components/VenueTable';
 import VenueService from '../services/venue-service';
 import { useState, useEffect } from 'react';
+import { useAppContext } from '../contexts/AppContext';
 
 function Venues() {
     const [venues, setVenues] = useState([]);
+    const {toggleSnackbar } = useAppContext();
 
     useEffect(() => {
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error occured getting venues', 'error');
         });
     }, []);
 

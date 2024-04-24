@@ -13,10 +13,12 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useAppContext } from '../contexts/AppContext';
 
 function VenueForm() {
     const [validated, setValidated] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const {toggleSnackBar} = useAppContext();
     const { name } = useParams();
     const navigate = useNavigate();
     const [venueDetails, setVenueDetails] = useState({
@@ -38,7 +40,7 @@ function VenueForm() {
             VenueService.get(name).then(response => {
                 setVenueDetails(response.data);
             }).catch(error => {
-                setErrorMessage(error.message)
+                toggleSnackbar('An error occured, Venue cannot be found', 'error');
             });
         }
     }, [name, VenueService]);
@@ -57,7 +59,7 @@ function VenueForm() {
                     //navigate("/venues");
                 })
                 .catch(error => {
-                    setErrorMessage(error.response?.data ?? "An error occurred, please try again.");
+                    toggleSnackbar('An error occured please try again', 'error');
                 });
         }
     };

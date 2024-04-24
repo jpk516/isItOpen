@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Button } from '@mui/material';
 import CheckIfOpen from '../services/checkIfOpen';
 import CheckInService from '../services/check-in-service'; 
+import { useAppContext } from '../contexts/AppContext.jsx';
+
+
 
 
 
@@ -13,6 +16,7 @@ import {
   useAdvancedMarkerRef,
   Pin,
 } from '@vis.gl/react-google-maps';
+import { AppContext } from '../contexts/AppContext';
 
 // Define the icons for each type of venue
 const icons = {
@@ -32,6 +36,7 @@ function IIOMarker({venue}) {
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [checkIns, setCheckIns] = useState([]);
+  const {toggleSnackbar} = useAppContext();
 
   useEffect(() => {
     getCheckIns();
@@ -41,7 +46,7 @@ function IIOMarker({venue}) {
     CheckInService.getByVenue(venue._id).then(response => {
         setCheckIns(response.data);
     }).catch(error => {
-        console.log(error);
+      toggleSnackbar('Error Getting Check In data', 'error');
     });
 }
 

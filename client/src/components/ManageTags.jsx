@@ -10,6 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ConfirmModal from './ConfirmModal';
 import TagService from '../services/tag-service';
+import { useAppContext } from '../contexts/AppContext';
 
 function ManageTags() {
   const [tags, setTags] = useState([]);
@@ -17,6 +18,7 @@ function ManageTags() {
   const [isEditing, setIsEditing] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState('');
+  const {toggleSnackbar} = useAppContext();
 
   useEffect(() => {
     fetchTags();
@@ -26,7 +28,7 @@ function ManageTags() {
     TagService.getAll().then(response => {
       setTags(response.data);
     }).catch(error => {
-      console.log(error);
+      toggleSnackbar('An error occured getting tags', 'error');
     });
   };
 

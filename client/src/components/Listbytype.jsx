@@ -4,16 +4,20 @@ import Table from 'react-bootstrap/Table';
 import { useState, useEffect } from 'react';
 import VenueService from '../services/venue-service';
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from '../contexts/AppContext';
+
 // followed the original venue list for a good portion of the code just slight modification
 function ListbyType() {
     const navigate = useNavigate();
     const [venues, setVenues] = useState([]);
+    const {toggleSnackbar} = useAppContext();
+
 
     useEffect(() => {
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {
-            console.log(error)
+            toggleSnackbar('An error occured getting venues', 'error');
         })
     }, []);
 

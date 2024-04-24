@@ -18,7 +18,7 @@ import VenueService from '../services/venue-service';
 import { useAppContext } from "../contexts/AppContext";
 
 function ManageVenue() {
-    const { setPageTitle } = useAppContext();
+    const { setPageTitle, toggleSnackbar } = useAppContext();
     const [venueDetails, setVenueDetails] = useState({});
     const [checkIns, setCheckIns] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
@@ -33,7 +33,7 @@ function ManageVenue() {
                 setVenueDetails(response.data);
                 getCheckIns(response.data._id);
             }).catch(error => {
-                console.log(error.message);
+                toggleSnackbar('An error occured getting venues', 'error');
             });
         }
     }, [name]);
@@ -43,7 +43,7 @@ function ManageVenue() {
         CheckInService.getByVenue(id).then(response => {
             setCheckIns(response.data);
         }).catch(error => {
-            console.log(error)
+            toggleSnackbar('An error occured getting Check Ins', 'error');
         })
     }
 

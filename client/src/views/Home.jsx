@@ -13,7 +13,7 @@ import Title from '../components/Title';
 import { useAppContext } from '../contexts/AppContext';
 
 function Home() {
-    const { setPageTitle } = useAppContext();
+    const { setPageTitle, toggleSnackbar } = useAppContext();
     const [venues, setVenues] = useState([]);
     const [checkIns, setCheckIns] = useState([]);
     const [allCheckIns, setAllCheckIns] = useState([]);
@@ -28,7 +28,7 @@ function Home() {
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {
-            console.log(error)
+            toggleSnackbar('An error occured getting Venues', 'error');
         })
     }
 
@@ -49,7 +49,7 @@ function Home() {
         CheckInService.getRecent(10).then(response => {
             setCheckIns(response.data);
         }).catch(error => {
-            console.log(error)
+            toggleSnackbar('An error occured getting recent Check Ins', 'error');
         })
     }
 
