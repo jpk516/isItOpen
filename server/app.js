@@ -66,6 +66,8 @@ const checkInController = require('./controllers/check-in');
 app.use(checkInController)
 const tagController = require('./controllers/tag');
 app.use(tagController)
+const achievementController = require('./controllers/achievement');
+app.use(achievementController)
 
 // setup debug mode
 if (debug) {
