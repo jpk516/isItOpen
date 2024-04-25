@@ -24,5 +24,34 @@ module.exports = {
             _id: { type: 'string' },
             name: { type: 'string' }
         }
+    },
+    AuthenticatedResult: {
+        type: 'object',
+        properties: {
+            authenticated: { type: 'boolean' },
+            message: { type: 'string' },
+            user: { $ref: '#/components/schemas/User' },
+            isAdmin: { type: 'boolean' }
+        }
+    },
+    Vote: {
+        type: 'object',
+        properties: {
+            up: { type: 'boolean' },
+        }
+    },
+    UserVoteStatus: {
+        type: 'object',
+        properties: {
+            voted: { type: 'boolean' },
+            up: { type: 'boolean' }
+        }
+    },
+    CheckInWithUserVoteStatus: {
+        type: 'object',
+        properties: {
+            checkIn: { $ref: '#/components/schemas/CheckIn' },
+            userVoteStatus: { $ref: '#/components/schemas/UserVoteStatus' },
+        }
     }
 };

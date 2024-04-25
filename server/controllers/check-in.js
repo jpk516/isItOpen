@@ -259,7 +259,36 @@ router.post(base, (req, res, next) => {
         });
 });
 
-// add an vote to a check-in
+/**
+* @openapi
+* /api/check-ins/vote/{id}:
+*   post:
+*       summary: Adds or removes a vote to a check-in
+*       tags: [Check-Ins]
+*       description: Adds or removes a vote to a check-in
+*       parameters:
+*           - in: path
+*             name: id
+*             required: true
+*             description: The check-in ID
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       $ref: '#/components/schemas/Vote'
+*       responses:
+*           200:
+*               description: The created check-in
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/CheckInWithUserVoteStatus'
+*           401:
+*               description: User is not authenticated
+*           500:
+*               description: Internal server error
+*/
 router.post(`${base}/vote/:id`, (req, res) => {
     if (!req.isAuthenticated()) {
         return res.status(401).send("User is not authenticated");
