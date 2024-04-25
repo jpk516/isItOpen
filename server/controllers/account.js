@@ -17,11 +17,30 @@ router.get("/api/accounts", (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not load users: " + err }));
 });
 
+
+/**
+* @openapi
+* /api/accounts/authenticated:
+*   get:
+*       summary: Returns details about the authenticated user
+*       tags: [Accounts]
+*       description: Returns a boolean indicating if the user is authenticated, the user object, and if the user is an admin. A message is also returned.
+*       responses:
+*           200:
+*               description: A list of achievements
+*               content:
+*                   application/json:
+*                       schema:
+*                           type: array
+*                           items:
+*                               $ref: '#/components/schemas/AuthenticatedResult'
+* 
+*/
 router.get("/api/accounts/authenticated", (req, res) => {
     if (req.isAuthenticated()) {
         res.json({ authenticated: true, message: "User is authenticated", user: req.user, isAdmin: req?.user?.role === "Admin" ?? false});
     } else {
-        res.json({ authenticated: false, message: "User is not authenticated" });
+        res.json({ authenticated: false, message: "User is not authenticated", user: null, isAdmin: false});
     }
 });
 
@@ -161,7 +180,24 @@ router.delete("/api/accounts/logout", (req, res) => {
     });
 });
 
-// get favorites
+/**
+* @openapi
+* /api/accounts/favorites:
+*   get:
+*       summary: If authenticated, returns all favorited venues
+*       tags: [Accounts]
+*       description: If authenticated, returns all favorited venues
+*       responses:
+*           200:
+*               description: A list of venues
+*               content:
+*                   application/json:
+*                       schema:
+*                           type: array
+*                           items:
+*                               $ref: '#/components/schemas/Venue'
+* 
+*/
 router.get("/api/accounts/favorites/", (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user._id)

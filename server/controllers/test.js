@@ -64,4 +64,10 @@ router.get(`${base}/places`, (req, res) => {
         .catch(err => res.json({ success: false, message: "Could not load places: " + err }));
 });
 
+router.get(`${base}/email`, (req, res) => {
+    const emailService = require('../services/email');
+    emailService.sendMail('tad284@gmail.com', 'test', 'test');
+    return res.json({ message: "Email sent" });
+});
+
 module.exports = router;
