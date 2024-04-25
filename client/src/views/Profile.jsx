@@ -6,7 +6,6 @@ function Profile() {
   return (
     <div>
       <ProfileCard />
-      {/* Future settings options here */}
     </div>
   );
 }

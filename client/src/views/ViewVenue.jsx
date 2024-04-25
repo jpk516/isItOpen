@@ -20,6 +20,7 @@ import Achievement from '../components/Achievement';
 import IIOMap from "../components/IIOMap";
 import CheckInList from "../components/CheckInList";
 import VenueHours from "../components/VenueHours";
+import { useAppContext } from "../contexts/AppContext";
 
 function ViewVenue() {
     const [venueDetails, setVenueDetails] = useState({});
@@ -27,6 +28,8 @@ function ViewVenue() {
     const [modalOpen, setModalOpen] = useState(false);
     const [value, setValue] = useState('edit');
     const { name } = useParams();
+    const {toggleSnackbar} = useAppContext();
+
     let id = null;
 
 
@@ -34,7 +37,7 @@ function ViewVenue() {
         CheckInService.getByVenue(id).then(response => {
             setCheckIns(response.data);
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error occured getting Check Ins', 'error');
         });
     }
 
@@ -44,7 +47,7 @@ function ViewVenue() {
                 setVenueDetails(response.data);
                 getCheckIns(response.data._id);
             }).catch(error => {
-                console.log(error.message);
+                toggleSnackbar('An error occured getting recent venues', 'error');
             });
         }
     }, [name]);

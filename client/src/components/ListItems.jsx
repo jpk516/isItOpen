@@ -22,17 +22,11 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="What's Hot?"/>
     </ListItemButton>
-    <ListItemButton component={Link} to={"/venues?type=bar"}>
+    <ListItemButton component={Link} to={"/venues"}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Bars" />
-    </ListItemButton>
-    <ListItemButton component={Link} to={"/venues?type=restaurant"}>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Restaurants" />
+      <ListItemText primary="Venues" />
     </ListItemButton>
     <ListItemButton component={Link} to={"/achievements"}>
       <ListItemIcon>

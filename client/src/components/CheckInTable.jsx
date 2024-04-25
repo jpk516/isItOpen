@@ -11,11 +11,13 @@ import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import ConfirmModal from './ConfirmModal';
+import { useAppContext } from '../contexts/AppContext'; 
 
 function CheckInTable({ checkIns, onVote, onDeleted }) {
     const navigate = useNavigate();
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [idToDelete, setIdToDelete] = useState('');
+    const {toggleSnackbar  } = useAppContext();
 
     if (!checkIns) return null;
 
@@ -24,7 +26,7 @@ function CheckInTable({ checkIns, onVote, onDeleted }) {
             .then(response => {
                 if (onVote && response.data) onVote(response.data);
             })
-            .catch(error => console.error('Error voting', error));
+            .catch(error => toggleSnackbar('Error Upvoting CheckIn', 'error'));
     };
 
     const handleDownvote = (checkInId) => {
@@ -32,7 +34,7 @@ function CheckInTable({ checkIns, onVote, onDeleted }) {
             .then(response => {
                 if (onVote && response.data) onVote(response.data);
             })
-            .catch(error => console.error('Error voting', error));
+            .catch(error => toggleSnackbar('Error Downvoting CheckIn', 'error'));
     };
 
     const showDeleteConfirmation = (id) => {
@@ -48,7 +50,7 @@ function CheckInTable({ checkIns, onVote, onDeleted }) {
                 }
                 setShowConfirmModal(false);
             }
-        }).catch(error => console.error('Error deleting check-in', error));
+        }).catch(error => toggleSnackbar('Error Deleting CheckIn', 'error'));
     };
 
     const getUserColor = (checkIn, isUpIcon) => {

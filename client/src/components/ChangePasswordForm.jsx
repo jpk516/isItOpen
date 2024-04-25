@@ -18,13 +18,11 @@ function ChangePasswordForm() {
       return;
     }
 
-    // Here you can add more password validations as needed
     
     AccountService.update({ password: passwords.password })
       .then(response => {
         if (response.data.success) {
           toggleSnackbar("Password updated successfully", "success");
-          // Perform additional actions on success, such as redirecting the user
         } else {
           toggleSnackbar(response.data.message, "error");
         }

@@ -5,6 +5,8 @@ import ConfirmModal from './ConfirmModal';
 import UserTable from './UserTable';
 import ManageUserDialog from './ManageUserDialog';
 import AccountService from '../services/account-service';
+import { useAppContext } from '../contexts/AppContext';
+
 
 
 function ManageUsers() {
@@ -15,6 +17,7 @@ function ManageUsers() {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [idToDelete, setIdToDelete] = useState('');
+    const {toggleSnackbar} = useAppContext();
 
     useEffect(() => {
         fetchUsers();
@@ -24,7 +27,7 @@ function ManageUsers() {
         AccountService.getAll().then(response => {
             setUsers(response.data);
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error occured getting users', 'error');
         });
     };
 
@@ -36,7 +39,7 @@ function ManageUsers() {
             setShowEditModal(false);
             fetchUsers();
         }).catch(error => {
-            console.log(error);
+            toggleSnackbar('An error occured updating user', 'error');
         });
         
     };
