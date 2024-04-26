@@ -18,6 +18,8 @@ var https = require('https')
 var http = require('http')
 var fs = require('fs')
 
+
+
 const corsOptions = {
     origin: ['*.ondigitalocean.app', 'http://localhost:3000', '*.whatstarted.com'],
     credentials: true
@@ -68,6 +70,9 @@ const tagController = require('./controllers/tag');
 app.use(tagController)
 const achievementController = require('./controllers/achievement');
 app.use(achievementController)
+const profanityController = require('./controllers/profanity');
+app.use('/api/profanity', profanityController);
+
 
 // setup debug mode
 if (debug) {
