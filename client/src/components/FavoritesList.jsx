@@ -35,7 +35,7 @@ function FavoritesList() {
                 .catch(error => {
                     //Message shown if favorite cannot be removed
                     toggleSnackbar('An error occurred while removing the venue from your favorites.', 'error');
-                    console.error('Error removing favorite:', error);
+            
                 });
         }
     }

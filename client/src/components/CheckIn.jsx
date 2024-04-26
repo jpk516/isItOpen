@@ -14,6 +14,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CheckInService from '../services/check-in-service';
 import TagService from '../services/tag-service';
 import { useAppContext } from '../contexts/AppContext.jsx';
+import { Box } from '@mui/material';
 
 function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
   const defaultObject = { open: true, comment: '', venue: venue?._id ?? '', tags: [] };
@@ -57,7 +58,7 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog class="checkInDialog" open={isOpen} onClose={onClose}>
       <DialogTitle>What's Up at {venue.name}? Are they still serving?</DialogTitle>
       <DialogContent>
         <FormControl fullWidth margin="normal">
@@ -74,19 +75,6 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
           </ToggleButtonGroup>
         </FormControl>
 
-        {checkInDetails.open && (
-          <Stack direction="row" spacing={1} marginTop={2}>
-            {tags.map(tag => (
-              <Chip
-                key={tag._id}
-                label={tag.name}
-                color={checkInDetails.tags.includes(tag.name) ? 'primary' : 'default'}
-                onClick={() => handleTagClick(tag)}
-              />
-            ))}
-          </Stack>
-        )}
-
         <TextField
           margin="normal"
           fullWidth
@@ -97,7 +85,22 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
           value={checkInDetails.comment}
           onChange={e => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
         />
-
+  
+        {checkInDetails.open && (
+           <Box class="tagContainer">
+           <Stack direction="column" spacing={1}>
+             {tags.map(tag => (
+               <Chip
+                 key={tag._id}
+                 label={tag.name}
+                 color={checkInDetails.tags.includes(tag.name) ? 'primary' : 'default'}
+                 onClick={() => handleTagClick(tag)}
+               />
+             ))}
+           </Stack>
+         </Box>
+        )}
+  
         {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
       </DialogContent>
       <DialogActions>
