@@ -11,9 +11,10 @@ import { useAppContext } from '../contexts/AppContext';
 
 function Venues() {
     const [venues, setVenues] = useState([]);
-    const {toggleSnackbar } = useAppContext();
+    const { setPageTitle, toggleSnackbar } = useAppContext();
 
     useEffect(() => {
+        setPageTitle('Venues');
         VenueService.getAll().then(response => {
             setVenues(response.data);
         }).catch(error => {

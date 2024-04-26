@@ -28,10 +28,9 @@ function ViewVenue() {
     const [modalOpen, setModalOpen] = useState(false);
     const [value, setValue] = useState('edit');
     const { name } = useParams();
-    const {toggleSnackbar} = useAppContext();
+    const { setPageTitle, toggleSnackbar } = useAppContext();
 
     let id = null;
-
 
     const getCheckIns = (id) => {
         CheckInService.getByVenue(id).then(response => {
@@ -42,6 +41,7 @@ function ViewVenue() {
     }
 
     useEffect(() => {
+        setPageTitle('Venue Page');
         if (name && name.length > 0) {
             VenueService.get(name).then(response => {
                 setVenueDetails(response.data);

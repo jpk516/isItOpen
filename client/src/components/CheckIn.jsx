@@ -14,6 +14,9 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CheckInService from '../services/check-in-service';
 import TagService from '../services/tag-service';
 import { useAppContext } from '../contexts/AppContext.jsx';
+import { Box } from '@mui/material';
+import ProfanityService from '../services/profanity-service';
+
 
 function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
   const defaultObject = { open: true, comment: '', venue: venue?._id ?? '', tags: [] };
@@ -32,16 +35,32 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
 
   const handleCheckIn = (event) => {
     event.preventDefault();
-    CheckInService.add(checkInDetails).then(() => {
-      setCheckInDetails(defaultObject);
-      onClose(); // Close the modal on successful check-in
-      if (onCheckIn) {
-        onCheckIn();
-        toggleSnackbar('Successfully Checked IN', 'success');
-      }
-    }).catch(error => {
-      toggleSnackbar('An error occurred while removing the venue from your favorites.', 'error');
-    });
+  
+    // Use the ProfanityService 
+    ProfanityService.checkForProfanity(checkInDetails.comment)
+      .then((response) => {
+        if (response.data.hasProfanity) {
+          // If profanity is detected, inform the user and do not proceed with check-in
+          toggleSnackbar('Please avoid using profane language.', 'error');
+        } 
+        else {
+          // If no profanity is detected, proceed with check-in
+          CheckInService.add(checkInDetails).then(() => {
+            setCheckInDetails(defaultObject);
+            onClose(); // Close the modal on successful check-in
+            if (onCheckIn) {
+              onCheckIn();
+              toggleSnackbar('Successfully Checked IN', 'success');
+            }
+          }).catch(error => {
+            toggleSnackbar('An error occurred during check-in.', 'error');
+          });
+        }
+      })
+      .catch((error) => {
+        // Handle any errors that occur during the profanity check process
+        toggleSnackbar('An error occurred during profanity checking.', 'error');
+      });
   };
 
   const handleTagClick = (tag) => {
@@ -57,7 +76,7 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
   };
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog className="checkInDialog" open={isOpen} onClose={onClose}>
       <DialogTitle>What's Up at {venue.name}? Are they still serving?</DialogTitle>
       <DialogContent>
         <FormControl fullWidth margin="normal">
@@ -74,19 +93,6 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
           </ToggleButtonGroup>
         </FormControl>
 
-        {checkInDetails.open && (
-          <Stack direction="row" spacing={1} marginTop={2}>
-            {tags.map(tag => (
-              <Chip
-                key={tag._id}
-                label={tag.name}
-                color={checkInDetails.tags.includes(tag.name) ? 'primary' : 'default'}
-                onClick={() => handleTagClick(tag)}
-              />
-            ))}
-          </Stack>
-        )}
-
         <TextField
           margin="normal"
           fullWidth
@@ -97,7 +103,22 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
           value={checkInDetails.comment}
           onChange={e => setCheckInDetails({ ...checkInDetails, comment: e.target.value })}
         />
-
+  
+        {checkInDetails.open && (
+           <Box className="tagContainer">
+           <Stack direction="column" spacing={1}>
+             {tags.map(tag => (
+               <Chip
+                 key={tag._id}
+                 label={tag.name}
+                 color={checkInDetails.tags.includes(tag.name) ? 'primary' : 'default'}
+                 onClick={() => handleTagClick(tag)}
+               />
+             ))}
+           </Stack>
+         </Box>
+        )}
+  
         {errorMessage && <FormHelperText error>{errorMessage}</FormHelperText>}
       </DialogContent>
       <DialogActions>
@@ -107,5 +128,4 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
     </Dialog>
   );
 }
-
 export default CheckIn;

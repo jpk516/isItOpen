@@ -46,3 +46,16 @@
 .status-closed {
   color: #dc3545; 
 }
+
+.tagContainer {
+  max-width: 50px;
+  max-height: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.tagContainer .MuiChip-root {
+  margin: 2px;
+}

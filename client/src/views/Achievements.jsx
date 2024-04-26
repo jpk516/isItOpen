@@ -8,8 +8,17 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Achievement from '../components/Achievement';
+import { useAppContext } from '../contexts/AppContext';
+
 
 function Achievements() {
+
+    const { setPageTitle, toggleSnackbar } = useAppContext();
+
+    useEffect(() => {
+        setPageTitle('Achievements');
+    }, [])
+
     return (
         <Container>
             <Grid container spacing={2}>

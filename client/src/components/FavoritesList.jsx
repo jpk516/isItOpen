@@ -9,10 +9,12 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Star from '@mui/icons-material/Star';
 import StarOutline from '@mui/icons-material/StarOutline';
+import { useNavigate } from 'react-router-dom';
 
 function FavoritesList() {
     const {toggleSnackbar  } = useAppContext();
     const [favorites, setFavorites] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         AccountService.getFavorites().then(response => {
@@ -35,20 +37,24 @@ function FavoritesList() {
                 .catch(error => {
                     //Message shown if favorite cannot be removed
                     toggleSnackbar('An error occurred while removing the venue from your favorites.', 'error');
-                    console.error('Error removing favorite:', error);
+            
                 });
         }
+    }
+
+    function handleRowClick(venue) {
+        navigate(`/venues/${venue.name}`);
     }
     
 
    
     return (
-        <div>
+        <>
             <h1>Favorites</h1>
             <List>
                 {favorites.map((favorite, index) => (
                     <ListItem key={favorite._id || index} disablePadding>
-                        <ListItemButton onClick={() => {/* logic to handle row click */}}>
+                        <ListItemButton onClick={() => handleRowClick(favorite)}>
                             <ListItemText
                                 primary={
                                     <Typography variant="body1">
@@ -67,7 +73,7 @@ function FavoritesList() {
                     </ListItem>
                 ))}
             </List>
-        </div>
+        </>
     );
 }
 
