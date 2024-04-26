@@ -5,9 +5,19 @@ import Col from "react-bootstrap/esm/Col";
 import ListbyType from "../components/Listbytype";
 //import VenueService from '../services/venue-service';
 
+import { useAppContext } from '../contexts/AppContext';
+import { useState, useEffect } from 'react';
+
 
 
 function BRList(){
+
+    const { setPageTitle, toggleSnackbar } = useAppContext();
+
+    useEffect(() => {
+        setPageTitle('BRList');
+    }, [])
+
     return (
     <Container>
         <Row>
