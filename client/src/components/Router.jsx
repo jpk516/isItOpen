@@ -12,6 +12,8 @@ import BRList from '../views/BRList';
 import Profile from '../views/Profile';
 import Fav from '../views/Favorites';
 import Test from '../views/Test';
+import ForgotPassword from "../views/ForgotPassword";
+import ResetPassword from "../views/ResetPassword";
 
 export const router = createBrowserRouter([
     {
@@ -29,6 +31,8 @@ export const router = createBrowserRouter([
         { path: '/profile', element: <Profile /> },
         { path: '/fav', element: <Fav /> },
         { path: '/test', element: <Test /> },
+        { path: '/forgot-password', element: <ForgotPassword /> },
+        { path: '/reset-password/:email/:token', element: <ResetPassword /> },
       ]
     },
   ]);

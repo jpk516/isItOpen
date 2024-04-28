@@ -24,6 +24,14 @@ const sendMail = async (to, subject, text, html) => {
     });
 }
 
+const sendPasswordReset = async (to, token) => {
+    let subject = 'Password Reset Request';
+    let text = `A password reset request was made for your account. If you did not make this request, please ignore this email. Otherwise, click the link below to reset your password. This link will expire in 1 hour.`;
+    let html = `<p>${text}</p><a href="${process.env.CLIENT_URL_DEV}/reset-password/${token}">Reset Password</a>`;
+    await sendMail(to, subject, text, html);
+}
+
 module.exports = {
-    sendMail
+    sendMail,
+    sendPasswordReset
 }

@@ -124,8 +124,8 @@ export default function LoginForm() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <MuiLink variant="body2">
-                Forgot password?
+              <MuiLink variant="body2" component={Link} to={"/forgot-password"}>
+                {"Forgot password?"}
               </MuiLink>
             </Grid>
             <Grid item>

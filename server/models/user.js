@@ -11,7 +11,9 @@ const User = new Schema({
         venue: { type: Schema.Types.ObjectId, ref: 'Venue' },
     }],
     created: { type: Date, default: Date.now },
-    disabled: { type: Boolean, default: false }
+    disabled: { type: Boolean, default: false },
+    token: String,
+    tokenExpires: Date
 });
 
 // enforce unique venue favorites

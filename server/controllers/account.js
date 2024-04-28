@@ -9,6 +9,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport');
 const User = require("../models/user");
+const email = require("../services/email");
 
 router.get("/api/accounts", (req, res) => {
     // TODO: check for admin role
@@ -67,8 +68,11 @@ router.post("/api/accounts/register", (req, res) => {
                 else {
                     console.log("User registered: " + user)
                     // remove salt & hash from user object before sending it to the client
+                    // TODO: better way to handle this
                     req.user.salt = undefined;
                     req.user.hash = undefined;
+                    req.user.token = undefined;
+                    req.user.tokenExpires = undefined;
                     res.json({ success: true, message: "Your account has been saved" });
                 }
             });
@@ -152,6 +156,83 @@ router.put("/api/accounts/", (req, res) => {
     User.findByIdAndUpdate(req.body._id, req.body, { new: true })
         .then((result) => res.json(result))
         .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
+});
+
+
+router.put("/api/accounts/password", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.json({ success: false, message: "User is not authenticated" });
+    }
+
+    User.findById(req.user._id)
+        .then((user) => {
+            user.changePassword(req.body.oldPassword, req.body.newPassword, (err) => {
+                if (err) {
+                    res.json({ success: false, message: "Could not change password: " + err });
+                } else {
+                    res.json({ success: true, message: "Password changed" });
+                }
+            });
+        })
+        .catch((err) => res.json({ success: false, message: "Could not find user: " + err }));
+});
+
+/**
+* @openapi
+* /api/accounts/forgot-password:
+*   post:
+*       summary: Send forgot password email
+*       tags: [Accounts]
+*       requestBody:
+*           required: true
+*           content:
+*               application/json:
+*                   schema:
+*                       type: object
+*                       properties:
+*                           email:
+*                               type: string
+*       responses:
+*           200:
+*               description: Send email result message
+*               content:
+*                   application/json:
+*                       schema:
+*                           $ref: '#/components/schemas/ActionResult'
+*           400:
+*               description: Invalid request body
+*           401:
+*               description: Unauthorized
+*           500:
+*               description: Error occurred during login
+*/
+router.post("/api/accounts/forgot-password", (req, res) => {
+    User.findOne({ email: req.body.email })
+        .then((user) => {
+            if (!user) {
+                // email isn't found, but we don't want to give that information away
+                res.json({ success: true, message: "Password reset email sent" });
+            } else {
+                // generate a 10 character token
+                user.token = Math.random().toString(36).substring(2, 15);
+                // add 1 hour to the current time
+                user.tokenExpires = Date.now() + 3600000;
+                user.save();
+
+                email.sendPasswordReset(user.email, user.token)
+                    .then(() => res.json({ success: true, message: "Password reset email sent" }))
+                    .catch((err) => res.json({ success: false, message: "Could not send password reset email: " + err }));
+
+            }
+        })
+        .catch((err) => res.json({ success: false, message: "Could not find user: " + err }));
+});
+
+router.post("/api/accounts/reset-password/:token", (req, res) => {
+    // validate reset token
+    // change password
+    // log user in
+    // send success message
 });
 
 /**
