@@ -50,10 +50,11 @@
 .tagContainer {
   max-width: 50px;
   max-height: 20px;
-  overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
+  max-height: 300px;
+  overflow: auto;
 }
 
 .tagContainer .MuiChip-root {

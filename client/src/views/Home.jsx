@@ -94,8 +94,12 @@ function Home() {
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
+                        maxHeight: 500,
+                        overflow: 'auto',
+                        minHeight: 672
                     }}
                     >
+                    <Title>What's Open?</Title>
                     <VenueList venues={venues} onFavoriteChange={(venue) => onFavoriteChange(venue)}/>
                     </Paper>
                 </Grid>

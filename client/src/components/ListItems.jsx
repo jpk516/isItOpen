@@ -54,13 +54,7 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Admin Panel" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-    <ListItemButton component={Link} to={"http://localhost:8099/api-docs/"} target='_blank' >
+    <ListItemButton component={Link} to={"https://server.whatstarted.com/api-docs/"} target='_blank'>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>

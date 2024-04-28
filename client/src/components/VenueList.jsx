@@ -50,7 +50,6 @@ function VenueList({ name, venues, onFavoriteChange}) {
 
     return (
         <>
-        <Title>What's Open?</Title>
         <List>
             {venues?.map((venue, index) => (
                 <ListItem key={index} disablePadding
