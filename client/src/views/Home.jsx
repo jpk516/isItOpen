@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Title from '../components/Title';
 import { useAppContext } from '../contexts/AppContext';
+import Box from '@mui/material/Box';
 
 function Home() {
     const { setPageTitle, toggleSnackbar } = useAppContext();
@@ -94,13 +95,12 @@ function Home() {
                         p: 2,
                         display: 'flex',
                         flexDirection: 'column',
-                        maxHeight: 500,
-                        overflow: 'auto',
-                        minHeight: 672
                     }}
                     >
                     <Title>What's Open?</Title>
-                    <VenueList venues={venues} onFavoriteChange={(venue) => onFavoriteChange(venue)}/>
+                    <Box sx={{maxHeight: 600, minHeight: 600, overflow: 'auto',}}>
+                        <VenueList venues={venues} onFavoriteChange={(venue) => onFavoriteChange(venue)}/>
+                    </Box>
                     </Paper>
                 </Grid>
                 {/* Recent Orders */}
