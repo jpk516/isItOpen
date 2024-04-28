@@ -16,6 +16,12 @@ const AccountService = {
     update: (user) => {
         return api.put(`/accounts/`, user)
     },
+    changePassword: (oldPassword, newPassword) => {
+        return api.put(`/accounts/password`, {
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        })
+    },
     authenticate: (userName, password) => {
         return api.post(`/accounts/login`, {
             username: userName,

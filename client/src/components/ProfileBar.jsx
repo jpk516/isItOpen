@@ -94,7 +94,7 @@ function ProfileCard() {
               }
             />
           </ListItem>
-          {showForm && <ChangePasswordForm />}
+          {showForm && <ChangePasswordForm onPasswordChange={handleShowForm} />}
         </List>
       </CardContent>
     </Card>

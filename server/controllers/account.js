@@ -154,6 +154,24 @@ router.put("/api/accounts/", (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not update user: " + err }));
 });
 
+router.put("/api/accounts/password", (req, res) => {
+    if (!req.isAuthenticated()) {
+        return res.json({ success: false, message: "User is not authenticated" });
+    }
+
+    User.findById(req.user._id)
+        .then((user) => {
+            user.changePassword(req.body.oldPassword, req.body.newPassword, (err) => {
+                if (err) {
+                    res.json({ success: false, message: "Could not change password: " + err });
+                } else {
+                    res.json({ success: true, message: "Password changed" });
+                }
+            });
+        })
+        .catch((err) => res.json({ success: false, message: "Could not find user: " + err }));
+});
+
 /**
  * @openapi
  * /api/accounts/logout:

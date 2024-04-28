@@ -6,12 +6,17 @@ import TextField from '@mui/material/TextField';
 import AccountService from '../services/account-service';
 import { useAppContext } from '../contexts/AppContext'; 
 
-function ChangePasswordForm() {
+function ChangePasswordForm({ onPasswordChange }) {
   const { toggleSnackbar } = useAppContext(); // Assuming you have a method to show snackbars
-  const [passwords, setPasswords] = useState({ password: '', confirmPassword: '' });
+  const [passwords, setPasswords] = useState({ oldPassword: '', password: '', confirmPassword: '' });
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!passwords.oldPassword || !passwords.password || !passwords.confirmPassword) {
+      toggleSnackbar("Please fill in all fields", "error");
+      return;
+    }
 
     if (passwords.password !== passwords.confirmPassword) {
       toggleSnackbar("Passwords do not match", "error");
@@ -19,10 +24,14 @@ function ChangePasswordForm() {
     }
 
     
-    AccountService.update({ password: passwords.password })
+    AccountService.changePassword(passwords.oldPassword, passwords.password)
       .then(response => {
         if (response.data.success) {
           toggleSnackbar("Password updated successfully", "success");
+          setPasswords({ oldPassword: '', password: '', confirmPassword: '' });
+          if (onPasswordChange) {
+            onPasswordChange();
+          }
         } else {
           toggleSnackbar(response.data.message, "error");
         }
@@ -36,6 +45,14 @@ function ChangePasswordForm() {
     <Card>
       <CardContent>
         <form onSubmit={handleSubmit}>
+          <TextField
+            label="Old Password"
+            type="password"
+            value={passwords.oldPassword}
+            onChange={(e) => setPasswords({ ...passwords, oldPassword: e.target.value })}
+            fullWidth
+            margin="normal"
+          />
           <TextField
             label="New Password"
             type="password"
