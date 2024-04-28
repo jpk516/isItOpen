@@ -22,6 +22,11 @@ const AccountService = {
             newPassword: newPassword
         })
     },
+    forgotPassword: (email) => {
+        return api.post(`/accounts/forgot-password`, {
+            email: email
+        })
+    },
     authenticate: (userName, password) => {
         return api.post(`/accounts/login`, {
             username: userName,
