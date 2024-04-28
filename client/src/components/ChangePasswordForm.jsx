@@ -18,6 +18,11 @@ function ChangePasswordForm({ onPasswordChange }) {
       return;
     }
 
+    if (passwords.oldPassword === passwords.password) {
+      toggleSnackbar("New password must be different from old password", "error");
+      return;
+    }
+
     if (passwords.password !== passwords.confirmPassword) {
       toggleSnackbar("Passwords do not match", "error");
       return;
