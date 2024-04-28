@@ -1,6 +1,6 @@
-import LoginForm from '../components/LoginForm';
 import { useAppContext } from '../contexts/AppContext';
 import { useState, useEffect } from 'react';
+import ResetPasswordForm from '../components/ResetPasswordForm';
 
 function ResetPassword() {
 
@@ -12,7 +12,7 @@ function ResetPassword() {
 
     
     return (
-        <LoginForm  />
+        <ResetPasswordForm  />
     );
 }
 
