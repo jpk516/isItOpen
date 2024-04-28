@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Copyright from './components/Copyright';
 import AppContextProvider from './contexts/AppContext';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
   // TODO: move to app context
@@ -62,7 +63,9 @@ const onThemeChange = (newMode) => {
             >
               <Toolbar />
               <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-                <Outlet></Outlet>
+                <ErrorBoundary>
+                  <Outlet />
+                </ErrorBoundary>
               </Container>
               <Copyright sx={{ mt: 8, mb: 4 }} />
             </Box>
