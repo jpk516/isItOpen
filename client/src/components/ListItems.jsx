@@ -32,7 +32,7 @@ export const mainListItems = (
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
-      <ListItemText primary="Leaderboard" />
+      <ListItemText primary="Achievements" />
     </ListItemButton>
     <ListItemButton component={Link} to={"/fav"}>
       <ListItemIcon>

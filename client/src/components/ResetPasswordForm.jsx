@@ -9,6 +9,7 @@ import { useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
+import openLogo from '../assets/open.png';
 
 export default function ResetPasswordForm() {
     const { email, token } = useParams();
@@ -49,6 +50,7 @@ export default function ResetPasswordForm() {
                     alignItems: 'center',
                 }}
             >
+                <img src={openLogo} alt="Is it open logo" width="200" />
                 <Typography component="h1" variant="h5">
                     Pick a New Password
                 </Typography>

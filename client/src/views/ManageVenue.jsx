@@ -88,7 +88,6 @@ function ManageVenue() {
             <Tabs value={value} onChange={handleChange} aria-label="venue management tabs" variant="fullWidth">
                 <Tab value="edit" label="Edit" />
                 <Tab value="checkins" label="Moderate Check-ins" />
-                <Tab value="public" label="Public View" />
             </Tabs>
             {value === 'edit' && (
                 <Grid container spacing={3}>
@@ -101,17 +100,6 @@ function ManageVenue() {
                 <Grid container spacing={3}>
                     <Grid item lg={12}>
                         <CheckInTable checkIns={checkIns} onVote={(updated) => replaceCheckIn(updated)} onDeleted={(deleted) => handleDeletedCheckIn(deleted)} />
-                    </Grid>
-                </Grid>
-            )}
-            {value === 'public' && (
-                <Grid container spacing={3}>
-                    <Grid item lg={6}>
-                        <VenueDetails venue={venueDetails} />
-                    </Grid>
-                    <Grid item lg={6}>
-                        <Button variant="contained" onClick={() => setModalOpen(true)}>Check In</Button>
-                        <CheckIn venue={venueDetails} isOpen={modalOpen} onClose={() => setModalOpen(false)} />
                     </Grid>
                 </Grid>
             )}
