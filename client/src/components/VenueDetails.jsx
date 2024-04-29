@@ -54,7 +54,7 @@ const VenueView = ({ venue, checkIns}) => {
           <ListItemIcon>
             <FaGlobe />
           </ListItemIcon>
-          <ListItemText primary={<><strong>Website:</strong> <RouterLink to={{ pathname: venue.website }} target="_blank">{venue.website}</RouterLink></>} />
+          <ListItemText primary={<><strong>Website:</strong> <a href={venue.website} target="_blank">{venue.website}</a></>} />
         </ListItem>
         <ListItem>
           <ListItemIcon>
