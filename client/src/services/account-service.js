@@ -27,6 +27,13 @@ const AccountService = {
             email: email
         })
     },
+    resetPassword: (email, token, password) => {
+        return api.post(`/accounts/reset-password`, {
+            email: email,
+            token: token,
+            password: password
+        })
+    },
     authenticate: (userName, password) => {
         return api.post(`/accounts/login`, {
             username: userName,

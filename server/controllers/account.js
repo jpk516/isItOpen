@@ -228,12 +228,12 @@ router.post("/api/accounts/forgot-password", (req, res) => {
         .catch((err) => res.json({ success: false, message: "Could not find user: " + err }));
 });
 
-router.post("/api/accounts/reset-password/:email/:token", (req, res) => {
-    if (!req.params.email || !req.params.token) {
-        return res.json({ success: false, message: "Email or token not provided" });
+router.post("/api/accounts/reset-password", (req, res) => {
+    if (!req.body.email || !req.body.token || !req.body.password) {
+        return res.json({ success: false, message: "Email password and token are required." });
     } 
 
-    User.findOne({ email: req.params.email, token: req.params.token })
+    User.findOne({ email: req.body.email, token: req.body.token })
         .then((user) => {
             if (!user) {
                 res.json({ success: false, message: "Invalid token" });
@@ -243,7 +243,7 @@ router.post("/api/accounts/reset-password/:email/:token", (req, res) => {
                     res.json({ success: false, message: "Token has expired" });
                 }
 
-                user.changePassword(req.body.password, (err) => {
+                user.setPassword(req.body.password, (err) => {
                     if (err) {
                         res.json({ success: false, message: "Could not reset password: " + err });
                     } else {
