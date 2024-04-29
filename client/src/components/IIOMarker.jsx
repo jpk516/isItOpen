@@ -6,9 +6,6 @@ import CheckInService from '../services/check-in-service';
 import { useAppContext } from '../contexts/AppContext.jsx';
 
 
-
-
-
 import {
   AdvancedMarker,
   Marker,

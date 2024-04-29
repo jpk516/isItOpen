@@ -14,12 +14,14 @@ import Fav from '../views/Favorites';
 import Test from '../views/Test';
 import ForgotPassword from "../views/ForgotPassword";
 import ResetPassword from "../views/ResetPassword";
+import NotFoundPage from "./NotFoundPage";
 
 export const router = createBrowserRouter([
     {
       element: <App />,
       children: [
         { path: '/', element: <Home /> },
+        { path: '*', element: <NotFoundPage /> },
         { path: '/login', element: <Login /> },
         { path: '/register', element: <Register /> },
         { path: '/venues', element: <Venues /> },
