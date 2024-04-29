@@ -243,7 +243,7 @@ router.post("/api/accounts/reset-password/:email/:token", (req, res) => {
                     res.json({ success: false, message: "Token has expired" });
                 }
 
-                user.setPassword(req.body.password, (err) => {
+                user.changePassword(req.body.password, (err) => {
                     if (err) {
                         res.json({ success: false, message: "Could not reset password: " + err });
                     } else {
