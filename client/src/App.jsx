@@ -12,6 +12,7 @@ import Link from '@mui/material/Link';
 import Copyright from './components/Copyright';
 import AppContextProvider from './contexts/AppContext';
 import ErrorBoundary from './components/ErrorBoundary';
+import NotFoundPage from './components/NotFoundPage';
 
 function App() {
   // TODO: move to app context
