@@ -32,3 +32,8 @@
   .status-closed {
     color: #dc3545; 
   }
+
+  .tagContainer {
+    max-height: 300px;
+    overflow: auto;
+  }
