@@ -26,6 +26,10 @@ const icons = {
   Restaurant: {
     icon: "https://img.icons8.com/matisse/45/restaurant.png",
   },
+  Music:
+  {
+    icon: "https://img.icons8.com/stickers/45/apple-music.png"
+  }
 };
 
 function IIOMarker({venue}) {
