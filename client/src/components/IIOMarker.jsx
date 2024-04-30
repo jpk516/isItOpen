@@ -28,7 +28,11 @@ const icons = {
   },
   Music:
   {
-    icon: "https://img.icons8.com/stickers/45/apple-music.png"
+    icon: "https://img.icons8.com/arcade/45/000000/music.png",
+  },
+  Other:
+  {
+    icon: "https://img.icons8.com/arcade/45/connection-status-off.png"
   }
 };
 
@@ -60,6 +64,11 @@ function IIOMarker({venue}) {
   const img = document.createElement('img');
   img.src = icons[venue.type]?.icon || '';
 
+  if(venue.type == "Music Venue")
+  {
+    img.src = icons.Music.icon; 
+  }
+
   const isOpen = CheckIfOpen(venue, checkIns);
 
   //console.log(venue.name + "In IIOMarker is marked as " + isOpen);
@@ -67,7 +76,7 @@ function IIOMarker({venue}) {
   return (
     <>
 
-      <AdvancedMarker //using Marker, to use advanced marker you just do <AdvancedMarker
+      <AdvancedMarker 
         ref={markerRef}
         onClick={() => setInfowindowOpen(true)}
         position={{ lat: venue.geo.coordinates[1], lng: venue.geo.coordinates[0] }}
