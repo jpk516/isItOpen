@@ -51,11 +51,7 @@ function VenueList({ name, venues, onFavoriteChange}) {
     return (
         <>
         <Title>What's Open?</Title>
-        <List
-            sx={{
-                maxHeight: '600px', // Adjust the max height as needed
-                overflowY: 'auto' // Enable vertical scrolling
-            }} >
+        <List>
             {venues?.map((venue, index) => (
                 <ListItem key={index} disablePadding
                     secondaryAction={
