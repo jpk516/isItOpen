@@ -21,6 +21,15 @@ console.log('Agenda job types:', jobTypes);
 if (jobTypes.length) {
     console.log('Agenda starting...');
     agenda.start();
+    
+    agenda.on('ready', () => {
+        console.log('Agenda ready!');
+        (async function() {
+            for (let jobType of jobTypes) {
+                await agenda.every('30 minutes', jobType);
+            }
+        })();
+    });
 }
 
 module.exports = agenda;

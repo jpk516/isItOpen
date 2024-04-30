@@ -6,7 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { Link as RouterLink } from 'react-router-dom';
-import { FaBuilding, FaPhone, FaEnvelope, FaGlobe, FaMusic, FaUtensils, FaGlassMartiniAlt, FaDoorOpen, FaDoorClosed} from 'react-icons/fa';
+import { FaBuilding, FaPhone, FaEnvelope, FaGlobe, FaMusic, FaUtensils, FaGlassMartiniAlt, FaDoorOpen, FaDoorClosed, FaBars} from 'react-icons/fa';
 import CheckIfOpen from '../services/checkIfOpen';
 import openIcon from '../assets/open-icon.png';
 import closedIcon from '../assets/closed-icon.png';
@@ -61,6 +61,12 @@ const VenueView = ({ venue, checkIns}) => {
             {getVenueTypeIcon(venue.type)}
           </ListItemIcon>
           <ListItemText primary={<><strong>Type:</strong> {venue.type}</>} />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <FaBars />
+          </ListItemIcon>
+          <ListItemText primary={<><strong>Desc:</strong> {venue.description}</>} />
         </ListItem>
         <ListItem>
             <ListItemIcon>
