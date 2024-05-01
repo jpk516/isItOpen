@@ -15,6 +15,9 @@ const VenueService = {
     get: (name) => {
         return api.get(`${base}/${name}`)
     },
+    isOpen: (id) => {
+        return api.get(`places/open/id/${id}`)
+    },
     add: (venue) => {
         return api.post(base, venue)
     },
