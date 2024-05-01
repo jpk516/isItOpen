@@ -2,6 +2,7 @@
 // call the hours service to get updated hours.
 const Venue = require("../models/venue");
 const User = require("../models/user");
+const CheckIn = require("../models/check-in");
 const Achievement = require("../models/achievement");
 const placesService = require('../services/places');
 
@@ -11,42 +12,31 @@ function processAchievements(hoursArray) {
 
 
 const updateAll = async () => {
-    let users = await User.find().populate('achievements').populate('checkins');
-    let checkinCount = user.checkins.length;
     let achievements = await Achievement.find();
+    let users = await User.find().populate('achievements').exec();
     // go through each user and check if they have any achievements
     // that we need to award them
 
+    console.log(`Checking ${users.length} users for achievements`);
+
     for (let user of users) {
+        let checkins = await CheckIn.find({ user: user._id });
+
         for (let achievement of achievements) {
             if (achievement._id in user.achievements) {
                 continue;
             }
             console.log(`Checking if user ${user.username} has achievement ${achievement.name}`);
-            if (achievement.points <= checkinCount) {
+            if (achievement.points <= checkins.length) {
                 console.log(`Awarding achievement ${achievement.name} to user ${user.username}`);
                 user.achievements.push({ achievement: achievement._id, awarded: new Date() });
             }
         }
     }
 
-
-
-    // let venues = await Venue.find();
-    // let updatedVenues = await Promise.all(venues.map(async venue => {
-    //     try {
-    //         let hours = await placesService.getHours(venue.name);
-    //         venue.hours = processSchedule(hours);
-    //         console.log(`Updated hours for ${venue.name} to ${JSON.stringify(venue.hours)}`);
-    //     } catch (error) {
-    //         console.error(`Failed to update hours for ${venue.name}: ${error}`);
-    //     }
-    //     return venue;
-    // }));
-
-    // await Promise.all(updatedVenues.map(async venue => {
-    //     await venue.save();
-    // }));
+    await Promise.all(users.map(async user => {
+        await user.save();
+    }));
 }
 
 module.exports = (agenda) => {
