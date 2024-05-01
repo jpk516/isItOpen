@@ -1,9 +1,9 @@
 function CheckIfOpen(venue, checkIns) {
-  // console.log(venue.name + " is being checked for open status");
+  //console.log(venue.name + " is being checked for open status");
 
   const nowUtc = new Date();
 
-  // console.log(checkIns);
+  //console.log(checkIns);
 
   // Define periods for checking check-ins
   const startPeriod = new Date(nowUtc);
@@ -56,7 +56,7 @@ function CheckIfOpen(venue, checkIns) {
   const closeTime = new Date(openTime); 
 
 
-  if (nowUtc < openTime && nowUtc.getUTCHours() < parseInt(openTimeParts[0]) && nowUtc.getUTCHours() <= 10) {
+  if (nowUtc < openTime  && nowUtc.getUTCHours() <= 10) {
     openTime.setUTCDate(openTime.getUTCDate() - 1);
   }
    
