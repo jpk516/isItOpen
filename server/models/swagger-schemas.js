@@ -53,5 +53,11 @@ module.exports = {
             checkIn: { $ref: '#/components/schemas/CheckIn' },
             userVoteStatus: { $ref: '#/components/schemas/UserVoteStatus' },
         }
-    }
+    },
+    Description: {
+        type: 'object',
+        properties: {
+            description: { type: 'string' }
+        }
+    },
 };

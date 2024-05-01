@@ -16,8 +16,8 @@ const getNearbyPlaces = (location, radius) => {
       });
 };
 
-const getHours = (placeName) => {
-    const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeName)} Columbia, MO&inputtype=textquery&fields=place_id&key=${apiKey}`;
+const getHours = (placeDescription) => {
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeDescription)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
   
     return fetch(searchUrl)
       .then(response => response.json())
@@ -42,15 +42,53 @@ const getHours = (placeName) => {
         console.error('Error fetching place ID:', err);
         throw err;
       });
-  };
+};
+
+const getPlaceData = (placeDescription) => {
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeDescription)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
   
-  const getReviews = (placeName) => {
+    return fetch(searchUrl)
+      .then(response => response.json())
+      .then(data => {
+        const placeId = data.candidates[0].place_id;
+        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`;
+
+        return fetch(detailsUrl)
+          .then(response => response.json())
+          .then(details => {
+            console.log(details);
+            return details;
+          })
+          .catch(err => {
+            console.error('Error fetching place details:', err);
+            throw err;
+          });
+      })
+      .catch(err => {
+        console.error('Error fetching place ID:', err);
+        throw err;
+      });
+}
+
+const getOpenNow = (placeDescription) => {
+  return getPlaceData(placeDescription)
+    .then(details => {
+      return details?.result?.opening_hours?.open_now ?? false;
+    })
+    .catch(err => {
+      console.error('Error fetching open now:', err);
+      throw err;
+    });
+};
+  
+  const getReviews = (placeDescription) => {
     // This is a placeholder for the actual implementation
-    return `Fetching reviews for ${placeName} using API key ${apiKey}`;
+    return `Fetching reviews for ${placeDescription} using API key ${apiKey}`;
   };
   
   const placesService = {
     getHours,
+    getOpenNow,
     getReviews,
     getNearbyPlaces
   };

@@ -41,7 +41,8 @@ const updateAll = async () => {
     let venues = await Venue.find();
     let updatedVenues = await Promise.all(venues.map(async venue => {
         try {
-            let hours = await placesService.getHours(venue.name);
+            let friendlyNameAndAddress = `${venue?.name ?? ''} ${venue?.address ?? ''} ${venue?.city ?? ''} ${venue?.state ?? ''} ${venue?.zip ?? ''}`;
+            let hours = await placesService.getHours(friendlyNameAndAddress);
             venue.hours = processSchedule(hours);
             console.log(`Updated hours for ${venue.name} to ${JSON.stringify(venue.hours)}`);
         } catch (error) {

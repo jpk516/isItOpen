@@ -72,7 +72,8 @@ const achievementController = require('./controllers/achievement');
 app.use(achievementController)
 const profanityController = require('./controllers/profanity');
 app.use('/api/profanity', profanityController);
-
+const placesController = require('./controllers/place');
+app.use(placesController)
 
 // setup debug mode
 if (debug) {
