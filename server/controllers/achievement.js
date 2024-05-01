@@ -35,9 +35,10 @@ router.get(base, (req, res) => {
 
 const setAchievementStatus = (achievement, user) => {
     const achievementObject = achievement.toObject();
-
-    if (user.achievements.includes(achievement._id)) {
-        return { ...achievementObject, earned: true, awarded: user.achievementObject.find(a => a.achievement === achievement._id).awarded };
+    console.log("logging user achievements")
+    console.log(user.achievements);
+    if (user?.achievements?.find(a => a.achievement.equals(achievement._id))) {
+        return { ...achievementObject, earned: true, awarded: user.achievements.find(a => a.achievement.equals(achievement._id)).awarded};
     } else {
         return { ...achievementObject, earned: false, awarded: null };
     }

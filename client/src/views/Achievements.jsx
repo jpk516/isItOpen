@@ -38,7 +38,7 @@ function Achievements() {
                 </Grid>
                 <Grid item xs={12}>
                     <Stack direction="row" spacing={3}>
-                        {achievements.map((achievement) => (
+                        {achievements?.map((achievement) => (
                             <Achievement key={achievement._id} text={achievement.name} tooltipText={achievement.description} earned={achievement?.earned ?? false} />
                         ))}
                         {/* <Achievement text="Early Riser" tooltipText="Awarded for being one of the first 100 people to use IIO - 1/1/1965" earned={true} />
