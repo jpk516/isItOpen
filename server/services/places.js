@@ -17,7 +17,7 @@ const getNearbyPlaces = (location, radius) => {
 };
 
 const getHours = (placeName) => {
-    const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeName)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
+    const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeName)} Columbia, MO&inputtype=textquery&fields=place_id&key=${apiKey}`;
   
     return fetch(searchUrl)
       .then(response => response.json())
