@@ -8,7 +8,7 @@ function IIOMap({venues}) {
     <APIProvider apiKey="AIzaSyDBsAc39kykWMw9GcY0ReFazPl1DY4XRbg">
       <Map
         defaultCenter={{lat: 38.9517, lng: -92.3341}} //Set latitude and longitude to Columbia Missouri
-        defaultZoom={12}
+        defaultZoom={14}
         style={{height: '600px' }}
         gestureHandling={'greedy'}
         disableDefaultUI={true}

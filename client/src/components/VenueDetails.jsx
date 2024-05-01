@@ -26,7 +26,7 @@ const VenueView = ({ venue, checkIns}) => {
     }
 
   };
-  
+ 
   const isOpen = CheckIfOpen(venue, checkIns)
 
   return (
