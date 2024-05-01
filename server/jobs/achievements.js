@@ -11,7 +11,8 @@ function processAchievements(hoursArray) {
 
 
 const updateAll = async () => {
-    let users = await User.find();
+    let users = await User.find().populate('achievements').populate('checkins');
+    let checkinCount = user.checkins.length;
     let achievements = await Achievement.find();
     // go through each user and check if they have any achievements
     // that we need to award them
@@ -22,6 +23,10 @@ const updateAll = async () => {
                 continue;
             }
             console.log(`Checking if user ${user.username} has achievement ${achievement.name}`);
+            if (achievement.points <= checkinCount) {
+                console.log(`Awarding achievement ${achievement.name} to user ${user.username}`);
+                user.achievements.push({ achievement: achievement._id, awarded: new Date() });
+            }
         }
     }
 

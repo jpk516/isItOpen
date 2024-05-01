@@ -26,7 +26,7 @@ if (jobTypes.length) {
         console.log('Agenda ready!');
         (async function() {
             for (let jobType of jobTypes) {
-                await agenda.every('30 minutes', jobType);
+                await agenda.every('1 minutes', jobType);
             }
         })();
     });

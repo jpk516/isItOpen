@@ -13,7 +13,10 @@ const User = new Schema({
     }],
     created: { type: Date, default: Date.now },
     disabled: { type: Boolean, default: false },
-    achievements: [{ type: Schema.Types.ObjectId, ref: 'Achievement' }],
+    achievements: [{
+        achievement: { type: Schema.Types.ObjectId, ref: 'Achievement' },
+        awarded: { type: Date, default: Date.now }
+    }],
     token: String,
     tokenExpires: Date
 });

@@ -24,10 +24,24 @@ const base = '/api/achievements';
 */
 router.get(base, (req, res) => {
     Achievement.find({})
-        .then((result) => res.json(result))
+        .then((result) => {
+            if (req.isAuthenticated()) {
+                result = result.map(achievement => setAchievementStatus(achievement, req.user));
+            }
+            res.json(result);
+        })
         .catch((err) => res.json({ success: false, message: "Could not load achievements: " + err }));
 });
 
+const setAchievementStatus = (achievement, user) => {
+    const achievementObject = achievement.toObject();
+
+    if (user.achievements.includes(achievement._id)) {
+        return { ...achievementObject, earned: true, awarded: user.achievementObject.find(a => a.achievement === achievement._id).awarded };
+    } else {
+        return { ...achievementObject, earned: false, awarded: null };
+    }
+}
 /**
 * @openapi
 * /api/achievements/{id}:
@@ -51,7 +65,12 @@ router.get(base, (req, res) => {
 */
 router.get(`${base}/:id`, (req, res) => {
     Achievement.findById(req.params.id)
-        .then((result) => res.json(result))
+        .then((result) => {
+            if (req.isAuthenticated()) {
+                result = setAchievementStatus(result, req.user);
+            }
+            res.json(result);
+        })
         .catch((err) => res.json({ success: false, message: "Could not load achievement: " + err }));
 });
 
