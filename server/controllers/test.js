@@ -3,6 +3,7 @@ const router = express.Router();
 const base = '/api/tests';
 const hoursService = require('../jobs/hours');
 const placesService = require('../services/places');
+const Venue = require('../models/venue');
 
 /**
 * @openapi
@@ -45,6 +46,24 @@ router.get(`${base}/hours/:name`, (req, res) => {
         .catch(err => res.json({ success: false, message: "Could not load hours: " + err }));
 });
 
+/**
+* @openapi
+* /api/tests/update-all-hours:
+*   get:
+*       summary: call the agenda hours job on demand
+*       tags: [Tests]
+*       description: call the agenda hours job on demand
+*       responses:
+*           200:
+*               description: Who knows what this will return
+* 
+*/
+router.get(`${base}/update-all-hours/`, async (req, res) => {
+    // get agenda from app.js
+    const agenda = require('../jobs/agenda');
+    agenda.now('hours');
+    return res.json({ message: "Updating hours..." });
+});
 
 /**
 * @openapi
