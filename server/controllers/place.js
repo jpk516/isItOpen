@@ -6,7 +6,7 @@ const base = '/api/places';
 
 /**
 * @openapi
-* /api/places/hours/{description}:
+* /api/places/hours/description/{description}:
 *   get:
 *       summary: Returns hours for a place
 *       tags: [Places]
@@ -41,7 +41,45 @@ router.get(`${base}/hours/:description`, async (req, res) => {
 
 /**
 * @openapi
-* /api/places/open/{description}:
+* /api/places/hours/id/{id}:
+*   get:
+*       summary: Returns hours for a place
+*       tags: [Places]
+*       description: Returns all open time periods for a place. Uses the IIO venue Id of a location.
+*       parameters:
+*           - in: path
+*             name: id
+*             required: true
+*             description: the IIO venue Id of a location
+*       responses:
+*           200:
+*               description: list of open time periods
+*               content:
+*                   application/json:
+*                       schema:
+*                           type: array
+* 
+*/
+router.get(`${base}/hours/id/:id`, async (req, res) => {
+    try {
+        if (!req.isAuthenticated()) {
+            res.status(401).send("User is not authenticated")
+            return
+        }
+
+        const venue = await Venue.findById(req.params.id);
+        let friendlyNameAndAddress = `${venue?.name ?? ''} ${venue?.address ?? ''} ${venue?.city ?? ''} ${venue?.state ?? ''} ${venue?.zip ?? ''}`;
+
+        const hours = await placesService.getHours(friendlyNameAndAddress);
+        return res.json(hours);
+    } catch (error) {
+        res.status(500).json({ success: false, message: `Could not get hours: ${error}` });
+    }
+});
+
+/**
+* @openapi
+* /api/places/open/description/{description}:
 *   get:
 *       summary: Returns if the location is currently open
 *       tags: [Places]
@@ -60,7 +98,7 @@ router.get(`${base}/hours/:description`, async (req, res) => {
 *                           type: boolean
 * 
 */
-router.get(`${base}/open/:description`, async (req, res) => {
+router.get(`${base}/open/description/:description`, async (req, res) => {
     try {
         if (!req.isAuthenticated()) {
             res.status(401).send("User is not authenticated")
@@ -76,11 +114,11 @@ router.get(`${base}/open/:description`, async (req, res) => {
 
 /**
 * @openapi
-* /api/places/open-by-id/{id}:
+* /api/places/open/id/{id}:
 *   get:
 *       summary: Returns if the location is currently open
 *       tags: [Places]
-*       description: Returns if the location is currently open. Description is a string containing the name and address of the place.
+*       description: Returns if the location is currently open. Uses the IIO venue Id of a location.
 *       parameters:
 *           - in: path
 *             name: id
@@ -95,7 +133,7 @@ router.get(`${base}/open/:description`, async (req, res) => {
 *                           type: boolean
 * 
 */
-router.get(`${base}/open-by-id/:id`, async (req, res) => {
+router.get(`${base}/open/id/:id`, async (req, res) => {
     try {
         if (!req.isAuthenticated()) {
             res.status(401).send("User is not authenticated")
