@@ -39,7 +39,6 @@ const getPlaceData = (placeDescription) => {
         return fetch(detailsUrl)
           .then(response => response.json())
           .then(details => {
-            console.log(convertOpeningHours(details?.result?.opening_hours?.periods, details?.result?.utc_offset));
             return details;
           })
           .catch(err => {
