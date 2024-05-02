@@ -39,6 +39,7 @@ const base = '/api/venues';
 */
 router.get(base, (req, res) => {
     Venue.find({})
+        .sort({ name: 1 })
         .then((result) => {
             if (req.isAuthenticated()) {
                 // Convert each venue to a plain object and add favorite property
