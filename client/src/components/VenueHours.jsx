@@ -14,7 +14,7 @@ const VenueHours = ({ hours }) => {
     if (!utcTime) {
       return 'Closed';
     }
-    return moment.utc(utcTime).tz("America/Chicago").format('h:mm A');
+    return moment.utc(utcTime).format('h:mm A');
   };
 
   return (

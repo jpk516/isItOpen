@@ -62,11 +62,14 @@ function IIOMarker({venue}) {
   }
 
   const img = document.createElement('img');
-  img.src = icons[venue.type]?.icon || '';
 
   if(venue.type == "Music Venue")
   {
     img.src = icons.Music.icon; 
+  }
+  else
+  {
+    img.src = icons[venue.type]?.icon || '';
   }
 
   const isOpen = CheckIfOpen(venue, checkIns);

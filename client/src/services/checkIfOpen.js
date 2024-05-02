@@ -1,3 +1,4 @@
+import moment from 'moment-timezone';
 function CheckIfOpen(venue, checkIns) {
   //console.log(venue.name + " is being checked for open status");
 
@@ -27,16 +28,19 @@ function CheckIfOpen(venue, checkIns) {
     if (checkInDate >= startPeriod && checkInDate < endPeriod) 
     {
       if (mostRecentCheckIn.open) {
-        console.log(`${venue.name} is checked in as open based on the most recent check-in.`); 
+        //console.log(`${venue.name} is checked in as open based on the most recent check-in.`); 
         return true;
       } else {
-        console.log(`${venue.name} is checked in as closed based on the most recent check-in.`);
+        //console.log(`${venue.name} is checked in as closed based on the most recent check-in.`);
         return false;
       }
     }
   }
 
-  // console.log(venue.name + " is defaulting to hours");
+  //console.log(venue.name + " is defaulting to hours");
+
+  const tzOffset = moment().tz("America/Chicago").utcOffset(); // Gets offset in minutes
+  nowUtc.setMinutes(nowUtc.getMinutes() + tzOffset);
 
   // Get today's hours based on current UTC day
   const currentDayIndex = nowUtc.getUTCDay();
@@ -56,13 +60,13 @@ function CheckIfOpen(venue, checkIns) {
   const closeTime = new Date(openTime); 
 
 
-  if (nowUtc < openTime  && nowUtc.getUTCHours() <= 10) {
+  if (nowUtc < openTime  && nowUtc.getUTCHours() <= 4) {
     openTime.setUTCDate(openTime.getUTCDate() - 1);
   }
    
   
   // Check if we need to adjust open time to the previous day, hours refer to previous day as business is open past midnight
-  if (parseInt(closeTimeParts[0]) <= parseInt(openTimeParts[0]) && nowUtc.getUTCHours() >= 10) {
+  if (parseInt(closeTimeParts[0]) <= parseInt(openTimeParts[0]) && nowUtc.getUTCHours() >= 4) {
     closeTime.setUTCDate(closeTime.getUTCDate() + 1);  // Add a day if closes after midnight
   }
   
