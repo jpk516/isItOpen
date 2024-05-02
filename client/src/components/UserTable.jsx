@@ -44,7 +44,6 @@ const UserTable = ({ users, onClick }) => {
         },
     ];
 
-    // Adding an id property if not present
     const rows = users.map((user) => ({
         _id: user._id || user.id,
         id: user._id || user.id,

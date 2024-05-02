@@ -7,7 +7,7 @@ import AccountService from '../services/account-service';
 import { useAppContext } from '../contexts/AppContext'; 
 
 function ChangePasswordForm({ onPasswordChange }) {
-  const { toggleSnackbar } = useAppContext(); // Assuming you have a method to show snackbars
+  const { toggleSnackbar } = useAppContext(); 
   const [passwords, setPasswords] = useState({ oldPassword: '', password: '', confirmPassword: '' });
 
   const handleSubmit = (event) => {
