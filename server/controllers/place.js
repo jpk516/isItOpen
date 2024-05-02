@@ -3,7 +3,7 @@ const router = express.Router();
 const Venue = require('../models/venue');
 const placesService = require('../services/places');
 const base = '/api/places';
-
+   
 /**
 * @openapi
 * /api/places/hours/description/{description}:
