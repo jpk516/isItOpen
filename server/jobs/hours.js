@@ -36,14 +36,13 @@ function processSchedule(hoursArray) {
     });
 }
 
-
 const updateAll = async () => {
     let venues = await Venue.find();
     let updatedVenues = await Promise.all(venues.map(async venue => {
         try {
             let friendlyNameAndAddress = `${venue?.name ?? ''} ${venue?.address ?? ''} ${venue?.city ?? ''} ${venue?.state ?? ''} ${venue?.zip ?? ''}`;
-            let hours = await placesService.getHours(friendlyNameAndAddress);
-            venue.hours = processSchedule(hours);
+            let placeData = await placesService.getPlaceData(friendlyNameAndAddress);
+            venue.hours = processSchedule(placeData?.result?.opening_hours?.weekday_text ?? []);
             console.log(`Updated hours for ${venue.name} to ${JSON.stringify(venue.hours)}`);
         } catch (error) {
             console.error(`Failed to update hours for ${venue.name}: ${error}`);

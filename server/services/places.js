@@ -17,31 +17,14 @@ const getNearbyPlaces = (location, radius) => {
 };
 
 const getHours = (placeDescription) => {
-    const searchUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(placeDescription)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
-  
-    return fetch(searchUrl)
-      .then(response => response.json())
-      .then(data => {
-        const placeId = data.candidates[0].place_id;
-        const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`;
-
-        return fetch(detailsUrl)
-          .then(response => response.json())
-          .then(details => {
-            console.log(details);
-            //console.log(details?.result?.opening_hours?.isOpen())
-            const hours = details?.result?.opening_hours?.weekday_text ?? [];
-            return hours;
-          })
-          .catch(err => {
-            console.error('Error fetching place details:', err);
-            throw err;
-          });
-      })
-      .catch(err => {
-        console.error('Error fetching place ID:', err);
-        throw err;
-      });
+  return getPlaceData(placeDescription)
+    .then(details => {
+      return details?.result?.opening_hours?.weekday_text ?? [];
+    })
+    .catch(err => {
+      console.error('Error fetching hours:', err);
+      throw err;
+    });
 };
 
 const getPlaceData = (placeDescription) => {
@@ -56,7 +39,7 @@ const getPlaceData = (placeDescription) => {
         return fetch(detailsUrl)
           .then(response => response.json())
           .then(details => {
-            console.log(details);
+            console.log(convertOpeningHours(details?.result?.opening_hours?.periods, details?.result?.utc_offset));
             return details;
           })
           .catch(err => {
@@ -87,6 +70,7 @@ const getOpenNow = (placeDescription) => {
   };
   
   const placesService = {
+    getPlaceData,
     getHours,
     getOpenNow,
     getReviews,
