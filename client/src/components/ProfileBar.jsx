@@ -18,10 +18,10 @@ import ChangePasswordForm from './ChangePasswordForm';
 
 function ProfileCard() {
   const { auth } = useAppContext();
-  const [showForm, setShowForm] = useState(false);  // State to control form visibility
+  const [showForm, setShowForm] = useState(false); 
 
   const handleShowForm = () => {
-    setShowForm(!showForm);  // Function to toggle the form visibility
+    setShowForm(!showForm); 
   };
 
   // Function to format date

@@ -29,13 +29,12 @@ function FavoritesList() {
         console.log(favorite);
         if (favorite.favorite) { //if star is marked if statement is started
             AccountService.deleteFavorite(favorite) //calls on service to delete the favorite
-                .then(response => { // once favorite deleted the selected favorite from the list 
+                .then(response => { 
                     const updatedFavorites = favorites.filter(f => f._id !== favorite._id);
                     setFavorites(updatedFavorites); // Resets list without now gone favorite so list reloads
-                    toggleSnackbar('Venue removed from favorites.', 'success'); //success message
+                    toggleSnackbar('Venue removed from favorites.', 'success'); 
                 })
                 .catch(error => {
-                    //Message shown if favorite cannot be removed
                     toggleSnackbar('An error occurred while removing the venue from your favorites.', 'error');
             
                 });

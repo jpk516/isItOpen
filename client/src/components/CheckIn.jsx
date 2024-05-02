@@ -47,7 +47,7 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
           // If no profanity is detected, proceed with check-in
           CheckInService.add(checkInDetails).then(() => {
             setCheckInDetails(defaultObject);
-            onClose(); // Close the modal on successful check-in
+            onClose(); 
             if (onCheckIn) {
               onCheckIn();
               toggleSnackbar('Successfully Checked IN', 'success');
@@ -58,7 +58,6 @@ function CheckIn({ venue, isOpen, onClose, onCheckIn }) {
         }
       })
       .catch((error) => {
-        // Handle any errors that occur during the profanity check process
         toggleSnackbar('An error occurred during profanity checking.', 'error');
       });
   };

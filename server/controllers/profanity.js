@@ -37,7 +37,7 @@ router.post('/check', async (req, res) => {
     if (!ProfanityEngine) {
         try {
             const module = await import('@coffeeandfun/google-profanity-words'); // @coffeeandfun/google-profanity-words package is an ES module,
-            ProfanityEngine = module.ProfanityEngine; // This loads it so we can use it in out commonJs style
+            ProfanityEngine = module.ProfanityEngine; // This loads it so we can use it in our commonJs style
         } catch (error) {
             console.error('Error importing ProfanityEngine:', error);
             return res.status(500).json({ error: 'Error loading profanity engine.' });

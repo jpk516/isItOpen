@@ -64,8 +64,6 @@ function CheckIfOpen(venue, checkIns) {
     openTime.setUTCDate(openTime.getUTCDate() - 1);
   }
    
-  
-  // Check if we need to adjust open time to the previous day, hours refer to previous day as business is open past midnight
   if (parseInt(closeTimeParts[0]) <= parseInt(openTimeParts[0]) && nowUtc.getUTCHours() >= 4) {
     closeTime.setUTCDate(closeTime.getUTCDate() + 1);  // Add a day if closes after midnight
   }
