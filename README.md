@@ -1,6 +1,9 @@
 # isItOpen
 Is it open? By Steven Gibson, Jimmy Keating, Alex Franklin, Jack Carroll, and Gerard Lucas
 
+[Main Website](https://whatstarted.com/)  
+[API Guide](https://server.whatstarted.com/api-docs/#/)
+
 
 ## Back-End
 This project lives in the "server" folder. To install, cd to the server folder and run:  
